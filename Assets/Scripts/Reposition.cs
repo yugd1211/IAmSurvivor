@@ -1,28 +1,39 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using GameManager;
+using UnityEngine.Tilemaps;
 
 public class Reposition : MonoBehaviour
 {
+    private Collider2D _coll;
+    private void Awake()
+    {
+        _coll = GetComponent<Collider2D>();
+    }
     void OnTriggerExit2D(Collider2D collision)
     {
-        if (!cillision.CompareTag("Area"))
+        if (!collision.CompareTag("Area"))
             return;
-        Vector2 PlayerPos = GameManager.Instance().player.transform.position;
+        Vector2 playerPos = GameManager.Instance.player.transform.position;
         Vector2 myPos = transform.position;
-        float diffX = Mathf.Abs(PlayerPos.x - myPos.x);
-        float diffY = Mathf.Abs(PlayerPos.y - myPos.y);
+        float diffX = Mathf.Abs(playerPos.x - myPos.x);
+        float diffY = Mathf.Abs(playerPos.y - myPos.y);
         
-        Vector2 playerDir = GameManager.Instance().player.inputVec;
+        Vector2 playerDir = GameManager.Instance.player.InputVec;
         float dirX = playerDir.x < 0 ? -1 : 1;
         float dirY = playerDir.y < 0 ? -1 : 1;
 
         switch (transform.tag)
         {
-            case "Ground" : 
+            case "Ground":
+                if (diffX > diffY)
+                    transform.Translate(Vector3.right * dirX * collision.bounds.size.x * 2);
+                else if (diffX < diffY)
+                    transform.Translate(Vector3.up * dirY * collision.bounds.size.y * 2);
                 break;
-            case "Enemy" : 
+            case "Enemy":
+                if (_coll.enabled)
+                {
+                    transform.Translate(playerDir * collision.bounds.size * 2);
+                }
                 break;
         }
     }

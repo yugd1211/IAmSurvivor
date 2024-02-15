@@ -7,13 +7,12 @@ public class GameManager : MonoBehaviour
     public Player player;
     private static GameManager instance;
 
-    void Awake()
+    public void Awake()
     {
-        if (instance == null) {
-            instance = this;
-        } else {
+        if (instance != null)
             Destroy(this.gameObject);
-        }
+        else
+            instance = this;
     }
 
     public static GameManager Instance
@@ -21,9 +20,7 @@ public class GameManager : MonoBehaviour
         get
         {
             if (instance == null)
-            {
                 instance = new GameManager();
-            }
             return instance;
         }
     }
