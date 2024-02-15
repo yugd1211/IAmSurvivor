@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public PoolManager pool;
     public Player player;
-    private static GameManager instance;
 
+    private static GameManager instance;
+    
     public void Awake()
     {
+        pool = FindObjectOfType<PoolManager>();
         if (instance != null)
             Destroy(this.gameObject);
         else

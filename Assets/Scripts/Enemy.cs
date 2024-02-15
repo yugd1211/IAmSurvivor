@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 
@@ -14,6 +15,11 @@ public class Enemy : MonoBehaviour
     {
         _rigid = GetComponent<Rigidbody2D>();
         _spriter = GetComponent<SpriteRenderer>();
+    }
+
+    private void OnEnable()
+    {
+        target = GameManager.Instance.player.GetComponent<Rigidbody2D>();
     }
 
     private void Move()
