@@ -6,17 +6,20 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
+    public Vector2 InputVec { get; set; }
     public float moveSpeed = 5f;
+    public Scanner _scanner;
+    
     private Rigidbody2D _rigid;
     private Animator _anim;
     private SpriteRenderer _spriter;
 
-    public Vector2 InputVec { get; set; }
     void Awake()
     {
         _rigid = GetComponent<Rigidbody2D>();
         _spriter = GetComponent<SpriteRenderer>();
         _anim = GetComponent<Animator>();
+        _scanner = GetComponent<Scanner>();
     }
     
     public void OnMove(InputValue value)
