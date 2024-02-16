@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -16,16 +17,19 @@ public class Enemy : MonoBehaviour
     private Rigidbody2D _rigid;
     private SpriteRenderer _spriter;
     private Animator _anim;
+    private WaitForFixedUpdate _wait;
+    private readonly static int Hit = Animator.StringToHash("Hit");
 
     private void Awake()
     {
         _rigid = GetComponent<Rigidbody2D>();
         _spriter = GetComponent<SpriteRenderer>();
         _anim = GetComponent<Animator>();
+        _wait = new WaitForFixedUpdate();
     }
     private void FixedUpdate()
     {
-        if (!_isLive)
+        if (!_isLive || _anim.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
             return;
         Move();
     }
@@ -47,9 +51,10 @@ public class Enemy : MonoBehaviour
             return;
 
         health -= other.GetComponent<Bullet>().damage;
-
+        StartCoroutine(KnockBack());
         if (health > 0)
         {
+            _anim.SetTrigger(Hit);
         }
         else
         {
@@ -57,10 +62,14 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void Dead()
+    IEnumerator KnockBack()
     {
-        gameObject.SetActive(false);
+        yield return _wait;
+        Vector3 playerPos = GameManager.Instance.player.transform.position;
+        Vector3 dirVec = transform.position - playerPos;
+        _rigid.AddForce(dirVec.normalized * 3, ForceMode2D.Impulse);
     }
+    
     
     public void Init(SpawnData spawnData)
     {
@@ -76,5 +85,10 @@ public class Enemy : MonoBehaviour
         Vector2 nextVec = dirVec.normalized * (moveSpeed * Time.fixedDeltaTime);
         _rigid.MovePosition(_rigid.position + nextVec);
         _rigid.velocity = Vector2.zero;
+    }
+    
+    private void Dead()
+    {
+        gameObject.SetActive(false);
     }
 }
