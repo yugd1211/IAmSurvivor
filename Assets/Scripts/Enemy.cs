@@ -15,14 +15,15 @@ public class Enemy : MonoBehaviour
 
     private bool _isLive;
     private Rigidbody2D _rigid;
+    private Collider2D _coll;
     private SpriteRenderer _spriter;
     private Animator _anim;
     private WaitForFixedUpdate _wait;
-    private readonly static int Hit = Animator.StringToHash("Hit");
 
     private void Awake()
     {
         _rigid = GetComponent<Rigidbody2D>();
+        _coll = GetComponent<Collider2D>();
         _spriter = GetComponent<SpriteRenderer>();
         _anim = GetComponent<Animator>();
         _wait = new WaitForFixedUpdate();
@@ -43,22 +44,34 @@ public class Enemy : MonoBehaviour
     {
         target = GameManager.Instance.player.GetComponent<Rigidbody2D>();
         _isLive = true;
+        _coll.enabled = true;
+        _rigid.simulated = true;
+        _spriter.sortingOrder = 2;
+        _anim.SetBool("Dead", false);
         health = maxHealth;
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!other.CompareTag("Bullet"))
+        if (!other.CompareTag("Bullet") || !_isLive)
             return;
 
         health -= other.GetComponent<Bullet>().damage;
         StartCoroutine(KnockBack());
         if (health > 0)
         {
-            _anim.SetTrigger(Hit);
+            _anim.SetTrigger("Hit");
         }
         else
         {
-            Dead();
+            _isLive = false;
+            _coll.enabled = false;
+            _rigid.simulated = false;
+            _spriter.sortingOrder = 1;
+            _anim.SetBool("Dead", true);
+            GameManager.Instance.kill++;
+            GameManager.Instance.GetExp();
+            
+            // Dead();
         }
     }
 
