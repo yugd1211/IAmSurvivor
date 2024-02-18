@@ -5,7 +5,9 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    private static GameManager instance;
+    private static GameManager _instance = null;
+    public static GameManager Instance => _instance ? _instance : null;
+    
     [Header("# Game Object")]
     public PoolManager pool;
     public Player player;
@@ -15,31 +17,20 @@ public class GameManager : MonoBehaviour
     public float maxGameTime = 20f;
 
     [Header("# Player Info")]
-    public int level;
+    public int level = 0;
     public int kill;
     public int exp;
-    public int[] nextExp = {3, 5, 10, 30, 60, 100, 150, 210, 280, 360, 460, 600};
+    public int[] nextExp;
     
     public void Awake()
     {
         pool = FindObjectOfType<PoolManager>();
-        if (instance != null)
+        if (_instance != null)
             Destroy(this.gameObject);
         else
-            instance = this;
+            _instance = this;
     }
-
-    public static GameManager Instance
-    {
-        get
-        {
-            if (!instance)
-                instance = new GameManager();
-            return instance;
-        }
-    }
-
-    private void Update()
+private void Update()
     {
         gameTime += Time.deltaTime;
 
@@ -51,7 +42,6 @@ public class GameManager : MonoBehaviour
     public void GetExp()
     {
         exp++;
-
         if (exp >= nextExp[level])
         {
             exp -= nextExp[level];
