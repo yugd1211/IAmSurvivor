@@ -19,15 +19,21 @@ public class Enemy : MonoBehaviour
     private SpriteRenderer _spriter;
     private Animator _anim;
     private WaitForFixedUpdate _wait;
+    private GameManager _gameManager;
 
     private void Awake()
+    {
+        _wait = new WaitForFixedUpdate();
+    }
+    private void Start()
     {
         _rigid = GetComponent<Rigidbody2D>();
         _coll = GetComponent<Collider2D>();
         _spriter = GetComponent<SpriteRenderer>();
         _anim = GetComponent<Animator>();
-        _wait = new WaitForFixedUpdate();
+        _gameManager = GameManager.Instance;
     }
+    
     private void FixedUpdate()
     {
         if (!_isLive || _anim.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
@@ -42,7 +48,7 @@ public class Enemy : MonoBehaviour
     }
     private void OnEnable()
     {
-        target = GameManager.Instance.player.GetComponent<Rigidbody2D>();
+        target = _gameManager.player.GetComponent<Rigidbody2D>();
         _isLive = true;
         _coll.enabled = true;
         _rigid.simulated = true;
@@ -68,8 +74,8 @@ public class Enemy : MonoBehaviour
             _rigid.simulated = false;
             _spriter.sortingOrder = 1;
             _anim.SetBool("Dead", true);
-            GameManager.Instance.kill++;
-            GameManager.Instance.GetExp();
+            _gameManager.kill++;
+            _gameManager.GetExp();
             
             // Dead();
         }
@@ -78,7 +84,7 @@ public class Enemy : MonoBehaviour
     IEnumerator KnockBack()
     {
         yield return _wait;
-        Vector3 playerPos = GameManager.Instance.player.transform.position;
+        Vector3 playerPos = _gameManager.player.transform.position;
         Vector3 dirVec = transform.position - playerPos;
         _rigid.AddForce(dirVec.normalized * 3, ForceMode2D.Impulse);
     }

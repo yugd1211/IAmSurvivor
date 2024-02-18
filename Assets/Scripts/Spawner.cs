@@ -9,19 +9,21 @@ public class Spawner : MonoBehaviour
 {
     public Transform[] spawnPoint;
     public SpawnData[] spawnDatas;
+    private GameManager _gameManager;
 
     private float timer;
     private int _level;
 
-    private void Awake()
+    private void Start()
     {
         spawnPoint = GetComponentsInChildren<Transform>();
+        _gameManager = GameManager.Instance;
     }
     void Update()
     {
         timer += Time.deltaTime;
 
-        _level = Mathf.Clamp(Mathf.FloorToInt(GameManager.Instance.gameTime / 10f), 0, spawnDatas.Length - 1);
+        _level = Mathf.Clamp(Mathf.FloorToInt(_gameManager.gameTime / 10f), 0, spawnDatas.Length - 1);
         if (timer > spawnDatas[_level].spawnTime)
         {
             Spawn();
@@ -31,7 +33,7 @@ public class Spawner : MonoBehaviour
 
     void Spawn()
     {
-        GameObject enemy = GameManager.Instance.pool.Get(0);
+        GameObject enemy = _gameManager.pool.Get(0);
         enemy.transform.position = spawnPoint[Random.Range(1, spawnPoint.Length)].position;
         enemy.GetComponent<Enemy>().Init(spawnDatas[_level]);
     }

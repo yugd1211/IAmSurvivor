@@ -12,14 +12,12 @@ public class Weapon : MonoBehaviour
     
     private float timer;
     private Player _player;
+    private GameManager _gameManager;
 
     private void Start()
     {
         Init();
-    }
-
-    private void Awake()
-    {
+        _gameManager = GameManager.Instance;
         _player = GetComponentInParent<Player>();
     }
 
@@ -85,7 +83,7 @@ public class Weapon : MonoBehaviour
                 bullet = transform.GetChild(i);
             else
             {
-                bullet = GameManager.Instance.pool.Get(prefabId).transform;
+                bullet = _gameManager.pool.Get(prefabId).transform;
                 bullet.parent = transform;
             }
             bullet.localPosition = Vector3.zero;
@@ -105,7 +103,7 @@ public class Weapon : MonoBehaviour
         Vector3 dir = targetPos - transform.position;
         dir = dir.normalized;
         
-        Transform bullet = GameManager.Instance.pool.Get(prefabId).transform;
+        Transform bullet = _gameManager.pool.Get(prefabId).transform;
         bullet.position = transform.position;
         bullet.rotation = Quaternion.FromToRotation(Vector3.up, dir);
         bullet.GetComponent<Bullet>().Init(damage, count, dir);

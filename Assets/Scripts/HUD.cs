@@ -14,10 +14,6 @@ public class HUD : MonoBehaviour
     private Slider _slider;
     private GameManager _gameManager;
 
-    private void Awake()
-    {
-    }
-
     private void Start()
     {
         _text = GetComponent<TextMeshPro>();

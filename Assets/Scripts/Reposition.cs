@@ -3,20 +3,22 @@ using UnityEngine;
 public class Reposition : MonoBehaviour
 {
     private Collider2D _coll;
-    private void Awake()
+    private GameManager _gameManager;
+    private void Start()
     {
         _coll = GetComponent<Collider2D>();
+        _gameManager = GameManager.Instance;
     }
     void OnTriggerExit2D(Collider2D collision)
     {
         if (!collision.CompareTag("Area"))
             return;
-        Vector2 playerPos = GameManager.Instance.player.transform.position;
+        Vector2 playerPos = _gameManager.player.transform.position;
         Vector2 myPos = transform.position;
         float diffX = Mathf.Abs(playerPos.x - myPos.x);
         float diffY = Mathf.Abs(playerPos.y - myPos.y);
         
-        Vector2 playerDir = GameManager.Instance.player.InputVec;
+        Vector2 playerDir = _gameManager.player.InputVec;
         float dirX = playerDir.x < 0 ? -1 : 1;
         float dirY = playerDir.y < 0 ? -1 : 1;
 
