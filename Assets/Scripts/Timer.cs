@@ -15,7 +15,5 @@ public class Timer : MonoBehaviour
 
     void Update()
     {
-        timeRemaining += Time.deltaTime; // 매 프레임마다 경과 시간만큼 타이머를 감소시킵니다.
-        _tmp.text = string.Format("{0:00}:{1:00}", Mathf.FloorToInt(timeRemaining % 60), Mathf.FloorToInt((timeRemaining * 100) % 100));
     }
 }

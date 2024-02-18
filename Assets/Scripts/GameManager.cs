@@ -20,6 +20,8 @@ public class GameManager : MonoBehaviour
     public int level = 0;
     public int kill;
     public int exp;
+    public int health;
+    public int maxHealth;
     public int[] nextExp;
     
     public void Awake()
@@ -30,7 +32,13 @@ public class GameManager : MonoBehaviour
         else
             _instance = this;
     }
-private void Update()
+
+    private void Start()
+    {
+        health = maxHealth;
+    }
+    
+    private void Update()
     {
         gameTime += Time.deltaTime;
 
