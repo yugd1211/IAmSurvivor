@@ -18813,7 +18813,7 @@ MonoBehaviour:
   - {fileID: 7374095405681530195, guid: c22ba27d630b3430aa9d111dd8b4cbac, type: 3}
   - {fileID: 5588354483150353491, guid: 9e95e38965c0e4d6b83bf14efdf3aa58, type: 3}
   - {fileID: 2773070785237260793, guid: df7d29b40a8754e978122ef4f9bd443d, type: 3}
-  initNum: 500
+  initNum: 0
 --- !u!1 &1960874171 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 166553160330396587, guid: b099c36c0a03144808cd2f60d44cb6c1, type: 3}

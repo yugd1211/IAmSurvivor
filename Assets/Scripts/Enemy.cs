@@ -24,13 +24,10 @@ public class Enemy : MonoBehaviour
     private void Awake()
     {
         _wait = new WaitForFixedUpdate();
-    }
-    private void Start()
-    {
+        _anim = GetComponent<Animator>();
         _rigid = GetComponent<Rigidbody2D>();
         _coll = GetComponent<Collider2D>();
         _spriter = GetComponent<SpriteRenderer>();
-        _anim = GetComponent<Animator>();
         _gameManager = GameManager.Instance;
     }
     
