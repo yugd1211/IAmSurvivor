@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
@@ -71,6 +72,9 @@ public class Weapon : MonoBehaviour
             default:
                 break;
         }
+        Hand hand = _player.hands[(int)data.itemType];
+        hand.spriter.sprite = data.hand;
+        hand.gameObject.SetActive(true);
         _player.BroadcastMessage("ApplyGear", SendMessageOptions.DontRequireReceiver);
     }
 
@@ -107,10 +111,10 @@ public class Weapon : MonoBehaviour
 
     void Fire()
     {
-        if (!_player._scanner.nearestTarget)
+        if (!_player.scanner.nearestTarget)
             return;
 
-        Vector3 targetPos = _player._scanner.nearestTarget.position;
+        Vector3 targetPos = _player.scanner.nearestTarget.position;
         Vector3 dir = targetPos - transform.position;
         dir = dir.normalized;
         

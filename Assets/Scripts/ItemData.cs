@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "Item", menuName = "Scriptable Object/ItemData")]
 public class ItemData : ScriptableObject
@@ -25,5 +26,6 @@ public class ItemData : ScriptableObject
 
     [Header("# Weapon")]
     public GameObject projectile;
+    public Sprite hand;
 
 }

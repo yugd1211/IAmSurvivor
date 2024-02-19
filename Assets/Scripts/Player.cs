@@ -2,13 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 // ReSharper disable All
 
 public class Player : MonoBehaviour
 {
     public Vector2 InputVec { get; set; }
     public float moveSpeed = 5f;
-    public Scanner _scanner;
+    public Scanner scanner;
+    public Hand[] hands;
     
     private Rigidbody2D _rigid;
     private Animator _anim;
@@ -19,7 +21,8 @@ public class Player : MonoBehaviour
         _rigid = GetComponent<Rigidbody2D>();
         _spriter = GetComponent<SpriteRenderer>();
         _anim = GetComponent<Animator>();
-        _scanner = GetComponent<Scanner>();
+        scanner = GetComponent<Scanner>();
+        hands = GetComponentsInChildren<Hand>(true);
     }
     
     public void OnMove(InputValue value)
