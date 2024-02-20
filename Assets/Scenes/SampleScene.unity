@@ -640,6 +640,7 @@ MonoBehaviour:
   uiLevelUp: {fileID: 1582408477}
   gameTime: 0
   maxGameTime: 20
+  isLive: 1
   level: 0
   kill: 0
   exp: 0

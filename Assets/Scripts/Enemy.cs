@@ -33,12 +33,17 @@ public class Enemy : MonoBehaviour
     
     private void FixedUpdate()
     {
+        if (!_gameManager.isLive)
+            return;
         if (!_isLive || _anim.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
             return;
         Move();
     }
     private void LateUpdate()
     {
+        
+        if (!_gameManager.isLive)
+            return;
         if (!_isLive)
             return;
         _spriter.flipX = target.position.x < _rigid.position.x;

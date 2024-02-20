@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,6 +16,7 @@ public class Player : MonoBehaviour
     private Rigidbody2D _rigid;
     private Animator _anim;
     private SpriteRenderer _spriter;
+    private GameManager _gameManager;
 
     void Awake()
     {
@@ -24,19 +26,29 @@ public class Player : MonoBehaviour
         scanner = GetComponent<Scanner>();
         hands = GetComponentsInChildren<Hand>(true);
     }
-    
+    private void Start()
+    {
+        _gameManager = GameManager.Instance;
+    }
+
     public void OnMove(InputValue value)
     {
+        if (!_gameManager.isLive)
+            return;
         InputVec = value.Get<Vector2>();
     }
 
     void FixedUpdate()
     {
+        if (!_gameManager.isLive)
+            return;
         Vector2 nextVec = InputVec.normalized * (moveSpeed * Time.fixedDeltaTime);
         _rigid.MovePosition(_rigid.position + nextVec);
     }
     void LateUpdate()
     {
+        if (!_gameManager.isLive)
+            return;
         if (InputVec.x != 0)
             _spriter.flipX = InputVec.x < 0;
         _anim.SetFloat("Speed", InputVec.magnitude);
