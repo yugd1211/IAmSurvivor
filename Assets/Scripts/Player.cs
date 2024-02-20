@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
@@ -12,6 +13,7 @@ public class Player : MonoBehaviour
     public float moveSpeed = 5f;
     public Scanner scanner;
     public Hand[] hands;
+    public RuntimeAnimatorController[] animCon;
     
     private Rigidbody2D _rigid;
     private Animator _anim;
@@ -25,10 +27,12 @@ public class Player : MonoBehaviour
         _anim = GetComponent<Animator>();
         scanner = GetComponent<Scanner>();
         hands = GetComponentsInChildren<Hand>(true);
-    }
-    private void Start()
-    {
         _gameManager = GameManager.Instance;
+    }
+
+    private void OnEnable()
+    {
+        _anim.runtimeAnimatorController = animCon[_gameManager.playerId];
     }
 
     public void OnMove(InputValue value)
