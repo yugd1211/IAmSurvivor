@@ -35,7 +35,24 @@ public class Player : MonoBehaviour
     {
         InputVec = value.Get<Vector2>();
     }
-    
+    private void OnCollisionStay2D(Collision2D other)
+    {
+        if (!_gameManager.isLive)
+            return;
+
+        _gameManager.health -= Time.deltaTime * 10;
+
+        if (_gameManager.health < 0.0f)
+        {
+            for (int i = 2; i < transform.childCount; i++)
+            {
+                transform.GetChild(i).gameObject.SetActive(false);
+            }
+            _anim.SetTrigger("Dead");
+            _gameManager.GameOver();
+        }
+    }
+
     void FixedUpdate()
     {
         if (!_gameManager.isLive)
