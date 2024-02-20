@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -35,12 +36,12 @@ public class GameManager : MonoBehaviour
             _instance = this;
     }
 
-    private void Start()
+    public void GameStart()
     {
         health = maxHealth;
         
-        // tmp
-        uiLevelUp.Select(0);
+        uiLevelUp.Select(0); // tmp
+        isLive = true;
     }
     
     private void Update()

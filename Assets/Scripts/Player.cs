@@ -33,11 +33,9 @@ public class Player : MonoBehaviour
 
     public void OnMove(InputValue value)
     {
-        if (!_gameManager.isLive)
-            return;
         InputVec = value.Get<Vector2>();
     }
-
+    
     void FixedUpdate()
     {
         if (!_gameManager.isLive)
