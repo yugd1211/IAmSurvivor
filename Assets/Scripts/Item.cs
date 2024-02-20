@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,6 +16,8 @@ public class Item : MonoBehaviour
 
     private Image _icon;
     private TextMeshProUGUI _textLevel;
+    private TextMeshProUGUI _textName;
+    private TextMeshProUGUI _textDesc;
     private GameManager _gameManager;
 
     private void Awake()
@@ -25,13 +28,32 @@ public class Item : MonoBehaviour
 
         TextMeshProUGUI[] texts = GetComponentsInChildren<TextMeshProUGUI>();
         _textLevel = texts[0];
-        
-    }
-    private void LateUpdate()
-    {
-        _textLevel.text = "Lv." + level;
+        _textName = texts[1];
+        _textDesc = texts[2];
+        _textName.text = data.itemName;
     }
 
+    void OnEnable()
+    {
+        _textLevel.text = "Lv." + level;
+
+        switch (data.itemType)
+        {
+            case ItemData.ItemType.Melee:
+            case ItemData.ItemType.Range:
+                _textDesc.text = string.Format(data.itemDesc, data.nextDamages[level] * 100, data.nextCounts[level]); 
+                break;
+            case ItemData.ItemType.Glove:
+            case ItemData.ItemType.Shoe:
+                _textDesc.text = string.Format(data.itemDesc, data.nextDamages[level] * 100);
+                break;
+            default:
+                _textDesc.text = string.Format(data.itemDesc); 
+                break;
+        }
+
+    }
+    
     public void OnClick()
     {
         switch (data.itemType)
