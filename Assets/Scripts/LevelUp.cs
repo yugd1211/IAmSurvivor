@@ -28,11 +28,16 @@ public class LevelUp : MonoBehaviour
         PickRandomItem();
         rect.localScale = Vector3.one;
         _gameManager.Stop();
+        AudioManager.Instance.PlaySfx(AudioManager.Sfx.LevelUp);
+        AudioManager.Instance.EffectBgm(true);
+
     }
     public void Hide()
     {
         rect.localScale = Vector3.zero;
         _gameManager.Resume();
+        AudioManager.Instance.PlaySfx(AudioManager.Sfx.Select);
+        AudioManager.Instance.EffectBgm(false);
     }
     public void Select(int index)
     {

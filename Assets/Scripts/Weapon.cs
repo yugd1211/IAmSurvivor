@@ -11,7 +11,7 @@ public class Weapon : MonoBehaviour
     public int count;
     public float speed;
     
-    private float timer;
+    private float _timer;
     private Player _player;
     private GameManager _gameManager;
 
@@ -31,11 +31,11 @@ public class Weapon : MonoBehaviour
                 transform.Rotate(Vector3.forward * (speed * Time.deltaTime));
                 break;
             case 1:
-                timer += Time.deltaTime;
+                _timer += Time.deltaTime;
 
-                if (timer >= speed)
+                if (_timer >= speed)
                 {
-                    timer = 0f;
+                    _timer = 0f;
                     Fire();
                 }
                 break;
@@ -125,5 +125,6 @@ public class Weapon : MonoBehaviour
         bullet.position = transform.position;
         bullet.rotation = Quaternion.FromToRotation(Vector3.up, dir);
         bullet.GetComponent<Bullet>().Init(damage, count, dir);
+        AudioManager.Instance.PlaySfx(AudioManager.Sfx.Range);
     }
 }
