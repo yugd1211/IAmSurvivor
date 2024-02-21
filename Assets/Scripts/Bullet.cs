@@ -36,4 +36,11 @@ public class Bullet : MonoBehaviour
             gameObject.SetActive(false);
         }
     }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (!other.CompareTag("Area") || per == -1)
+            return;
+        gameObject.SetActive(false);
+    }
 }

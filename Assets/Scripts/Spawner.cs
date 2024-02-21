@@ -9,27 +9,29 @@ public class Spawner : MonoBehaviour
 {
     public Transform[] spawnPoint;
     public SpawnData[] spawnDatas;
+    public float levelTime;
     private GameManager _gameManager;
 
-    private float timer;
+    private float _timer;
     private int _level;
 
     private void Start()
     {
         spawnPoint = GetComponentsInChildren<Transform>();
         _gameManager = GameManager.Instance;
+        levelTime = _gameManager.maxGameTime / spawnDatas.Length;
     }
     void Update()
     {
         if (!_gameManager.isLive)
             return;
-        timer += Time.deltaTime;
+        _timer += Time.deltaTime;
 
-        _level = Mathf.Clamp(Mathf.FloorToInt(_gameManager.gameTime / 10f), 0, spawnDatas.Length - 1);
-        if (timer > spawnDatas[_level].spawnTime)
+        _level = Mathf.Clamp(Mathf.FloorToInt(_gameManager.gameTime / levelTime), 0, spawnDatas.Length - 1);
+        if (_timer > spawnDatas[_level].spawnTime)
         {
             Spawn();
-            timer = 0f;
+            _timer = 0f;
         }
     }
 
