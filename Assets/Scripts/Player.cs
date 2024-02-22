@@ -9,11 +9,11 @@ using UnityEngine.Serialization;
 
 public class Player : MonoBehaviour
 {
+    public CharacterData data;
     public Vector2 InputVec { get; set; }
     public float moveSpeed = 5f;
     public Scanner scanner;
     public Hand[] hands;
-    public RuntimeAnimatorController[] animCon;
     
     private Rigidbody2D _rigid;
     private Animator _anim;
@@ -32,9 +32,9 @@ public class Player : MonoBehaviour
 
     private void OnEnable()
     {
-        moveSpeed *= Character.Speed;
-        _anim.runtimeAnimatorController = animCon[_gameManager.playerId];
+        _anim.runtimeAnimatorController = data.AnimCon;
     }
+    
 
     public void OnMove(InputValue value)
     {

@@ -46,11 +46,11 @@ public class Gear : MonoBehaviour
             switch (weapon.id)
             {
                 case 0:
-                    float speed = 150 * Character.WeaponSpeed;
+                    float speed = 150 * GameManager.Instance.player.data.WeaponSpeed;
                     weapon.speed = speed + (speed * rate);
                     break;
                 case 1:
-                    speed = 0.5f * Character.WeaponRate;
+                    speed = 0.5f * GameManager.Instance.player.data.WeaponRate;
                     weapon.speed = speed * (1f - rate);
                     break;
             }
@@ -59,7 +59,7 @@ public class Gear : MonoBehaviour
     
     private void SpeedUp()
     {
-        float speed = 3 * Character.Speed;
-        GameManager.Instance.player.moveSpeed = speed + speed * rate;
+        float speed = GameManager.Instance.player.moveSpeed;
+        GameManager.Instance.player.moveSpeed = speed * rate;
     }
 }
