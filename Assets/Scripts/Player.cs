@@ -14,7 +14,6 @@ public class Player : MonoBehaviour
     public float moveSpeed = 5f;
     public Scanner scanner;
     public Hand[] hands;
-    public RuntimeAnimatorController[] animCon;
     
     private Rigidbody2D _rigid;
     private Animator _anim;
@@ -33,7 +32,7 @@ public class Player : MonoBehaviour
 
     private void OnEnable()
     {
-        _anim.runtimeAnimatorController = animCon[_gameManager.playerId];
+        _anim.runtimeAnimatorController = data.AnimCon;
     }
 
     public void OnMove(InputValue value)
