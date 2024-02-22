@@ -34,6 +34,7 @@ public class Player : MonoBehaviour
     {
         _anim.runtimeAnimatorController = data.AnimCon;
     }
+    
 
     public void OnMove(InputValue value)
     {
