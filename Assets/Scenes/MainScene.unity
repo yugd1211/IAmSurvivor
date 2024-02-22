@@ -328,6 +328,7 @@ MonoBehaviour:
   gameTime: 0
   maxGameTime: 300
   isLive: 0
+  data: {fileID: 0}
   playerId: 0
   level: 0
   kill: 0

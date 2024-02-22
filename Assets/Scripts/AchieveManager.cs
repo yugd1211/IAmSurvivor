@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AchieveManager : MonoBehaviour
 {
@@ -28,7 +29,8 @@ public class AchieveManager : MonoBehaviour
 
     private void Start()
     {
-        UnlockCharacter();
+        if (SceneManager.GetActiveScene().name == "MainScene")
+            UnlockCharacter();
     }
 
     void LateUpdate()

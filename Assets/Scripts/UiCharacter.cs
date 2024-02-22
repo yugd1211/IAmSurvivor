@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UiCharacter : MonoBehaviour
@@ -22,8 +23,10 @@ public class UiCharacter : MonoBehaviour
         _button.onClick.AddListener(() =>
         {
             _gameManager.data = data;
-            _gameManager.GameStart();
+            SceneManager.LoadScene(1);
         });
     }
-    
+
+    // 씬 로드 후에 호출되는 메서드입니다.
+
 }
