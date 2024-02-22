@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     public bool isLive;
 
     [Header("# Player Info")]
+    public CharacterData data;
     public int playerId;
     public int level = 0;
     public int kill;
@@ -39,17 +40,19 @@ public class GameManager : MonoBehaviour
         else
             _instance = this;
         Application.targetFrameRate = 60;
+        DontDestroyOnLoad(this.gameObject);
     }
 
     public void GameStart()
     {
+        SceneManager.LoadScene(1);
+        // SceneManager.LoadScene("GameScene");
         health = maxHealth;
         
         player.gameObject.SetActive(true);
         uiLevelUp.Select(playerId % 2); // tmp
         Resume();
-        
-        
+
         AudioManager.Instance.PlayBgm(true);
         AudioManager.Instance.PlaySfx(AudioManager.Sfx.Select);
     }

@@ -9,6 +9,7 @@ public class UiCharacter : MonoBehaviour
 {
     public CharacterData data;
 
+    private GameManager _gameManager;
     private TextMeshProUGUI _text;
     private Button _button;
 
@@ -16,14 +17,13 @@ public class UiCharacter : MonoBehaviour
     {
         _text = GetComponentInChildren<TextMeshProUGUI>();
         _button = GetComponentInChildren<Button>();
+        _gameManager = GameManager.Instance; 
         _text.text = data.CharacterName;
         _button.onClick.AddListener(() =>
         {
-            GameManager.Instance.player.data = data;
-            GameManager.Instance.GameStart();
+            _gameManager.data = data;
+            _gameManager.GameStart();
         });
     }
-    
-    
     
 }
