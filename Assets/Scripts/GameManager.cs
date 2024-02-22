@@ -1,7 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -23,6 +20,7 @@ public class GameManager : MonoBehaviour
     public bool isLive;
 
     [Header("# Player Info")]
+    public CharacterData data;
     public int playerId;
     public int level = 0;
     public int kill;
@@ -33,23 +31,38 @@ public class GameManager : MonoBehaviour
     
     public void Awake()
     {
-        pool = FindObjectOfType<PoolManager>();
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        DontDestroyOnLoad(this.gameObject);
         if (_instance != null)
             Destroy(this.gameObject);
         else
             _instance = this;
+        
         Application.targetFrameRate = 60;
+        pool = FindObjectOfType<PoolManager>();
+    }
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "GameScene")
+            GameStart();        
     }
 
     public void GameStart()
     {
         health = maxHealth;
-        
-        player.gameObject.SetActive(true);
+
+        player = FindObjectOfType<Player>();
+        uiLevelUp = FindObjectOfType<LevelUp>();
+        pool = FindObjectOfType<PoolManager>();
+        enemyClearner = FindObjectOfType<Bullet>(true).gameObject;
+        uiResult = FindObjectOfType<Result>(true);
         uiLevelUp.Select(playerId % 2); // tmp
+        player.data = data;
+        player.ChangeAnim();
+        
+        // 없어도될듯
         Resume();
-        
-        
+
         AudioManager.Instance.PlayBgm(true);
         AudioManager.Instance.PlaySfx(AudioManager.Sfx.Select);
     }

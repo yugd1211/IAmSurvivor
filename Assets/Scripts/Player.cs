@@ -30,7 +30,7 @@ public class Player : MonoBehaviour
         _gameManager = GameManager.Instance;
     }
 
-    private void OnEnable()
+    public void ChangeAnim()
     {
         _anim.runtimeAnimatorController = data.AnimCon;
     }

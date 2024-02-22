@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Follow : MonoBehaviour
 {
-    private RectTransform _rect;
+    public RectTransform _rect;
     private GameManager _gameManager;
     void Awake()
     {
@@ -18,6 +18,7 @@ public class Follow : MonoBehaviour
 
     void FixedUpdate()
     {
+        // _rect.position = Vector3.forward;
         _rect.position = Camera.main.WorldToScreenPoint(_gameManager.player.transform.position);
     }
 }
