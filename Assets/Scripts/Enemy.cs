@@ -11,7 +11,7 @@ public class Enemy : MonoBehaviour
     public float maxHealth;
     public RuntimeAnimatorController[] animCon;
     public Rigidbody2D target;
-    
+        
 
     private bool _isLive;
     private Rigidbody2D _rigid;

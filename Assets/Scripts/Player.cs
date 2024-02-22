@@ -9,6 +9,7 @@ using UnityEngine.Serialization;
 
 public class Player : MonoBehaviour
 {
+    public CharacterData data;
     public Vector2 InputVec { get; set; }
     public float moveSpeed = 5f;
     public Scanner scanner;
