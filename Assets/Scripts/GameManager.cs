@@ -55,6 +55,7 @@ public class GameManager : MonoBehaviour
         uiLevelUp = FindObjectOfType<LevelUp>();
         pool = FindObjectOfType<PoolManager>();
         enemyClearner = FindObjectOfType<Bullet>(true).gameObject;
+        uiResult = FindObjectOfType<Result>(true);
         uiLevelUp.Select(playerId % 2); // tmp
         player.data = data;
         player.ChangeAnim();
