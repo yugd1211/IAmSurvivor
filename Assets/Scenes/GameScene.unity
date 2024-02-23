@@ -218,7 +218,7 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: 7db8b245c88594520998f9ac3dc48f93, type: 2}
   level: 0
   weapon: {fileID: 0}
-  gear: {fileID: 0}
+  armor: {fileID: 0}
 --- !u!114 &54423051
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1569,8 +1569,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 5
-  m_fontSizeBase: 5
+  m_fontSize: 4
+  m_fontSizeBase: 4
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1683,7 +1683,7 @@ RectTransform:
   - {fileID: 261889815}
   - {fileID: 592396301}
   m_Father: {fileID: 1895181296}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -2142,8 +2142,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 5
-  m_fontSizeBase: 5
+  m_fontSize: 4
+  m_fontSizeBase: 4
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2308,8 +2308,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 5
-  m_fontSizeBase: 5
+  m_fontSize: 4
+  m_fontSizeBase: 4
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -7991,7 +7991,7 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: ccb011d20226344059aed0e39bd35904, type: 2}
   level: 0
   weapon: {fileID: 0}
-  gear: {fileID: 0}
+  armor: {fileID: 0}
 --- !u!114 &894170494
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8214,8 +8214,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 5
-  m_fontSizeBase: 5
+  m_fontSize: 4
+  m_fontSizeBase: 4
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -8819,7 +8819,7 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: faecccd89a7094ef4b6c39b36cdc857e, type: 2}
   level: 0
   weapon: {fileID: 0}
-  gear: {fileID: 0}
+  armor: {fileID: 0}
 --- !u!114 &1175666805
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13529,7 +13529,7 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: 1194612bd141041299d5a76687b943f9, type: 2}
   level: 0
   weapon: {fileID: 0}
-  gear: {fileID: 0}
+  armor: {fileID: 0}
 --- !u!114 &1269899257
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18040,8 +18040,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 5
-  m_fontSizeBase: 5
+  m_fontSize: 4
+  m_fontSizeBase: 4
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -18136,6 +18136,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 1000000
+  weaponType: 0
   per: -1
 --- !u!61 &1333610395
 BoxCollider2D:
@@ -18469,7 +18470,7 @@ RectTransform:
   - {fileID: 2021078690}
   - {fileID: 869633036}
   m_Father: {fileID: 1895181296}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -23064,8 +23065,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1880019352}
-  m_Father: {fileID: 1954418199}
-  m_RootOrder: 5
+  m_Father: {fileID: 1895181296}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -23460,7 +23461,7 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: b618d8cff029149bebb21571003ccba5, type: 2}
   level: 0
   weapon: {fileID: 0}
-  gear: {fileID: 0}
+  armor: {fileID: 0}
 --- !u!114 &1722150764
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24236,6 +24237,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1954418199}
+  - {fileID: 1582408474}
   - {fileID: 1513346812}
   - {fileID: 488006150}
   m_Father: {fileID: 0}
@@ -24667,7 +24669,6 @@ RectTransform:
   - {fileID: 1181763423}
   - {fileID: 207815389}
   - {fileID: 1930321981}
-  - {fileID: 1582408474}
   m_Father: {fileID: 1895181296}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -36,7 +36,10 @@ public class Item : MonoBehaviour
         switch (data.itemType)
         {
             case ItemData.ItemType.Weapon:
-                _textDesc.text = string.Format(data.itemDesc, data.nextDamages[level], data.nextCounts[level]); 
+                if (level == 0)
+                    _textDesc.text = string.Format(data.itemName + "을 얻습니다!");
+                else
+                    _textDesc.text = string.Format(data.itemDesc, data.nextDamages[level], data.nextCounts[level]); 
                 break;
             case ItemData.ItemType.Armor:
                 _textDesc.text = string.Format(data.itemDesc, data.nextDamages[level]);
@@ -49,8 +52,6 @@ public class Item : MonoBehaviour
     
     public void OnClick()
     {
-        //Equip(this);
-        //player.Equip(Armor armor);
         switch (data.itemType)
         {
             case ItemData.ItemType.Weapon:
@@ -62,25 +63,26 @@ public class Item : MonoBehaviour
                 }
                 else
                 {
-                    float nextDamage = data.baseDamage;
-                    int nextCount = 0;
-
-                    nextDamage += data.baseDamage * data.nextDamages[level];
-                    nextCount += data.nextCounts[level];
-                    weapon.LevelUp(nextDamage, nextCount);
+                    weapon.LevelUp(data.nextDamages[level], 
+                        data.nextCounts[level], 
+                        data.nextWeaponSpeed[level], 
+                        data.nextRate[level], 
+                        data.nextPer[level]);
                 }
                 break;
             case ItemData.ItemType.Armor:
                 if (level == 0)
                 {
-                    GameObject newGear = new GameObject();
-                    armor = newGear.AddComponent<Armor>();
+                    GameObject newArmor = new GameObject();
+                    armor = newArmor.AddComponent<Armor>();
                     armor.Init(data);
                 }
                 else
                 {
-                    float nextRate = data.nextDamages[level];
-                    armor.LevelUp(nextRate);
+                    armor.LevelUp(data.nextDamages[level], 
+                        data.nextMoveSpeed[level], 
+                        data.nextWeaponSpeed[level], 
+                        data.nextRate[level]);
                 }
                 break;
             case ItemData.ItemType.Potion:

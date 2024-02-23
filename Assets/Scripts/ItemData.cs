@@ -28,21 +28,29 @@ public class ItemData : ScriptableObject
     }
     
     [Header("# Main Info")]
+    public readonly static int MaxLevel = 5;
     public ItemType itemType;
     public WeaponType weaponType;
     public ArmorType armorType;
-    
     public int itemId;
     public string itemName;
     [TextArea]
     public string itemDesc;
     public Sprite itemIcon;
 
-    [Header("# Level Data")]
+    [Header("# Base Data")]
     public float baseDamage;
     public int baseCount;
-    public float[] nextDamages;
-    public int[] nextCounts;
+    public float baseSpeed;
+    public float baseRate;
+    
+    [Header("# Level Data")]
+    public float[] nextDamages = new float[MaxLevel];
+    public int[] nextCounts = new int[MaxLevel];
+    public float[] nextWeaponSpeed = new float[MaxLevel];
+    public float[] nextMoveSpeed = new float[MaxLevel];
+    public float[] nextRate = new float[MaxLevel];
+    public int[] nextPer = new int[MaxLevel];
 
     [Header("# Weapon")]
     public GameObject projectile;

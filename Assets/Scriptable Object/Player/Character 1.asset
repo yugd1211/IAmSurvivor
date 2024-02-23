@@ -15,8 +15,8 @@ MonoBehaviour:
   characterName: "\uBCF4\uB9AC\uB18D\uBD80"
   moveSpeed: 5
   animCon: {fileID: 22100000, guid: 4fb394ad0aa3b4641ab4a90a27ca3fe5, type: 2}
-  weaponSpeed: 1
-  weaponRate: 1
+  weaponSpeed: 1.1
+  weaponRate: 1.1
   damage: 1
-  count: 1
-  initWeaponId: 0
+  count: 0
+  initWeaponId: 1
