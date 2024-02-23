@@ -7,7 +7,7 @@ public class Bullet : MonoBehaviour
 {
     public float damage;
     public ItemData.WeaponType weaponType;
-    public int per; // -1 is Infinity Per
+    public int per;
 
     private Rigidbody2D _rigid;
 

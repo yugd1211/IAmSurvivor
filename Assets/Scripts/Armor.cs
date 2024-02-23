@@ -5,7 +5,6 @@ using UnityEngine;
 public class Armor : MonoBehaviour
 {
     public ItemData.ArmorType type;
-    public float rate;
 
     public void Init(ItemData data)
     {
@@ -14,52 +13,23 @@ public class Armor : MonoBehaviour
         transform.localPosition = Vector3.zero;
 
         type = data.armorType;
-        rate = data.nextDamages[0];
-        ApplyArmor();
+        ApplyArmor(data.nextDamages[0], data.nextMoveSpeed[0],data.nextWeaponSpeed[0], data.nextRate[0]);
     }
 
-    public void LevelUp(float rate)
+    public void LevelUp(float damage, float moveSpeed, float weaponSpeed, float weaponRate)
     {
-        this.rate = rate;
-        ApplyArmor();
+        ApplyArmor(damage, moveSpeed, weaponSpeed, weaponRate);
     }
 
-    private void ApplyArmor()
-    {
-        switch (type)
-        {
-            case ItemData.ArmorType.Glove:
-                RateUp();
-                break;
-            case ItemData.ArmorType.Shoe:
-                SpeedUp();
-                break;
-        }
-    }
-
-    private void RateUp()
+    private void ApplyArmor(float damage, float moveSpeed, float weaponSpeed, float weaponRate)
     {
         Weapon[] weapons = transform.parent.GetComponentsInChildren<Weapon>();
-
+        
         foreach (Weapon weapon in weapons)
         {
-            switch (weapon.id)
-            {
-                case 0:
-                    float speed = 150 * GameManager.Instance.player.data.WeaponSpeed;
-                    weapon.speed = speed + (speed * rate);
-                    break;
-                case 1:
-                    speed = 0.5f * GameManager.Instance.player.data.WeaponRate;
-                    weapon.speed = speed * (1f - rate);
-                    break;
-            }
+            weapon.damageMultiplier += damage;
+            weapon.speed += weaponSpeed;
+            weapon.rate += weaponRate;
         }
-    }
-    
-    private void SpeedUp()
-    {
-        float speed = GameManager.Instance.player.moveSpeed;
-        GameManager.Instance.player.moveSpeed = speed * rate;
     }
 }

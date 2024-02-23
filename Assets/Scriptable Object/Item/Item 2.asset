@@ -21,12 +21,33 @@ MonoBehaviour:
   itemIcon: {fileID: -201829820, guid: d71a3dc7aa20fad4f9a99fc76a9254ba, type: 3}
   baseDamage: 0
   baseCount: 0
+  baseSpeed: 0
+  baseRate: 0
   nextDamages:
-  - 0.1
-  - 0.2
-  - 0.3
-  - 0.4
-  - 0.5
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
   nextCounts: 0000000000000000000000000000000000000000
+  nextWeaponSpeed:
+  - 0.1
+  - 0.1
+  - 0.1
+  - 0.1
+  - 0.1
+  nextMoveSpeed:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  nextRate:
+  - 0.1
+  - 0.1
+  - 0.1
+  - 0.1
+  - 0.1
+  nextPer: 0000000000000000000000000000000000000000
   projectile: {fileID: 0}
   hand: {fileID: 0}
