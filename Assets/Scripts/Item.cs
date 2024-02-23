@@ -1,9 +1,6 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class Item : MonoBehaviour
@@ -11,8 +8,7 @@ public class Item : MonoBehaviour
     public ItemData data;
     public int level;
     public Weapon weapon;
-    public Gear gear;
-    
+    public Armor armor;
 
     private Image _icon;
     private TextMeshProUGUI _textLevel;
@@ -39,27 +35,25 @@ public class Item : MonoBehaviour
 
         switch (data.itemType)
         {
-            case ItemData.ItemType.Melee:
-            case ItemData.ItemType.Range:
-                _textDesc.text = string.Format(data.itemDesc, data.nextDamages[level] * 100, data.nextCounts[level]); 
+            case ItemData.ItemType.Weapon:
+                _textDesc.text = string.Format(data.itemDesc, data.nextDamages[level], data.nextCounts[level]); 
                 break;
-            case ItemData.ItemType.Glove:
-            case ItemData.ItemType.Shoe:
-                _textDesc.text = string.Format(data.itemDesc, data.nextDamages[level] * 100);
+            case ItemData.ItemType.Armor:
+                _textDesc.text = string.Format(data.itemDesc, data.nextDamages[level]);
                 break;
             default:
                 _textDesc.text = string.Format(data.itemDesc); 
                 break;
         }
-
     }
     
     public void OnClick()
     {
+        //Equip(this);
+        //player.Equip(Armor armor);
         switch (data.itemType)
         {
-            case ItemData.ItemType.Melee:
-            case ItemData.ItemType.Range:
+            case ItemData.ItemType.Weapon:
                 if (level == 0)
                 {
                     GameObject newWeapon = new GameObject();
@@ -76,25 +70,24 @@ public class Item : MonoBehaviour
                     weapon.LevelUp(nextDamage, nextCount);
                 }
                 break;
-            case ItemData.ItemType.Glove:
-            case ItemData.ItemType.Shoe:
+            case ItemData.ItemType.Armor:
                 if (level == 0)
                 {
                     GameObject newGear = new GameObject();
-                    gear = newGear.AddComponent<Gear>();
-                    gear.Init(data);
+                    armor = newGear.AddComponent<Armor>();
+                    armor.Init(data);
                 }
                 else
                 {
                     float nextRate = data.nextDamages[level];
-                    gear.LevelUp(nextRate);
+                    armor.LevelUp(nextRate);
                 }
                 break;
-            case ItemData.ItemType.Heal:
+            case ItemData.ItemType.Potion:
                 _gameManager.health = _gameManager.maxHealth;
                 break;
         }
-        if (data.itemType != ItemData.ItemType.Heal)
+        if (data.itemType != ItemData.ItemType.Potion)
             level++;
 
         if (level == data.nextDamages.Length)

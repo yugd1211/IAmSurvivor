@@ -8,11 +8,30 @@ public class ItemData : ScriptableObject
 {
     public enum ItemType
     {
-        Melee, Range, Glove, Shoe, Heal, Potion
+        None,
+        Weapon, 
+        Armor, 
+        Potion
+    }
+    
+    public enum WeaponType
+    {
+        None,
+        Melee, 
+        Range,
+    }
+    public enum ArmorType
+    {
+        None,
+        Glove, 
+        Shoe, 
     }
     
     [Header("# Main Info")]
     public ItemType itemType;
+    public WeaponType weaponType;
+    public ArmorType armorType;
+    
     public int itemId;
     public string itemName;
     [TextArea]

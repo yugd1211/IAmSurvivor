@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Item 2
   m_EditorClassIdentifier: 
   itemType: 2
+  weaponType: 0
+  armorType: 1
   itemId: 2
   itemName: "\uD14C\uD06C\uB2C8\uCEEC \uC7A5\uAC11"
   itemDesc: "\uC5F0\uC0AC\uC18D\uB3C4 {0}% \uC99D\uAC00"

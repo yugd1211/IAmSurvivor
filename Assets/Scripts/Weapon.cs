@@ -65,7 +65,7 @@ public class Weapon : MonoBehaviour
         switch (id)
         {
             case 0:
-                speed = -150 * _gameManager.player.data.WeaponSpeed;
+                speed = 150 * _gameManager.player.data.WeaponSpeed;
                 Batch();
                 break;
             case 1:

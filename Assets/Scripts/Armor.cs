@@ -2,36 +2,36 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Gear : MonoBehaviour
+public class Armor : MonoBehaviour
 {
-    public ItemData.ItemType type;
+    public ItemData.ArmorType type;
     public float rate;
 
     public void Init(ItemData data)
     {
-        name = "Gear " + data.itemName;
+        name = "Armor " + data.itemName;
         transform.parent = GameManager.Instance.player.transform;
         transform.localPosition = Vector3.zero;
 
-        type = data.itemType;
+        type = data.armorType;
         rate = data.nextDamages[0];
-        ApplyGear();
+        ApplyArmor();
     }
 
     public void LevelUp(float rate)
     {
         this.rate = rate;
-        ApplyGear();
+        ApplyArmor();
     }
 
-    private void ApplyGear()
+    private void ApplyArmor()
     {
         switch (type)
         {
-            case ItemData.ItemType.Glove :
+            case ItemData.ArmorType.Glove:
                 RateUp();
                 break;
-            case ItemData.ItemType.Shoe :
+            case ItemData.ArmorType.Shoe:
                 SpeedUp();
                 break;
         }
