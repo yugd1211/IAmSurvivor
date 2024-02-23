@@ -10,6 +10,7 @@ public class Weapon : MonoBehaviour
     public float damage;
     public int count;
     public float speed;
+    public ItemData.WeaponType weaponType;
     
     private float _timer;
     private Player _player;
@@ -49,7 +50,7 @@ public class Weapon : MonoBehaviour
         name = "Weapon " + data.itemName;
         transform.parent = _player.transform;
         transform.localPosition = Vector3.zero;
-
+        weaponType = data.weaponType;
         id = data.itemId;
         damage = data.baseDamage * _gameManager.player.data.Damage;
         count = data.baseCount + _gameManager.player.data.Count;
@@ -78,7 +79,7 @@ public class Weapon : MonoBehaviour
         Hand hand = _player.hands[(int)data.itemType];
         hand.spriter.sprite = data.hand;
         hand.gameObject.SetActive(true);
-        _player.BroadcastMessage("ApplyGear", SendMessageOptions.DontRequireReceiver);
+        _player.BroadcastMessage("ApplyArmor", SendMessageOptions.DontRequireReceiver);
     }
 
     public void LevelUp(float damage, int count)
@@ -89,7 +90,7 @@ public class Weapon : MonoBehaviour
         if (id == 0)
             Batch();
         
-        _player.BroadcastMessage("ApplyGear", SendMessageOptions.DontRequireReceiver);
+        _player.BroadcastMessage("ApplyArmor", SendMessageOptions.DontRequireReceiver);
     }
 
     void Batch()
@@ -108,7 +109,7 @@ public class Weapon : MonoBehaviour
             bullet.localRotation = Quaternion.identity;
             bullet.Rotate(Vector3.forward * (360 * i) / count);
             bullet.Translate(bullet.up * 1.5f, Space.World);
-            bullet.GetComponent<Bullet>().Init(damage, -1, Vector3.zero);
+            bullet.GetComponent<Bullet>().Init(damage, -1, Vector3.zero, weaponType);
         }
     }
 
@@ -124,7 +125,7 @@ public class Weapon : MonoBehaviour
         Transform bullet = _gameManager.pool.Get(prefabId).transform;
         bullet.position = transform.position;
         bullet.rotation = Quaternion.FromToRotation(Vector3.up, dir);
-        bullet.GetComponent<Bullet>().Init(damage, count, dir);
+        bullet.GetComponent<Bullet>().Init(damage, count, dir, weaponType);
         AudioManager.Instance.PlaySfx(AudioManager.Sfx.Range);
     }
 }

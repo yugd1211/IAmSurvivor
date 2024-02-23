@@ -6,29 +6,30 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     public float damage;
+    public ItemData.WeaponType weaponType;
     public int per; // -1 is Infinity Per
 
-    private Rigidbody2D rigid;
+    private Rigidbody2D _rigid;
 
     private void Awake()
     {
-        rigid = GetComponent<Rigidbody2D>();
+        _rigid = GetComponent<Rigidbody2D>();
     }
 
-    public void Init(float damage, int per, Vector3 dir)
+    public void Init(float damage, int per, Vector3 dir, ItemData.WeaponType weaponType)
     {
         this.damage = damage;
         this.per = per;
-
+        this.weaponType = weaponType;
         if (per != -1)
         {
-            rigid.velocity = dir * 10;
+            _rigid.velocity = dir * 10;
         }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!other.CompareTag("Enemy") || per == -1)
+        if (!other.CompareTag("Enemy") || weaponType == ItemData.WeaponType.Melee)
             return;
         per--;
         if (per < 0)
@@ -39,7 +40,7 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (!other.CompareTag("Area") || per == -1)
+        if (!other.CompareTag("Area") || weaponType == ItemData.WeaponType.Melee)
             return;
         gameObject.SetActive(false);
     }
