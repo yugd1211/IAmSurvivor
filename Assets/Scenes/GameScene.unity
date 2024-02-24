@@ -25550,7 +25550,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -10}
+  m_AnchoredPosition: {x: 0, y: 9}
   m_SizeDelta: {x: 0, y: 4}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1799205232
@@ -26543,7 +26543,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1920098720}
   m_LocalRotation: {x: 0, y: 0, z: -0.30070576, w: 0.953717}
-  m_LocalPosition: {x: -0.208, y: -0.371, z: 0}
+  m_LocalPosition: {x: -0.2, y: -0.34, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -26906,7 +26906,16 @@ MonoBehaviour:
   - {fileID: 7374095405681530195, guid: c22ba27d630b3430aa9d111dd8b4cbac, type: 3}
   - {fileID: 5588354483150353491, guid: 9e95e38965c0e4d6b83bf14efdf3aa58, type: 3}
   - {fileID: 2773070785237260793, guid: df7d29b40a8754e978122ef4f9bd443d, type: 3}
-  initNum: 0
+  enemyPrefabs:
+  - {fileID: 7374095405681530195, guid: c22ba27d630b3430aa9d111dd8b4cbac, type: 3}
+  meleePrefabs:
+  - {fileID: 5588354483150353491, guid: 9e95e38965c0e4d6b83bf14efdf3aa58, type: 3}
+  - {fileID: 5588354483150353491, guid: 8286316a87df7462b9673becf5f5692c, type: 3}
+  - {fileID: 5588354483150353491, guid: 8d8cbaf5750164895965addae327ad77, type: 3}
+  rangePrefabs:
+  - {fileID: 2773070785237260793, guid: df7d29b40a8754e978122ef4f9bd443d, type: 3}
+  - {fileID: 5588354483150353491, guid: 149e0ef29fd19425193e8c61e6b263e3, type: 3}
+  - {fileID: 5588354483150353491, guid: 1ac08c3500f53445dbf0897c1f825b7a, type: 3}
 --- !u!1 &1930321980
 GameObject:
   m_ObjectHideFlags: 0

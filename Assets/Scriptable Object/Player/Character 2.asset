@@ -19,4 +19,4 @@ MonoBehaviour:
   weaponRate: 1
   damage: 1.2
   count: 0
-  initWeaponId: 0
+  initWeaponId: 4

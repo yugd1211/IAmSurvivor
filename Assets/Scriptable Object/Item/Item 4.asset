@@ -12,30 +12,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 573562d9362bb4f1982f92c71ebace01, type: 3}
   m_Name: Item 4
   m_EditorClassIdentifier: 
-  itemType: 3
-  weaponType: 0
+  itemType: 1
+  weaponType: 1
   armorType: 0
   itemId: 4
-  itemName: "\uC74C\uB8CC"
-  itemDesc: "\uC0DD\uBA85\uB825 100% \uD68C\uBCF5"
-  itemIcon: {fileID: 927338625, guid: d71a3dc7aa20fad4f9a99fc76a9254ba, type: 3}
-  baseDamage: 0
-  baseCount: 0
-  baseSpeed: 0
+  itemName: "\uC0BC\uC9C0\uCC3D"
+  itemDesc: "\uB370\uBBF8\uC9C0 {0}% \uC99D\uAC00\n\uD68C\uC804\uCCB4 {1}\uAC1C \uCD94\uAC00\n\uCC0C\uB974\uAE30"
+  itemIcon: {fileID: -1786786079, guid: d71a3dc7aa20fad4f9a99fc76a9254ba, type: 3}
+  baseDamage: 4.5
+  baseCount: 3
+  baseSpeed: 150
   baseRate: 0
   nextDamages:
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  nextCounts: 0000000000000000000000000000000000000000
+  - 0.5
+  - 0.5
+  - 0.5
+  - 0.5
+  - 0.5
+  nextCounts: 0100000001000000010000000100000001000000
   nextWeaponSpeed:
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
+  - 0.1
+  - 0.1
+  - 0.1
+  - 0.1
+  - 0.1
   nextMoveSpeed:
   - 0
   - 0
@@ -49,5 +49,5 @@ MonoBehaviour:
   - 0
   - 0
   nextPer: 0000000000000000000000000000000000000000
-  projectile: {fileID: 0}
-  hand: {fileID: 0}
+  projectile: {fileID: 5588354483150353491, guid: 8286316a87df7462b9673becf5f5692c, type: 3}
+  hand: {fileID: -1972582131, guid: 0d5e657ee5a074e4baa53d5b248a01d2, type: 3}

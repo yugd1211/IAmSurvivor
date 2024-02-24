@@ -6,7 +6,9 @@ using UnityEngine;
 public class PoolManager : MonoBehaviour
 {
     public GameObject[] prefabs;
-    public int initNum = 500;
+    public GameObject[] enemyPrefabs;
+    public GameObject[] meleePrefabs;
+    public GameObject[] rangePrefabs;
     private List<GameObject>[] _pools;
 
     private void Awake()
@@ -15,14 +17,6 @@ public class PoolManager : MonoBehaviour
 
         for (int i = 0; i < _pools.Length; i++)
             _pools[i] = new List<GameObject>();
-        for (int i = 0; i < _pools.Length; i++)
-        {
-            for (int j = 0; j < initNum; j++)
-            {
-                _pools[i].Add(Instantiate(prefabs[i], transform));
-                _pools[i][j].SetActive(false);
-            }
-        }
     }
 
     public GameObject Get(int index)
