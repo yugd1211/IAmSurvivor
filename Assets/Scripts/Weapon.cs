@@ -52,8 +52,7 @@ public class Weapon : MonoBehaviour
                     Fire();
                 }
                 break;
-            default:
-                break;
+
         }
     }
 
