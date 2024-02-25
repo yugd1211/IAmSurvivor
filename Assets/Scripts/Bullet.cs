@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+    public int id;
     public float damage;
     public ItemData.WeaponType weaponType;
     public int per;

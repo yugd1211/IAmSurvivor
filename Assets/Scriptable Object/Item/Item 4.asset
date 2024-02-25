@@ -22,14 +22,14 @@ MonoBehaviour:
   baseDamage: 4.5
   baseCount: 3
   baseSpeed: 150
-  baseRate: 0
+  baseRate: 0.5
   nextDamages:
   - 0.5
   - 0.5
   - 0.5
   - 0.5
   - 0.5
-  nextCounts: 0100000001000000010000000100000001000000
+  nextCounts: 0000000000000000000000000000000000000000
   nextWeaponSpeed:
   - 0.1
   - 0.1
