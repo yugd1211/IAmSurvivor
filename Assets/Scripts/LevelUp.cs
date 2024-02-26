@@ -41,7 +41,13 @@ public class LevelUp : MonoBehaviour
     }
     public void Select(int index)
     {
-        _items[index].OnClick();
+        for (int i = 0; i < _items.Length; i++)
+        {
+            if (_items[i].data.itemId != index)
+                continue;
+            _items[i].ObtainItem();
+            break;
+        }
     }
 
     void PickRandomItem()

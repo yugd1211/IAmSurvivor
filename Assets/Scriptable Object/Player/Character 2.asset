@@ -17,6 +17,6 @@ MonoBehaviour:
   animCon: {fileID: 22100000, guid: 39b008a035cb94de0b77748e3f4aeb30, type: 2}
   weaponSpeed: 1
   weaponRate: 1
-  damage: 1
+  damage: 1.2
   count: 0
-  initWeaponId: 0
+  initWeaponId: 4

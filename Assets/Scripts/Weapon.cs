@@ -35,12 +35,15 @@ public class Weapon : MonoBehaviour
     {
         if (!_gameManager.isLive)
             return;
-        switch (id)
+        switch (weaponType)
         {
-            case 0:
+            case ItemData.WeaponType.Orbital:
                 transform.Rotate(Vector3.forward * (baseSpeed * speed * Time.deltaTime));
                 break;
-            case 1:
+            case ItemData.WeaponType.Melee:
+                transform.Rotate(Vector3.forward * (baseSpeed * speed * Time.deltaTime));
+                break;
+            case ItemData.WeaponType.Range:
                 _timer += Time.deltaTime;
 
                 if (_timer >= 1 - (baseRate + rate))
@@ -49,8 +52,7 @@ public class Weapon : MonoBehaviour
                     Fire();
                 }
                 break;
-            default:
-                break;
+
         }
     }
 
@@ -59,8 +61,8 @@ public class Weapon : MonoBehaviour
         name = "Weapon " + data.itemName;
         transform.parent = _player.transform;
         transform.localPosition = Vector3.zero;
-        weaponType = data.weaponType;
         id = data.itemId;
+        weaponType = data.weaponType;
         baseDamage = data.baseDamage * _gameManager.player.data.Damage;
         count = data.baseCount + _gameManager.player.data.Count;
         baseRate = data.baseRate;
@@ -73,11 +75,20 @@ public class Weapon : MonoBehaviour
                 prefabId = i;
             }
         }
-        Hand hand = _player.hands[(int)data.itemType];
+        if (id == (int)ItemData.WeaponType.Orbital)
+            Batch();
+        PlaceHandPosition(data);
+    }
+
+    private void PlaceHandPosition(ItemData data)
+    {
+        Hand hand;
+        if (data.weaponType == ItemData.WeaponType.Melee)
+            hand = _player.hands[0];
+        else
+            hand = _player.hands[1];
         hand.spriter.sprite = data.hand;
         hand.gameObject.SetActive(true);
-        Batch();
-        // _player.BroadcastMessage("ApplyArmor", SendMessageOptions.DontRequireReceiver);
     }
 
     public void LevelUp(float damage, int count, float speed, float rate, int per)
@@ -88,7 +99,7 @@ public class Weapon : MonoBehaviour
         this.rate += rate;
         this.per += per;
 
-        if (id == 0)
+        if (id == (int)ItemData.WeaponType.Orbital)
             Batch();
         // _player.BroadcastMessage("ApplyArmor", SendMessageOptions.DontRequireReceiver);
     }

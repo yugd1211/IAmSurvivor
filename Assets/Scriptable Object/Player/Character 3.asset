@@ -18,5 +18,5 @@ MonoBehaviour:
   weaponSpeed: 1
   weaponRate: 1
   damage: 1
-  count: 1
-  initWeaponId: 0
+  count: 2
+  initWeaponId: 5

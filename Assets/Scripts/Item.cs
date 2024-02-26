@@ -49,8 +49,11 @@ public class Item : MonoBehaviour
                 break;
         }
     }
-    
     public void OnClick()
+    {
+        ObtainItem();
+    }
+    public void ObtainItem()
     {
         switch (data.itemType)
         {

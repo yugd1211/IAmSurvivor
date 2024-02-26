@@ -16,7 +16,7 @@ public class ItemData : ScriptableObject
     
     public enum WeaponType
     {
-        None,
+        Orbital,
         Melee, 
         Range,
     }
