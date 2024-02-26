@@ -47,18 +47,29 @@ public class GameManager : MonoBehaviour
             GameStart();        
     }
 
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
     public void GameStart()
     {
         health = maxHealth;
 
+        gameTime = 0;
+        level = 0;
+        kill = 0;
+        exp = 0;
+        health = maxHealth;
         player = FindObjectOfType<Player>();
         uiLevelUp = FindObjectOfType<LevelUp>();
         pool = FindObjectOfType<PoolManager>();
         enemyClearner = FindObjectOfType<Bullet>(true).gameObject;
         uiResult = FindObjectOfType<Result>(true);
+        
+        Debug.Log("gameManager Data");
         player.data = data;
-        uiLevelUp.Select(player.data.InitWeaponId);
         player.ChangeAnim();
+        uiLevelUp.Select(player.data.InitWeaponId);
         
         // 없어도될듯
         Resume();
