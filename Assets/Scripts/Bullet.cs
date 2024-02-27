@@ -22,7 +22,7 @@ public class Bullet : MonoBehaviour
         this.damage = damage;
         this.per = per;
         this.weaponType = weaponType;
-        if (per != -1)
+        if (weaponType == ItemData.WeaponType.Range)
         {
             _rigid.velocity = dir * 10;
         }
@@ -30,7 +30,7 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!other.CompareTag("Enemy") || weaponType == ItemData.WeaponType.Melee)
+        if (!other.CompareTag("Enemy") || weaponType != ItemData.WeaponType.Range)
             return;
         per--;
         if (per < 0)
@@ -41,7 +41,7 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (!other.CompareTag("Area") || weaponType == ItemData.WeaponType.Melee)
+        if (!other.CompareTag("Area") || weaponType != ItemData.WeaponType.Range)
             return;
         gameObject.SetActive(false);
     }

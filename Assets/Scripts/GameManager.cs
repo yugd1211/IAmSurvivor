@@ -66,7 +66,6 @@ public class GameManager : MonoBehaviour
         enemyClearner = FindObjectOfType<Bullet>(true).gameObject;
         uiResult = FindObjectOfType<Result>(true);
         
-        Debug.Log("gameManager Data");
         player.data = data;
         player.ChangeAnim();
         uiLevelUp.Select(player.data.InitWeaponId);
