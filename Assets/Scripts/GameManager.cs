@@ -70,9 +70,8 @@ public class GameManager : MonoBehaviour
         player.ChangeAnim();
         uiLevelUp.Select(player.data.InitWeaponId);
         
-        // 없어도될듯
-        Resume();
 
+        Resume();
         AudioManager.Instance.PlayBgm(true);
         AudioManager.Instance.PlaySfx(AudioManager.Sfx.Select);
     }

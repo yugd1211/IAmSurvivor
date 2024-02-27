@@ -9,12 +9,12 @@ using Random = UnityEngine.Random;
 public class LevelUp : MonoBehaviour
 {
     private GameManager _gameManager;
-    private RectTransform rect;
+    private RectTransform _rect;
     private Item[] _items;
 
     private void Awake()
     {
-        rect = GetComponent<RectTransform>();
+        _rect = GetComponent<RectTransform>();
         _items = GetComponentsInChildren<Item>(true);
     }
 
@@ -26,7 +26,7 @@ public class LevelUp : MonoBehaviour
     public void Show()
     {
         PickRandomItem();
-        rect.localScale = Vector3.one;
+        _rect.localScale = Vector3.one;
         _gameManager.Stop();
         AudioManager.Instance.PlaySfx(AudioManager.Sfx.LevelUp);
         AudioManager.Instance.EffectBgm(true);
@@ -34,7 +34,7 @@ public class LevelUp : MonoBehaviour
     }
     public void Hide()
     {
-        rect.localScale = Vector3.zero;
+        _rect.localScale = Vector3.zero;
         _gameManager.Resume();
         AudioManager.Instance.PlaySfx(AudioManager.Sfx.Select);
         AudioManager.Instance.EffectBgm(false);

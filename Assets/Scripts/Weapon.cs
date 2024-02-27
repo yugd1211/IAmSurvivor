@@ -43,12 +43,25 @@ public class Weapon : MonoBehaviour
                 transform.Rotate(Vector3.forward * (baseSpeed * speed * Time.deltaTime));
                 break;
             case ItemData.WeaponType.Melee:
-                _timer += Time.deltaTime;
-
-                if (_timer >= 2 - (baseRate + rate))
+                if (id == 4)
                 {
-                    _timer = 0f;
-                    Poke();
+                    _timer += Time.deltaTime;
+
+                    if (_timer >= 2 - (baseRate + rate))
+                    {
+                        _timer = 0f;
+                        Poke();
+                    }
+                }
+                else if (id == 5)
+                {
+                    _timer += Time.deltaTime;
+                    
+                    if (_timer >= 2 - (baseRate + rate))
+                    {
+                        _timer = 0f;
+                        Scythe();
+                    }
                 }
                 break;
             case ItemData.WeaponType.Range:
@@ -70,11 +83,7 @@ public class Weapon : MonoBehaviour
         bullet.transform.parent = _gameManager.pool.transform;
         bullet.transform.localScale = Vector3.one;
         bullet.gameObject.SetActive(false);
-        
     }
-
-
-
     public void Init(ItemData data)
     {
         name = "Weapon " + data.itemName;
@@ -140,23 +149,39 @@ public class Weapon : MonoBehaviour
             bTf.localRotation = Quaternion.identity;
             bTf.Rotate(Vector3.forward * (360 * i) / count);
             bTf.Translate(bTf.up * 1.5f, Space.World);
-            bullet.Init(baseDamage * damageMultiplier, -1, Vector3.zero, weaponType);
+            bullet.Init(baseDamage * damageMultiplier, -1, Vector3.zero, weaponType, id,baseSpeed * speed);
         }
     }
     
     private void Poke()
     {
-        Vector2 dir = _player.dir;
         Bullet bullet = _gameManager.pool.GetMelee(1);
         
         bullet.transform.parent = transform;
         bullet.transform.localPosition = Vector3.zero;
         bullet.transform.localScale *= 2;
-        bullet.transform.rotation = Quaternion.FromToRotation(Vector3.up, dir);
+        bullet.transform.rotation = Quaternion.FromToRotation(Vector3.up, _player.dir);
         bullet.transform.Translate(bullet.transform.up * 1.5f, Space.World);
-        bullet.Init(baseDamage * damageMultiplier, count, dir, weaponType);
+        bullet.Init(baseDamage * damageMultiplier, count, _player.dir, weaponType, id, baseSpeed * speed);
         StartCoroutine(PokeExit(bullet));
         
+        AudioManager.Instance.PlaySfx(AudioManager.Sfx.Melee);
+    }    
+    private void Scythe()
+    {
+        Vector2 dir = _player.dir;
+        Bullet bullet = _gameManager.pool.GetMelee(2);
+        
+        bullet.transform.parent = transform;
+        bullet.transform.localPosition = Vector3.zero;
+        bullet.transform.localScale *= 3;
+        bullet.transform.rotation = 
+            Quaternion.FromToRotation(Vector3.up, dir.normalized) * 
+            Quaternion.Euler(0, 0, dir == Vector2.down ? 45 : -45);
+        bullet.transform.Translate(bullet.transform.up * 2f, Space.World);
+        bullet.Init(baseDamage * damageMultiplier, count, dir.normalized, weaponType, id, baseSpeed * speed);
+        
+        StartCoroutine(PokeExit(bullet));
         AudioManager.Instance.PlaySfx(AudioManager.Sfx.Melee);
     }
 
@@ -172,7 +197,7 @@ public class Weapon : MonoBehaviour
         Bullet bullet = _gameManager.pool.GetRange(0);
         bullet.transform.position = transform.position;
         bullet.transform.rotation = Quaternion.FromToRotation(Vector3.up, dir);
-        bullet.Init(baseDamage * damageMultiplier, count, dir, weaponType);
+        bullet.Init(baseDamage * damageMultiplier, count, dir, weaponType, id,baseSpeed * speed);
         AudioManager.Instance.PlaySfx(AudioManager.Sfx.Range);
     }
 }
