@@ -193,11 +193,28 @@ public class Weapon : MonoBehaviour
         Vector3 targetPos = _player.scanner.nearestTarget.position;
         Vector3 dir = targetPos - transform.position;
         dir = dir.normalized;
-
-        Bullet bullet = _gameManager.pool.GetRange(0);
-        bullet.transform.position = transform.position;
-        bullet.transform.rotation = Quaternion.FromToRotation(Vector3.up, dir);
-        bullet.Init(baseDamage * damageMultiplier, count, dir, weaponType, id,baseSpeed * speed);
+        if (id == 7)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                Bullet bullet = _gameManager.pool.GetRange(id == 1 ? 0 : id == 6 ? 1 : 2);
+                bullet.transform.position = transform.position;
+                bullet.transform.rotation = Quaternion.FromToRotation(Vector3.up, dir);
+                Quaternion q;
+                if (i == 0)
+                    q = Quaternion.Euler(0, 0, 0);
+                else 
+                    q = Quaternion.Euler(0, 0, i % 2 == 1 ? i * 5 : (i - 1) * -5);
+                bullet.Init(baseDamage * damageMultiplier, count, q * dir, weaponType, id,baseSpeed * speed);
+            }
+        }
+        else
+        {
+            Bullet bullet = _gameManager.pool.GetRange(id == 1 ? 0 : id == 6 ? 1 : 2);
+            bullet.transform.position = transform.position;
+            bullet.transform.rotation = Quaternion.FromToRotation(Vector3.up, dir);
+            bullet.Init(baseDamage * damageMultiplier, count, dir, weaponType, id,baseSpeed * speed);
+        }
         AudioManager.Instance.PlaySfx(AudioManager.Sfx.Range);
     }
 }
