@@ -138,7 +138,7 @@ public class GameManager : MonoBehaviour
         if (!isLive)
             return;
         exp++;
-        if (exp >= nextExp[Mathf.Min(level, nextExp.Length - 1)])
+        if (level < nextExp.Length && exp >= nextExp[Mathf.Min(level, nextExp.Length - 1)])
         {
             exp -= nextExp[level];
             level++;

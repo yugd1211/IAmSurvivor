@@ -47,7 +47,7 @@ public class Weapon : MonoBehaviour
                 {
                     _timer += Time.deltaTime;
 
-                    if (_timer >= 2 - (baseRate + rate))
+                    if (_timer >= 2 - (baseRate * (1 + rate)))
                     {
                         _timer = 0f;
                         Poke();
@@ -57,7 +57,7 @@ public class Weapon : MonoBehaviour
                 {
                     _timer += Time.deltaTime;
                     
-                    if (_timer >= 2 - (baseRate + rate))
+                    if (_timer >= 2 - (baseRate * (1 + rate)))
                     {
                         _timer = 0f;
                         Scythe();
@@ -67,7 +67,7 @@ public class Weapon : MonoBehaviour
             case ItemData.WeaponType.Range:
                 _timer += Time.deltaTime;
 
-                if (_timer >= 1 - (baseRate + rate))
+                if (_timer >= 1 - (baseRate * (1 + rate)))
                 {
                     _timer = 0f;
                     Fire();
