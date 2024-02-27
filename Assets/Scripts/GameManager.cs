@@ -66,14 +66,12 @@ public class GameManager : MonoBehaviour
         enemyClearner = FindObjectOfType<Bullet>(true).gameObject;
         uiResult = FindObjectOfType<Result>(true);
         
-        Debug.Log("gameManager Data");
         player.data = data;
         player.ChangeAnim();
         uiLevelUp.Select(player.data.InitWeaponId);
         
-        // 없어도될듯
-        Resume();
 
+        Resume();
         AudioManager.Instance.PlayBgm(true);
         AudioManager.Instance.PlaySfx(AudioManager.Sfx.Select);
     }
@@ -140,7 +138,7 @@ public class GameManager : MonoBehaviour
         if (!isLive)
             return;
         exp++;
-        if (exp >= nextExp[Mathf.Min(level, nextExp.Length - 1)])
+        if (level < nextExp.Length && exp >= nextExp[Mathf.Min(level, nextExp.Length - 1)])
         {
             exp -= nextExp[level];
             level++;

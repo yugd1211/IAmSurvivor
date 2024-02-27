@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
 {
     public CharacterData data;
     public Vector2 InputVec { get; set; }
+    public Vector2 dir;
     public float moveSpeed = 5f;
     public Scanner scanner;
     public Hand[] hands;
@@ -39,6 +40,9 @@ public class Player : MonoBehaviour
     public void OnMove(InputValue value)
     {
         InputVec = value.Get<Vector2>();
+        if (InputVec == Vector2.zero)
+            return;
+        dir = InputVec;
     }
     private void OnCollisionStay2D(Collision2D other)
     {

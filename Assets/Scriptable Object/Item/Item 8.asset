@@ -22,7 +22,7 @@ MonoBehaviour:
   baseDamage: 0
   baseCount: 0
   baseSpeed: 0
-  baseRate: 0
+  baseRate: 0.8
   nextDamages:
   - 0
   - 0

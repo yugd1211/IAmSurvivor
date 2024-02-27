@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingOrder: 3
   m_Sprite: {fileID: 762804792, guid: 0d5e657ee5a074e4baa53d5b248a01d2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 0.3888889, y: 1}
@@ -124,6 +124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79f92b53589e745d2be00d6c2e2b65b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  id: 0
   damage: 0
   weaponType: 0
   per: 0

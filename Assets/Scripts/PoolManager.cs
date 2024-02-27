@@ -72,5 +72,46 @@ public class PoolManager : MonoBehaviour
             _enemyPools[index].Add(select);
         }
         return select;
+    }    
+       
+    public Bullet GetMelee(int index)
+    {
+        Bullet select = null;
+
+        foreach (Bullet item in _meleePools[index])
+        {
+            if (!item.gameObject.activeSelf)
+            {
+                select = item;
+                select.gameObject.SetActive(true);
+                break;
+            }
+        }
+        if (!select)
+        {
+            select = Instantiate(meleePrefabs[index], transform).GetComponent<Bullet>();
+            _meleePools[index].Add(select);
+        }
+        return select;
+    }   
+    public Bullet GetRange(int index)
+    {
+        Bullet select = null;
+
+        foreach (Bullet item in _rangePools[index])
+        {
+            if (!item.gameObject.activeSelf)
+            {
+                select = item;
+                select.gameObject.SetActive(true);
+                break;
+            }
+        }
+        if (!select)
+        {
+            select = Instantiate(rangePrefabs[index], transform).GetComponent<Bullet>();
+            _rangePools[index].Add(select);
+        }
+        return select;
     }
 }
