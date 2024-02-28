@@ -63,7 +63,7 @@ public class Enemy : MonoBehaviour
         if (!other.CompareTag("Bullet") || !_isLive)
             return;
 
-        health -= other.GetComponent<Bullet>().damage;
+        health -= other.GetComponent<Bullet>().WeaponInfo.Damage();
         StartCoroutine(KnockBack());
         if (health > 0)
         {

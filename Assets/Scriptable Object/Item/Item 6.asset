@@ -20,10 +20,11 @@ MonoBehaviour:
   itemDesc: "\uB370\uBBF8\uC9C0 {0}% \uC99D\uAC00\n\uAD00\uD1B5\uB825 {1} \uCD94\uAC00\n\uC5F0\uC0AC\uC18D\uB3C4\uBE60\uB984
     \uAD00\uD1B5\uB0AE\uC74C"
   itemIcon: {fileID: 563336626, guid: d71a3dc7aa20fad4f9a99fc76a9254ba, type: 3}
-  baseDamage: 3
+  baseDamage: 4
   baseCount: 0
   baseSpeed: 0
-  baseRate: 0.7
+  baseRate: 2
+  basePer: 0
   nextDamages:
   - 0.35
   - 0.35
@@ -45,10 +46,10 @@ MonoBehaviour:
   - 0
   nextRate:
   - 0.1
-  - 0
-  - 0
   - 0.1
-  - 0
-  nextPer: 0100000000000000010000000100000001000000
+  - 0.1
+  - 0.1
+  - 0.1
+  nextPer: 0000000000000000000000000000000001000000
   projectile: {fileID: 2773070785237260793, guid: df7d29b40a8754e978122ef4f9bd443d, type: 3}
   hand: {fileID: -144335857, guid: 0d5e657ee5a074e4baa53d5b248a01d2, type: 3}

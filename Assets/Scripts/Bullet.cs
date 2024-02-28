@@ -4,11 +4,12 @@ using Vector3 = UnityEngine.Vector3;
 
 public class Bullet : MonoBehaviour
 {
-    public int id;
-    public float damage;
-    public ItemData.WeaponType weaponType;
-    public int per;
-    public float speed;
+    // public int id;
+    // public float damage;
+    // public ItemData.WeaponType WeaponInfo.type;
+    // public int per;
+    // public float speed;
+    public WeaponInfo WeaponInfo;
     
     private Rigidbody2D _rigid;
     private SpriteRenderer _spriter;
@@ -23,30 +24,26 @@ public class Bullet : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (weaponType == ItemData.WeaponType.Melee)
+        if (WeaponInfo.type == ItemData.WeaponType.Melee)
         {
-            if (id == 4)
+            if (WeaponInfo.ID == 4)
             {
                transform.rotation = Quaternion.FromToRotation(Vector3.up, _player.dir);
                transform.localPosition = transform.up * 2f;
             }
-            if (id == 5)
-                transform.RotateAround(_player.transform.position, Vector3.forward, speed * Time.deltaTime);
+            if (WeaponInfo.ID == 5)
+                transform.RotateAround(_player.transform.position, Vector3.forward, WeaponInfo.Speed() * Time.deltaTime);
         }
     }
 
-    public void Init(float damage, int per, Vector3 dir, ItemData.WeaponType weaponType, int id, float speed)
+    public void Init(WeaponInfo info, Vector3 dir)
     {
-        this.id = id;
-        this.damage = damage;
-        this.per = per;
-        this.weaponType = weaponType;
-        this.speed = speed;
-        if (id == 5)
+        WeaponInfo = info;
+        if (WeaponInfo.ID == 5)
         {
             _spriter.flipX = dir != Vector3.down;
         }
-        if (weaponType == ItemData.WeaponType.Range)
+        if (WeaponInfo.type == ItemData.WeaponType.Range)
         {
             _rigid.velocity = dir * 10;
         }
@@ -54,10 +51,10 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!other.CompareTag("Enemy") || weaponType != ItemData.WeaponType.Range)
+        if (!other.CompareTag("Enemy") || WeaponInfo.type != ItemData.WeaponType.Range)
             return;
-        per--;
-        if (per < 0)
+        WeaponInfo.per--;
+        if (WeaponInfo.per < 0)
         {
             gameObject.SetActive(false);
         }
@@ -65,7 +62,7 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (!other.CompareTag("Area") || weaponType != ItemData.WeaponType.Range)
+        if (!other.CompareTag("Area") || WeaponInfo.type != ItemData.WeaponType.Range)
             return;
         gameObject.SetActive(false);
     }

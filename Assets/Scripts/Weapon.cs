@@ -5,22 +5,40 @@ using UnityEngine.UIElements;
 using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
 
-public class Weapon : MonoBehaviour
+public struct WeaponInfo
 {
-    public int id;
-    public int prefabId;
+    public WeaponInfo(int id, float baseDamage, float baseRate, float baseSpeed, int count, int per, ItemData.WeaponType type) : this()
+    {
+        ID = id;
+        _baseDamage = baseDamage;
+        _baseRate = baseRate;
+        _baseSpeed = baseSpeed;
+        this.count = count;
+        this.per = per;
+        this.type = type;
+    }
     
-    public float baseDamage;
-    public float baseRate;
-    public float baseSpeed;
-    
+    public readonly int ID;
+    private readonly float _baseDamage;
+    private readonly float _baseRate;
+    private readonly float _baseSpeed;
+
     public float damageMultiplier;
     public int count;
     public int per;
-    public float speed;
-    public float rate;
-    public ItemData.WeaponType weaponType;
-    
+    public float speedMultiplier;
+    public float rateMultiplier;
+    public ItemData.WeaponType type;
+
+
+    public float Damage() => _baseDamage * damageMultiplier;
+    public float Speed() => _baseSpeed * speedMultiplier;
+    public float Rate() => _baseRate * rateMultiplier;
+}
+
+public class Weapon : MonoBehaviour
+{
+    public WeaponInfo WBI;
     private float _timer;
     private Player _player;
     private GameManager _gameManager;
@@ -29,45 +47,34 @@ public class Weapon : MonoBehaviour
     {
         _gameManager = GameManager.Instance;
         _player = _gameManager.player;
-        speed = 1;
-        damageMultiplier = 1;
+
     }
 
     void Update()
     {
         if (!_gameManager.isLive)
             return;
-        switch (weaponType)
+        switch (WBI.type)
         {
             case ItemData.WeaponType.Orbital:
-                transform.Rotate(Vector3.forward * (baseSpeed * speed * Time.deltaTime));
+                transform.Rotate(Vector3.forward * (WBI.Speed() * Time.deltaTime));
                 break;
             case ItemData.WeaponType.Melee:
-                if (id == 4)
-                {
                     _timer += Time.deltaTime;
 
-                    if (_timer >= 2 - (baseRate * (1 + rate)))
+                    if (_timer >= 1 / WBI.Rate())
                     {
                         _timer = 0f;
-                        Poke();
+                        if (WBI.ID == 4)
+                            Poke();
+                        else if (WBI.ID == 5)
+                            Scythe();
                     }
-                }
-                else if (id == 5)
-                {
-                    _timer += Time.deltaTime;
-                    
-                    if (_timer >= 2 - (baseRate * (1 + rate)))
-                    {
-                        _timer = 0f;
-                        Scythe();
-                    }
-                }
-                break;
+                    break;
             case ItemData.WeaponType.Range:
                 _timer += Time.deltaTime;
 
-                if (_timer >= 1 - (baseRate * (1 + rate)))
+                if (_timer >= 1 / WBI.Rate())
                 {
                     _timer = 0f;
                     Fire();
@@ -89,21 +96,19 @@ public class Weapon : MonoBehaviour
         name = "Weapon " + data.itemName;
         transform.parent = _player.transform;
         transform.localPosition = Vector3.zero;
-        id = data.itemId;
-        weaponType = data.weaponType;
-        baseDamage = data.baseDamage * _gameManager.player.data.Damage;
-        count = data.baseCount + _gameManager.player.data.Count;
-        baseRate = data.baseRate;
-        baseSpeed = data.baseSpeed;
+        WBI.type = data.weaponType;
 
-        for (int i = 0; i < _gameManager.pool.prefabs.Length; i++)
-        {
-            if (data.projectile == _gameManager.pool.prefabs[i])
-            {
-                prefabId = i;
-            }
-        }
-        if (id == (int)ItemData.WeaponType.Orbital)
+        WBI = new WeaponInfo(data.itemId, 
+            data.baseDamage * _gameManager.player.data.Damage, 
+            data.baseRate, data.baseSpeed, 
+            data.baseCount + _gameManager.player.data.Count, 
+            data.basePer, 
+            data.weaponType);
+        WBI.speedMultiplier = 1;
+        WBI.damageMultiplier = 1;
+        WBI.rateMultiplier = 1;
+
+        if (WBI.ID == (int)ItemData.WeaponType.Orbital)
             Batch();
         PlaceHandPosition(data);
     }
@@ -122,19 +127,19 @@ public class Weapon : MonoBehaviour
 
     public void LevelUp(float damage, int count, float speed, float rate, int per)
     {
-        this.damageMultiplier += damage;
-        this.count += count;
-        this.speed += speed;
-        this.rate += rate;
-        this.per += per;
+        WBI.damageMultiplier += damage;
+        WBI.count += count;
+        WBI.speedMultiplier += speed;
+        WBI.rateMultiplier += rate;
+        WBI.per += per;
 
-        if (id == (int)ItemData.WeaponType.Orbital)
+        if (WBI.ID == (int)ItemData.WeaponType.Orbital)
             Batch();
     }
 
     private void Batch()
     {
-        for (int i = 0; i < count; i++)
+        for (int i = 0; i < WBI.count; i++)
         {
             Bullet bullet;
             if (i < transform.childCount)
@@ -144,25 +149,26 @@ public class Weapon : MonoBehaviour
                 bullet = _gameManager.pool.GetMelee(0);
                 bullet.transform.parent = transform;
             }
-            Transform bTf = bullet.transform;
-            bTf.localPosition = Vector3.zero;
-            bTf.localRotation = Quaternion.identity;
-            bTf.Rotate(Vector3.forward * (360 * i) / count);
-            bTf.Translate(bTf.up * 1.5f, Space.World);
-            bullet.Init(baseDamage * damageMultiplier, -1, Vector3.zero, weaponType, id,baseSpeed * speed);
+            Transform bulletTrans = bullet.transform;
+            bulletTrans.localPosition = Vector3.zero;
+            bulletTrans.localRotation = Quaternion.identity;
+            bulletTrans.Rotate(Vector3.forward * (360 * i) / WBI.count);
+            bulletTrans.Translate(bulletTrans.up * 1.5f, Space.World);
+            bullet.Init(WBI, Vector3.zero);
         }
     }
     
     private void Poke()
     {
         Bullet bullet = _gameManager.pool.GetMelee(1);
+        Transform bulletTrans = bullet.transform;
         
-        bullet.transform.parent = transform;
-        bullet.transform.localPosition = Vector3.zero;
-        bullet.transform.localScale *= 2;
-        bullet.transform.rotation = Quaternion.FromToRotation(Vector3.up, _player.dir);
-        bullet.transform.Translate(bullet.transform.up * 1.5f, Space.World);
-        bullet.Init(baseDamage * damageMultiplier, count, _player.dir, weaponType, id, baseSpeed * speed);
+        bulletTrans.parent = transform;
+        bulletTrans.localPosition = Vector3.zero;
+        bulletTrans.localScale *= 2;
+        bulletTrans.rotation = Quaternion.FromToRotation(Vector3.up, _player.dir);
+        bulletTrans.Translate(bulletTrans.up * 1.5f, Space.World);
+        bullet.Init(WBI, _player.dir);
         StartCoroutine(PokeExit(bullet));
         
         AudioManager.Instance.PlaySfx(AudioManager.Sfx.Melee);
@@ -171,15 +177,17 @@ public class Weapon : MonoBehaviour
     {
         Vector2 dir = _player.dir;
         Bullet bullet = _gameManager.pool.GetMelee(2);
+        Transform bulletTrans = bullet.transform;
         
-        bullet.transform.parent = transform;
-        bullet.transform.localPosition = Vector3.zero;
-        bullet.transform.localScale *= 3;
-        bullet.transform.rotation = 
+        bulletTrans.parent = transform;
+        bulletTrans.localPosition = Vector3.zero;
+        bulletTrans.localScale *= 3;
+        bulletTrans.rotation = 
             Quaternion.FromToRotation(Vector3.up, dir.normalized) * 
             Quaternion.Euler(0, 0, dir == Vector2.down ? 45 : -45);
-        bullet.transform.Translate(bullet.transform.up * 2f, Space.World);
-        bullet.Init(baseDamage * damageMultiplier, count, dir.normalized, weaponType, id, baseSpeed * speed);
+        bulletTrans.Translate(bulletTrans.up * 2f, Space.World);
+
+        bullet.Init(WBI, dir.normalized);
         
         StartCoroutine(PokeExit(bullet));
         AudioManager.Instance.PlaySfx(AudioManager.Sfx.Melee);
@@ -193,27 +201,25 @@ public class Weapon : MonoBehaviour
         Vector3 targetPos = _player.scanner.nearestTarget.position;
         Vector3 dir = targetPos - transform.position;
         dir = dir.normalized;
-        if (id == 7)
+        if (WBI.ID == 7)
         {
-            for (int i = 0; i < count; i++)
+            for (int i = 0; i < WBI.count; i++)
             {
-                Bullet bullet = _gameManager.pool.GetRange(id == 1 ? 0 : id == 6 ? 1 : 2);
+                Bullet bullet = _gameManager.pool.GetRange(WBI.ID == 1 ? 0 : WBI.ID == 6 ? 1 : 2);
                 bullet.transform.position = transform.position;
                 bullet.transform.rotation = Quaternion.FromToRotation(Vector3.up, dir);
-                Quaternion q;
-                if (i == 0)
-                    q = Quaternion.Euler(0, 0, 0);
-                else 
-                    q = Quaternion.Euler(0, 0, i % 2 == 1 ? i * 5 : (i - 1) * -5);
-                bullet.Init(baseDamage * damageMultiplier, count, q * dir, weaponType, id,baseSpeed * speed);
+                Quaternion q = i == 0
+                    ? Quaternion.Euler(0, 0, 0)
+                    : Quaternion.Euler(0, 0, i % 2 == 1 ? i * 5 : (i - 1) * -5);
+                bullet.Init(WBI, q * dir);
             }
         }
         else
         {
-            Bullet bullet = _gameManager.pool.GetRange(id == 1 ? 0 : id == 6 ? 1 : 2);
+            Bullet bullet = _gameManager.pool.GetRange(WBI.ID == 1 ? 0 : WBI.ID == 6 ? 1 : 2);
             bullet.transform.position = transform.position;
             bullet.transform.rotation = Quaternion.FromToRotation(Vector3.up, dir);
-            bullet.Init(baseDamage * damageMultiplier, count, dir, weaponType, id,baseSpeed * speed);
+            bullet.Init(WBI, dir);
         }
         AudioManager.Instance.PlaySfx(AudioManager.Sfx.Range);
     }

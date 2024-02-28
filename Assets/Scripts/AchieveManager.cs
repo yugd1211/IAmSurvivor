@@ -11,7 +11,7 @@ public class AchieveManager : MonoBehaviour
     public GameObject uiNotice;
     
     
-    enum Achieve 
+    private enum Achieve 
     { 
         UnlockPotato,
         UnlockBean, 

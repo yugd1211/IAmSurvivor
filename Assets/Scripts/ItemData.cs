@@ -43,6 +43,7 @@ public class ItemData : ScriptableObject
     public int baseCount;
     public float baseSpeed;
     public float baseRate;
+    public int basePer;
     
     [Header("# Level Data")]
     public float[] nextDamages = new float[MaxLevel];
