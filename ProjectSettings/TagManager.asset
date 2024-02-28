@@ -9,6 +9,7 @@ TagManager:
   - Enemy
   - Bullet
   - Magnet
+  - AreaMagnet
   layers:
   - Default
   - TransparentFX

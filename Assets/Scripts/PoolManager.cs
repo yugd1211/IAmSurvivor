@@ -114,4 +114,9 @@ public class PoolManager : MonoBehaviour
         }
         return select;
     }
+
+    public List<Exp> GetAllExp(int index)
+    {
+        return _expPools[index];
+    }
 }

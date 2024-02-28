@@ -131,18 +131,18 @@ public class GameManager : MonoBehaviour
             gameTime = maxGameTime;
             GameVictory();
         }
-    }
-    public void GetExp(int exp)
-    {
-        if (!isLive)
-            return;
-        this.exp += exp;
         if (level < nextExp.Length && exp >= nextExp[Mathf.Min(level, nextExp.Length - 1)])
         {
             this.exp -= nextExp[level];
             level++;
             uiLevelUp.Show();
         }
+    }
+    public void GetExp(int exp)
+    {
+        if (!isLive)
+            return;
+        this.exp += exp;
     }
 
     public void Stop()
