@@ -27,9 +27,9 @@ public class Armor : MonoBehaviour
         
         foreach (Weapon weapon in weapons)
         {
-            weapon.damageMultiplier += damage;
-            weapon.speed += weaponSpeed;
-            weapon.rate += weaponRate;
+            weapon.WBI.damageMultiplier += damage;
+            weapon.WBI.speedMultiplier += weaponSpeed;
+            weapon.WBI.rateMultiplier += weaponRate;
         }
     }
 }
