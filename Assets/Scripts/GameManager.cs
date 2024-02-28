@@ -21,7 +21,6 @@ public class GameManager : MonoBehaviour
 
     [Header("# Player Info")]
     public CharacterData data;
-    public int playerId;
     public int level = 0;
     public int kill;
     public int exp;
@@ -133,14 +132,14 @@ public class GameManager : MonoBehaviour
             GameVictory();
         }
     }
-    public void GetExp()
+    public void GetExp(int exp)
     {
         if (!isLive)
             return;
-        exp++;
+        this.exp += exp;
         if (level < nextExp.Length && exp >= nextExp[Mathf.Min(level, nextExp.Length - 1)])
         {
-            exp -= nextExp[level];
+            this.exp -= nextExp[level];
             level++;
             uiLevelUp.Show();
         }
