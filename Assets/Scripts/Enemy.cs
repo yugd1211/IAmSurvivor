@@ -41,7 +41,6 @@ public class Enemy : MonoBehaviour
     }
     private void LateUpdate()
     {
-        
         if (!_gameManager.isLive)
             return;
         if (!_isLive)
@@ -78,8 +77,9 @@ public class Enemy : MonoBehaviour
             _spriter.sortingOrder = 1;
             _anim.SetBool("Dead", true);
             _gameManager.kill++;
-            _gameManager.GetExp();
-            
+            Exp exp = _gameManager.pool.GetExp(0);
+            exp.Init(0);
+            exp.transform.position = transform.position;
             if (_gameManager.isLive)
                 AudioManager.Instance.PlaySfx(AudioManager.Sfx.Dead);
         }

@@ -41,8 +41,8 @@ public class AudioManager : MonoBehaviour
             Destroy(this.gameObject);
         else
             _instance = this;
-
         Init();
+        PlayBgm(true);
     }
 
     private void Init()
@@ -55,7 +55,6 @@ public class AudioManager : MonoBehaviour
         _bgmPlayer.volume = bgmVolume;
         _bgmPlayer.clip = bgmClip;
         _bgmEffect = Camera.main.GetComponent<AudioHighPassFilter>();
-        
         
         GameObject sfxObject = new GameObject("SfxPlayer");
         sfxObject.transform.parent = transform;
