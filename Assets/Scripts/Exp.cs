@@ -55,16 +55,22 @@ public class Exp : MonoBehaviour
         _target = target;
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+
+    private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.CompareTag("AreaMagnet"))
-            Follow(other.transform);
-        if (other.CompareTag("Player"))
+        if (other.transform.CompareTag("Player"))
         {
             _gameManager.GetExp((int)_type * 2 + 1);
             
             AudioManager.Instance.PlaySfx(AudioManager.Sfx.Select);
             gameObject.SetActive(false);
         }
+    }
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        Debug.Log(other.tag);
+        if (other.CompareTag("AreaMagnet"))
+            Follow(other.transform);
+
     }
 }

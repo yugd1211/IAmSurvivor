@@ -46,7 +46,7 @@ public class Player : MonoBehaviour
     }
     private void OnCollisionStay2D(Collision2D other)
     {
-        if (!_gameManager.isLive)
+        if (!_gameManager.isLive || !other.transform.CompareTag("Enemy"))
             return;
 
         _gameManager.health -= Time.deltaTime * 10;

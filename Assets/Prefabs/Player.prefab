@@ -134,7 +134,7 @@ GameObject:
   m_Component:
   - component: {fileID: 723332904}
   - component: {fileID: 723332905}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Area
   m_TagString: Area
   m_Icon: {fileID: 0}
@@ -513,7 +513,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1707467367}
   - component: {fileID: 1707467368}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: AreaMagnet
   m_TagString: AreaMagnet
   m_Icon: {fileID: 0}
