@@ -3,13 +3,13 @@ using UnityEngine;
 
 public class PoolManager : MonoBehaviour
 {
-    public GameObject[] enemyPrefabs;
+    public GameObject enemyPrefabs;
     public GameObject[] meleePrefabs;
     public GameObject[] rangePrefabs;
     public GameObject[] expPrefabs;
     public GameObject[] boxPrefabs;
     
-    private List<Enemy>[] _enemyPools;
+    private List<Enemy> _enemyPools;
     private List<Bullet>[] _meleePools;
     private List<Bullet>[] _rangePools;
     private List<Exp>[] _expPools;
@@ -17,9 +17,7 @@ public class PoolManager : MonoBehaviour
 
     private void Awake()
     {
-        _enemyPools = new List<Enemy>[enemyPrefabs.Length];
-        for (int i = 0; i < _enemyPools.Length; i++)
-            _enemyPools[i] = new List<Enemy>();
+        _enemyPools = new List<Enemy>();
         
         _meleePools = new List<Bullet>[meleePrefabs.Length];
         for (int i = 0; i < _meleePools.Length; i++)
@@ -38,11 +36,11 @@ public class PoolManager : MonoBehaviour
             _boxPools[i] = new List<Box>();
     }
 
-    public Enemy GetEnemy(int index)
+    public Enemy GetEnemy()
     {
         Enemy select = null;
 
-        foreach (Enemy item in _enemyPools[index])
+        foreach (Enemy item in _enemyPools)
         {
             if (!item.gameObject.activeSelf)
             {
@@ -53,8 +51,8 @@ public class PoolManager : MonoBehaviour
         }
         if (!select)
         {
-            select = Instantiate(enemyPrefabs[index], transform).GetComponent<Enemy>();
-            _enemyPools[index].Add(select);
+            select = Instantiate(enemyPrefabs, transform).GetComponent<Enemy>();
+            _enemyPools.Add(select);
         }
         return select;
     }    

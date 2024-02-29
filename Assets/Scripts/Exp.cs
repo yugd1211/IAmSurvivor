@@ -5,9 +5,9 @@ public class Exp : MonoBehaviour
 {
     public enum ExpType
     {
-        Normal = 0,
-         Elite = 1,
-        Boss = 2,
+        Bronze = 0,
+        Silver = 1,
+        Gold = 2,
     }
 
     public Sprite[] sprite;

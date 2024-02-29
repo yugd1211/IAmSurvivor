@@ -25,10 +25,10 @@ MonoBehaviour:
   baseRate: 0.5
   basePer: 0
   nextDamages:
-  - 0.5
-  - 0.5
-  - 0.5
-  - 0.5
+  - 0.2
+  - 0.2
+  - 0.2
+  - 0.2
   - 0.5
   nextCounts: 0000000000000000000000000000000000000000
   nextWeaponSpeed:
@@ -44,11 +44,11 @@ MonoBehaviour:
   - 0
   - 0
   nextRate:
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0.2
+  - 0.1
+  - 0.1
+  - 0.1
+  - 0.1
+  - 0.5
   nextPer: 0000000000000000000000000000000000000000
   projectile: {fileID: 5588354483150353491, guid: 8286316a87df7462b9673becf5f5692c, type: 3}
   hand: {fileID: -1972582131, guid: 0d5e657ee5a074e4baa53d5b248a01d2, type: 3}

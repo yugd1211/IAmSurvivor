@@ -25,9 +25,9 @@ public class Box : MonoBehaviour
         {
             exp.Init(Random.Range(0, 3) switch
             {
-                0 => Exp.ExpType.Normal,
-                1 => Exp.ExpType.Elite,
-                _ => Exp.ExpType.Boss,
+                0 => Exp.ExpType.Bronze,
+                1 => Exp.ExpType.Silver,
+                _ => Exp.ExpType.Gold,
             });
         }
         gameObject.SetActive(false);

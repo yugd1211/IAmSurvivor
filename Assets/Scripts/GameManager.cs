@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     public float gameTime;
     public float maxGameTime = 20f;
     public bool isLive;
+    public bool isBoss;
 
     [Header("# Player Info")]
     public CharacterData data;
@@ -58,6 +59,7 @@ public class GameManager : MonoBehaviour
         level = 0;
         kill = 0;
         exp = 0;
+        isBoss = false;
         health = maxHealth;
         player = FindObjectOfType<Player>();
         uiLevelUp = FindObjectOfType<LevelUp>();
@@ -122,14 +124,13 @@ public class GameManager : MonoBehaviour
     {
         if (!isLive)
             return;
-        if (gameTime >= maxGameTime)
-            isLive = false;
+
         gameTime += Time.deltaTime;
 
-        if (gameTime > maxGameTime)
+        if (!isBoss && gameTime >= maxGameTime)
         {
-            gameTime = maxGameTime;
-            GameVictory();
+            isBoss = true;
+            FindObjectOfType<Spawner>().Spawn(EnemyType.Boss);
         }
         if (level < nextExp.Length && exp >= nextExp[Mathf.Min(level, nextExp.Length - 1)])
         {
