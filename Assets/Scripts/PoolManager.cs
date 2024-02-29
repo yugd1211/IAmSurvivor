@@ -7,11 +7,13 @@ public class PoolManager : MonoBehaviour
     public GameObject[] meleePrefabs;
     public GameObject[] rangePrefabs;
     public GameObject[] expPrefabs;
+    public GameObject[] boxPrefabs;
     
     private List<Enemy>[] _enemyPools;
     private List<Bullet>[] _meleePools;
     private List<Bullet>[] _rangePools;
     private List<Exp>[] _expPools;
+    private List<Box>[] _boxPools;
 
     private void Awake()
     {
@@ -30,6 +32,10 @@ public class PoolManager : MonoBehaviour
         _expPools = new List<Exp>[expPrefabs.Length];
         for (int i = 0; i < _expPools.Length; i++)
             _expPools[i] = new List<Exp>();
+        
+        _boxPools = new List<Box>[boxPrefabs.Length];
+        for (int i = 0; i < _boxPools.Length; i++)
+            _boxPools[i] = new List<Box>();
     }
 
     public Enemy GetEnemy(int index)
@@ -111,6 +117,26 @@ public class PoolManager : MonoBehaviour
         {
             select = Instantiate(expPrefabs[index], transform).GetComponent<Exp>();
             _expPools[index].Add(select);
+        }
+        return select;
+    }    
+    public Box GetBox(int index)
+    {
+        Box select = null;
+
+        foreach (Box item in _boxPools[index])
+        {
+            if (!item.gameObject.activeSelf)
+            {
+                select = item;
+                select.gameObject.SetActive(true);
+                break;
+            }
+        }
+        if (!select)
+        {
+            select = Instantiate(boxPrefabs[index], transform).GetComponent<Box>();
+            _boxPools[index].Add(select);
         }
         return select;
     }

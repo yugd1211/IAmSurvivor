@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -43,17 +44,20 @@ public class magnet : MonoBehaviour
             item.Follow(target);
         }
     }
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.transform.CompareTag("Player"))
+        {
+            PullExp(other.transform);
+            AudioManager.Instance.PlaySfx(AudioManager.Sfx.Select);
+            gameObject.SetActive(false);
+        }
+    }
 
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("AreaMagnet"))
             Follow(other.transform);
-        if (other.CompareTag("Player"))
-        {
-            PullExp(other.transform);
-            AudioManager.Instance.PlaySfx(AudioManager.Sfx.Select);
-            gameObject.SetActive(false);
-        }
     }
 }

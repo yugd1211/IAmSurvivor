@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Enemy : MonoBehaviour
 {
@@ -80,6 +81,12 @@ public class Enemy : MonoBehaviour
             Exp exp = _gameManager.pool.GetExp(0);
             exp.Init(0);
             exp.transform.position = transform.position;
+            if (Random.Range(0, 100) < 10)
+            {
+                Box box = _gameManager.pool.GetBox(0);
+                box.transform.position = transform.position;
+                box.gameObject.SetActive(true);
+            }
             if (_gameManager.isLive)
                 AudioManager.Instance.PlaySfx(AudioManager.Sfx.Dead);
         }

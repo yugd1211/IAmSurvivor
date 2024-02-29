@@ -8116,7 +8116,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1578027954, guid: b099c36c0a03144808cd2f60d44cb6c1, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 166553160330396583, guid: b099c36c0a03144808cd2f60d44cb6c1, type: 3}
       propertyPath: m_RootOrder
@@ -24966,7 +24966,7 @@ MonoBehaviour:
   m_FillRect: {fileID: 328296259}
   m_HandleRect: {fileID: 0}
   m_Direction: 0
-  m_MinValue: 0
+  m_MinValue: -0.15
   m_MaxValue: 1
   m_WholeNumbers: 0
   m_Value: 1
@@ -26171,6 +26171,8 @@ MonoBehaviour:
   - {fileID: 5588354483150353491, guid: 1ac08c3500f53445dbf0897c1f825b7a, type: 3}
   expPrefabs:
   - {fileID: 8316010755521944017, guid: 31941e24bcfbc4d36ae4901d1014d0df, type: 3}
+  boxPrefabs:
+  - {fileID: 2448614100446694707, guid: bf136e034d10d412cbcfb239e9ce7e38, type: 3}
 --- !u!1 &1930321980
 GameObject:
   m_ObjectHideFlags: 0

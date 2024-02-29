@@ -7,12 +7,19 @@ using Random = UnityEngine.Random;
 public class Box : MonoBehaviour
 {
     public GameObject[] prefabs;
-    private void OnTriggerEnter2D(Collider2D other)
+    private GameManager _gameManager;
+
+    private void Awake()
     {
-        if (!other.CompareTag("Player"))
+        _gameManager = GameManager.Instance;
+    }
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (!other.transform.CompareTag("Player"))
             return;
         GameObject go = Instantiate(prefabs[Random.Range(0, prefabs.Length)]);
-        go.transform.position = GameManager.Instance.player.dir * 1;
+        go.transform.position = transform.position + (Vector3)GameManager.Instance.player.dir.normalized * 1;
+
         Exp exp = go.GetComponent<Exp>(); 
         if (exp)
         {

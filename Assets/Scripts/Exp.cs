@@ -6,7 +6,7 @@ public class Exp : MonoBehaviour
     public enum ExpType
     {
         Normal = 0,
-        Elite = 1,
+         Elite = 1,
         Boss = 2,
     }
 
@@ -42,7 +42,6 @@ public class Exp : MonoBehaviour
     {
         transform.position = Vector3.MoveTowards(transform.position, _target.position, speed * Time.fixedDeltaTime);
     }
-    
 
     public void Init(ExpType type)
     {
@@ -68,9 +67,7 @@ public class Exp : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log(other.tag);
         if (other.CompareTag("AreaMagnet"))
             Follow(other.transform);
-
     }
 }
