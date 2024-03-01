@@ -4,8 +4,11 @@ using Random = UnityEngine.Random;
 public class Spawner : MonoBehaviour
 {
     public Transform[] spawnPoint;
-    public SpawnData[] spawnDatas;
+    public EnemyData[] enemyDatas;
+    public EnemyData bossData;
+    public float[] spawnTime;
     public float levelTime;
+    
     private GameManager _gameManager;
 
     private float _timer;
@@ -15,35 +18,34 @@ public class Spawner : MonoBehaviour
     {
         spawnPoint = GetComponentsInChildren<Transform>();
         _gameManager = GameManager.Instance;
-        levelTime = _gameManager.maxGameTime / spawnDatas.Length;
+        levelTime = _gameManager.maxGameTime / enemyDatas.Length;
     }
-    void Update()
+    private void Update()
     {
-        if (!_gameManager.isLive)
+        if (!_gameManager.isLive || _gameManager.gameTime >= _gameManager.maxGameTime)
             return;
         _timer += Time.deltaTime;
 
-        _level = Mathf.Clamp(Mathf.FloorToInt(_gameManager.gameTime / levelTime), 0, spawnDatas.Length - 1);
-        if (_timer > spawnDatas[_level].spawnTime)
+        _level = Mathf.Clamp(Mathf.FloorToInt(_gameManager.gameTime / levelTime), 0, enemyDatas.Length - 1);
+        if (_timer > spawnTime[_level])
         {
-            Spawn();
+            EnemyType type = Random.Range(0, 100) <= 4 ? EnemyType.Elite : EnemyType.Normal; 
+            Spawn(type);
             _timer = 0f;
         }
     }
 
-    void Spawn()
+    private void FixedUpdate()
     {
-        Enemy enemy = _gameManager.pool.GetEnemy(0);
+        transform.position = _gameManager.player.transform.position;
+    }
+
+    public Enemy Spawn(EnemyType enemyType)
+    {
+        Enemy enemy = _gameManager.pool.GetEnemy();
         enemy.transform.position = spawnPoint[Random.Range(1, spawnPoint.Length)].position;
-        enemy.Init(spawnDatas[_level]);
+        enemy.Init(enemyType == EnemyType.Boss ? bossData : enemyDatas[_level], enemyType);
+        return enemy;
     }
 }
 
-[System.Serializable]
-public class SpawnData
-{
-    public int spriteType;
-    public float spawnTime;
-    public int health;
-    public float moveSpeed;
-}

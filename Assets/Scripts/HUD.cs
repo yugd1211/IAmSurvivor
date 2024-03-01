@@ -14,6 +14,7 @@ public class HUD : MonoBehaviour
         Kill, 
         Time,
         Health,
+        BossHealth,
     }
     
     public InfoType type;
@@ -47,6 +48,11 @@ public class HUD : MonoBehaviour
             case InfoType.Health:
                 float currHealth = _gameManager.health;
                 float maxHealth = _gameManager.maxHealth;
+                _slider.value = currHealth / maxHealth;
+                break;
+            case InfoType.BossHealth:
+                currHealth = _gameManager.boss.health;
+                maxHealth = _gameManager.boss.data.health;
                 _slider.value = currHealth / maxHealth;
                 break;
             case InfoType.Time:

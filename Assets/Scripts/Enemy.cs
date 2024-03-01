@@ -6,13 +6,11 @@ using Random = UnityEngine.Random;
 
 public class Enemy : MonoBehaviour
 {
-    public float moveSpeed;
+    public EnemyData data;
+    private EnemyType _type;
    
     public float health;
-    public float maxHealth;
-    public RuntimeAnimatorController[] animCon;
     public Rigidbody2D target;
-        
 
     private bool _isLive;
     private Rigidbody2D _rigid;
@@ -56,7 +54,13 @@ public class Enemy : MonoBehaviour
         _rigid.simulated = true;
         _spriter.sortingOrder = 2;
         _anim.SetBool("Dead", false);
-        health = maxHealth;
+    }
+
+    private void OnDisable()
+    {
+        if (_type != EnemyType.Boss)
+            return;
+        _gameManager.GameVictory();
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -78,10 +82,13 @@ public class Enemy : MonoBehaviour
             _spriter.sortingOrder = 1;
             _anim.SetBool("Dead", true);
             _gameManager.kill++;
-            Exp exp = _gameManager.pool.GetExp(0);
-            exp.Init(0);
-            exp.transform.position = transform.position;
-            if (Random.Range(0, 100) < 10)
+            if (_type == EnemyType.Normal)
+            {
+                Exp exp = _gameManager.pool.GetExp(0);
+                exp.Init((Exp.ExpType)_type);
+                exp.transform.position = transform.position;
+            }
+            if (Random.Range(0, 100) < 5)
             {
                 Box box = _gameManager.pool.GetBox(0);
                 box.transform.position = transform.position;
@@ -101,18 +108,27 @@ public class Enemy : MonoBehaviour
     }
     
     
-    public void Init(SpawnData spawnData)
+    public void Init(EnemyData enemyData, EnemyType enemyType)
     {
-        _anim.runtimeAnimatorController = animCon[spawnData.spriteType];
-        moveSpeed = spawnData.moveSpeed;
-        maxHealth = spawnData.health;
-        health = spawnData.health;
+        data = enemyData;
+        health = data.health;
+        _anim.runtimeAnimatorController = data.AnimCon;
+        _type = enemyType; 
+        if (_type == EnemyType.Elite)
+        {
+            transform.localScale *= 1.5f;
+            _spriter.color = Color.red;
+
+            health *= 10;
+        }
+        else if (_type == EnemyType.Boss)
+            transform.localScale *= 3f;
     }
     
     private void Move()
     {
         Vector2 dirVec = target.position - _rigid.position;
-        Vector2 nextVec = dirVec.normalized * (moveSpeed * Time.fixedDeltaTime);
+        Vector2 nextVec = dirVec.normalized * (data.moveSpeed * Time.fixedDeltaTime);
         _rigid.MovePosition(_rigid.position + nextVec);
         _rigid.velocity = Vector2.zero;
     }

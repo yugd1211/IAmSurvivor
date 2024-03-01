@@ -25,10 +25,10 @@ MonoBehaviour:
   baseRate: 0
   basePer: 0
   nextDamages:
-  - 0.5
-  - 0.5
-  - 0.5
-  - 0.5
+  - 0.2
+  - 0.2
+  - 0.2
+  - 0.2
   - 0.5
   nextCounts: 0100000001000000010000000100000001000000
   nextWeaponSpeed:
