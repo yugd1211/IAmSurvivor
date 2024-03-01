@@ -384,9 +384,11 @@ MonoBehaviour:
   uiLevelUp: {fileID: 0}
   uiResult: {fileID: 1513346813}
   enemyClearner: {fileID: 0}
+  boss: {fileID: 0}
   gameTime: 0
   maxGameTime: 300
   isLive: 0
+  isBoss: 0
   data: {fileID: 0}
   level: 0
   kill: 0

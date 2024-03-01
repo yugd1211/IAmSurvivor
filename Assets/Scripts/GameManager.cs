@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public LevelUp uiLevelUp;
     public Result uiResult;
     public GameObject enemyClearner;
+    public Enemy boss;
     
     [Header("# Game Control")]
     public float gameTime;
@@ -125,12 +126,15 @@ public class GameManager : MonoBehaviour
         if (!isLive)
             return;
 
-        gameTime += Time.deltaTime;
+        if (gameTime >= maxGameTime)
+            gameTime = maxGameTime;
+        else
+            gameTime += Time.deltaTime;
 
         if (!isBoss && gameTime >= maxGameTime)
         {
             isBoss = true;
-            FindObjectOfType<Spawner>().Spawn(EnemyType.Boss);
+            boss = FindObjectOfType<Spawner>().Spawn(EnemyType.Boss);
         }
         if (level < nextExp.Length && exp >= nextExp[Mathf.Min(level, nextExp.Length - 1)])
         {

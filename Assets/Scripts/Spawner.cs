@@ -22,7 +22,7 @@ public class Spawner : MonoBehaviour
     }
     private void Update()
     {
-        if (!_gameManager.isLive)
+        if (!_gameManager.isLive || _gameManager.gameTime >= _gameManager.maxGameTime)
             return;
         _timer += Time.deltaTime;
 
@@ -40,11 +40,12 @@ public class Spawner : MonoBehaviour
         transform.position = _gameManager.player.transform.position;
     }
 
-    public void Spawn(EnemyType enemyType)
+    public Enemy Spawn(EnemyType enemyType)
     {
         Enemy enemy = _gameManager.pool.GetEnemy();
         enemy.transform.position = spawnPoint[Random.Range(1, spawnPoint.Length)].position;
         enemy.Init(enemyType == EnemyType.Boss ? bossData : enemyDatas[_level], enemyType);
+        return enemy;
     }
 }
 
