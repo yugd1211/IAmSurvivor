@@ -11,11 +11,13 @@ public class LevelUp : MonoBehaviour
     private GameManager _gameManager;
     private RectTransform _rect;
     private Item[] _items;
+    private WaitForSecondsRealtime _wait;
 
     private void Awake()
     {
         _rect = GetComponent<RectTransform>();
         _items = GetComponentsInChildren<Item>(true);
+        _wait = new WaitForSecondsRealtime(2);
     }
 
     private void Start()
@@ -35,10 +37,16 @@ public class LevelUp : MonoBehaviour
     public void Hide()
     {
         _rect.localScale = Vector3.zero;
-        _gameManager.Resume();
         AudioManager.Instance.PlaySfx(AudioManager.Sfx.Select);
         AudioManager.Instance.EffectBgm(false);
+        StartCoroutine(GameResumeRoutine());
     }
+    private IEnumerator GameResumeRoutine()
+    {
+        yield return _wait;
+        _gameManager.Resume();
+    }
+    
     public void Select(int index)
     {
         for (int i = 0; i < _items.Length; i++)
