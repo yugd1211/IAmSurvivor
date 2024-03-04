@@ -1,9 +1,6 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Advertisements;
 using Random = UnityEngine.Random;
 
 public class LevelUp : MonoBehaviour
@@ -42,16 +39,8 @@ public class LevelUp : MonoBehaviour
         AudioManager.Instance.PlaySfx(AudioManager.Sfx.Select);
         AudioManager.Instance.EffectBgm(false);
         _delay.ResumeDelay();
-        // StartCoroutine(GameResumeRoutine());
     }
-    private IEnumerator GameResumeRoutine()
-    {
-        yield return _wait;
-        yield return _wait;
-        yield return _wait;
-        _gameManager.Resume();
-    }
-    
+
     public void Select(int index)
     {
         for (int i = 0; i < _items.Length; i++)
