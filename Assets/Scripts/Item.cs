@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -31,21 +32,48 @@ public class Item : MonoBehaviour
 
     void OnEnable()
     {
-        _textLevel.text = "Lv." + level;
+        if (level == 0)
+            _textLevel.text = "";
+        else
+            _textLevel.text = "Lv." + level;
 
         switch (data.itemType)
         {
-            case ItemData.ItemType.Weapon:
+            case ItemData.ItemType.Weapon:            
+            case ItemData.ItemType.Armor:
+                int[] line =
+                {
+                    (int)(data.nextDamages[level] * 100),
+                    data.nextCounts[level], 
+                    (int)(data.nextWeaponSpeed[level] * 100),
+                    (int)(data.nextMoveSpeed[level] * 100),
+                    (int)(data.nextRate[level] * 100),
+                };
                 if (level == 0)
                     _textDesc.text = string.Format(data.itemName + "을 얻습니다!");
                 else
-                    _textDesc.text = string.Format(data.itemDesc, data.nextDamages[level], data.nextCounts[level]); 
+                {
+                    _textDesc.text = 
+                    string.Format(data.itemDesc, 
+                        data.nextDamages[level] * 100, 
+                        data.nextCounts[level],
+                        data.nextWeaponSpeed[level] * 100, 
+                        data.nextMoveSpeed[level] * 100, 
+                        data.nextRate[level] * 100);
+                    string[] lines = _textDesc.text.Split(new[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries);
+                    string str = "";
+                    for (int i = 0; i < 5; i++)
+                    {
+                        if (line[i] != 0)
+                            str += lines[i] + "\n";
+                    }
+                    _textDesc.text = string.Format(str);
+                }
                 break;
-            case ItemData.ItemType.Armor:
-                _textDesc.text = string.Format(data.itemDesc, data.nextDamages[level]);
+            case ItemData.ItemType.Potion:
+                _textDesc.text = string.Format(data.itemDesc);
                 break;
             default:
-                _textDesc.text = string.Format(data.itemDesc); 
                 break;
         }
     }
@@ -98,6 +126,6 @@ public class Item : MonoBehaviour
         if (level == data.nextDamages.Length)
         {
             GetComponent<Button>().interactable = false;
+}
         }
     }
-}
