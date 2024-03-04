@@ -68,7 +68,6 @@ public class Item : MonoBehaviour
                             str += lines[i] + "\n";
                     }
                     _textDesc.text = string.Format(str);
-
                 }
                 break;
             case ItemData.ItemType.Potion:
