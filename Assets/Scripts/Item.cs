@@ -49,7 +49,7 @@ public class Item : MonoBehaviour
                     (int)(data.nextMoveSpeed[level] * 100),
                     (int)(data.nextRate[level] * 100),
                 };
-                if (level == 0)
+                if (level == 0 && data.itemType == ItemData.ItemType.Weapon)
                     _textDesc.text = string.Format(data.itemName + "을 얻습니다!");
                 else
                 {

@@ -44,6 +44,7 @@ public class Spawner : MonoBehaviour
     {
         Enemy enemy = _gameManager.pool.GetEnemy();
         enemy.transform.position = spawnPoint[Random.Range(1, spawnPoint.Length)].position;
+        // enemy.Init(new EnemyData, Ene);
         enemy.Init(enemyType == EnemyType.Boss ? bossData : enemyDatas[_level], enemyType);
         return enemy;
     }

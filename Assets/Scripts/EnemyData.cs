@@ -24,4 +24,7 @@ public class EnemyData : ScriptableObject
 
     public RuntimeAnimatorController AnimCon => animCon;
     public GameObject projectile;
+    public EnemyData(EnemyData enemyData)
+    {
+    }
 }

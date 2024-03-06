@@ -21,7 +21,7 @@ MonoBehaviour:
     {2}% \uC99D\uAC00\n\uC774\uB3D9\uC18D\uB3C4 {3}% \uC99D\uAC00\n\uACF5\uACA9\uC18D\uB3C4
     {4}% \uC99D\uAC00"
   itemIcon: {fileID: -205726582, guid: d71a3dc7aa20fad4f9a99fc76a9254ba, type: 3}
-  baseDamage: 7
+  baseDamage: 10
   baseCount: 1
   baseSpeed: 0
   baseRate: 1
