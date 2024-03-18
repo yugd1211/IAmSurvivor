@@ -135,6 +135,8 @@ public class Enemy : MonoBehaviour
     
     private void Dead()
     {
+        transform.localScale = Vector3.one;
+        _spriter.color = Color.white;
         gameObject.SetActive(false);
     }
 }
