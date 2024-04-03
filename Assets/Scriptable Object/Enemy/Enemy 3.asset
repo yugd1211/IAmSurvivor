@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Enemy 3
   m_EditorClassIdentifier: 
   id: 3
-  type: 2
+  type: 3
   health: 2000
   moveSpeed: 2
   damage: 0
