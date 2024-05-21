@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
 
 public class LevelUp : MonoBehaviour
@@ -10,6 +12,7 @@ public class LevelUp : MonoBehaviour
     private Item[] _items;
     private WaitForSecondsRealtime _wait;
     private GameResumeDelay _delay;
+    private int[] _selectItemNum;
 
     private void Awake()
     {
@@ -17,6 +20,41 @@ public class LevelUp : MonoBehaviour
         _delay = FindObjectOfType<GameResumeDelay>(true);
         _items = GetComponentsInChildren<Item>(true);
         _wait = new WaitForSecondsRealtime(0.5f);
+    }
+
+    public void OnSelectItem1(InputAction.CallbackContext context)
+    {
+        if (!context.performed)
+            return;
+        if (transform.localScale == Vector3.zero)
+            return;
+        if (_gameManager.isLive) 
+            return;
+        _items[_selectItemNum[0]].ObtainItem();
+        Hide();
+    }
+
+    public void OnSelectItem2(InputAction.CallbackContext context)
+    {
+        if (!context.performed)
+            return;
+        if (transform.localScale == Vector3.zero)
+            return;
+        if (_gameManager.isEnd) 
+            return;
+        _items[_selectItemNum[1]].ObtainItem();
+        Hide();
+    }
+    public void OnSelectItem3(InputAction.CallbackContext context)
+    {
+        if (!context.performed)
+            return;
+        if (transform.localScale == Vector3.zero)
+            return;
+        if (_gameManager.isEnd) 
+            return;
+        _items[_selectItemNum[2]].ObtainItem();
+        Hide();
     }
 
     private void Start()
@@ -79,5 +117,6 @@ public class LevelUp : MonoBehaviour
             Item ranItem = _items[ran[i]];
             ranItem.gameObject.SetActive(true);
         }
+        _selectItemNum = ran;
     }
 }

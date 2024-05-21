@@ -28,20 +28,15 @@ namespace Core.Observer
         public int GoalCount;
         public Action Action;
         
+        // subject에게 알림을 받을때 사용하는 함수
         public override void Notify(ASubject subject)
         {
             if (subject is SubjectKill kill)
             {
                 Count = kill.Count;
-                GoalCompleted();
+                if (Count >= GoalCount)
+                    Action();
             }
         }
-
-        private void GoalCompleted()
-        {
-            if (Count < GoalCount)
-                return;
-            Action();
-        } 
     }
 }

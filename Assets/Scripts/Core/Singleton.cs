@@ -27,6 +27,12 @@ namespace Core
 		}
 		public void Awake()
 		{
+			if (_instance != null && _instance != this)
+			{
+				Destroy(this.gameObject);
+				return;
+			}
+			
 			if (!_onceInit)
 			{
 				DontDestroyOnLoad(gameObject);

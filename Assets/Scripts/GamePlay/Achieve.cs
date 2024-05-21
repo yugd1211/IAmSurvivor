@@ -1,140 +1,47 @@
 using System;
 using System.Collections.Generic;
 using Core.Observer;
-using UnityEngine;
 
 // 방문자패턴
 [Serializable]
 public class Achieve : AObserver
 {
+    public int id;
     public string name;
     public string desc;
-    public List<Condition> Conditions;
+    public List<AchieveCondition> Conditions;
     private ConditionChecker _checker;
     
-    public Achieve(string name, string desc)
+    public Achieve(int id, string name, string desc)
     {
-        _checker = new ConditionChecker();
-        Conditions = new List<Condition>();
+        this.id = id;
         this.name = name;
         this.desc = desc;
+        _checker = new ConditionChecker();
+        Conditions = new List<AchieveCondition>();
     }
 
-    public void AddCondition(Condition condition)
+    // 현재 Achieve에 조건을 추가함
+    public void AddCondition(AchieveCondition achieveCondition)
     {
-        Conditions.Add(condition);
-        if (condition is Kill kill)
-        {
-            GameManager.Instance.Kill.Attach(kill.OKill);
-            Debug.Log("attach kill");
-        }
-    }
-
-    public interface IConditionVisitor
-    {
-        bool Visit(Kill kill);
-        bool Visit(Hit hit);
-        bool Visit(Hp hp);
-        bool Visit(Victory victory);
-    }
-
-    public abstract class Condition
-    {
-        public abstract bool Accept(IConditionVisitor visitor);
+        achieveCondition.ParentAchieve = this;
+        Conditions.Add(achieveCondition);
+        achieveCondition.Attach(this);
+        // 당연히 Achieve에 추가하고 kill일 경우에는 GameManager의 kill(옵저버 패턴의 subject)에 Attach해서
+        // GameManager의 Kill이 변동될때마다 알림받을 수 있게함
+        // AchieveCondition에서 attach하고 있음
     }
     
-    public class Kill : Condition
+    public void RemoveCondition(AchieveCondition achieveCondition)
     {
-        public readonly EnemyType EnemyType;
-        public readonly int ID;
-        public readonly ObserverKill OKill;        
-
-        public Kill(EnemyType type, int id, int killCount)
-        {
-            EnemyType = type;
-            ID = id;
-            OKill = new ObserverKill(killCount);
-            OKill.Action += Goal;
-        }
-
-        private void Goal()
-        {
-            Debug.Log("Goal!!");
-            GameManager.Instance.Kill.Detach(OKill);
-        }
-        
-        public override bool Accept(IConditionVisitor visitor)
-        {
-            return visitor.Visit(this);
-        }
+        Conditions.Remove(achieveCondition);
     }
     
-    public class Hit : Condition 
+    public bool CheckCondition()
     {
-        public readonly int HitCount;
-        public Hit(int hitCount)
+        for (int i = 0; i < Conditions.Count; i++)
         {
-            HitCount = hitCount;
-        }
-
-        public override bool Accept(IConditionVisitor visitor)
-        {
-            return visitor.Visit(this);
-        }
-    }
-    
-    public class Hp : Condition
-    {
-        public readonly int HpPercent;
-        public Hp(int hpPercent)
-        {
-            HpPercent = hpPercent;
-        }
-
-        public override bool Accept(IConditionVisitor visitor)
-        {
-            return visitor.Visit(this);
-        }
-    }
-    
-    public class Victory : Condition 
-    {
-        public readonly int VictoryCount;
-        public Victory(int victoryCount)
-        {
-            VictoryCount = victoryCount;
-        }
-
-        public override bool Accept(IConditionVisitor visitor)
-        {
-            return visitor.Visit(this);
-        }
-    }
-
-    public class ConditionChecker : IConditionVisitor
-    {
-        public bool Visit(Kill kill)
-        {
-            return AchieveManager.Instance.kill == kill.OKill.Count;
-        }
-        public bool Visit(Hit hit)
-        {
-            return AchieveManager.Instance.hitCount >= hit.HitCount;
-        }
-        public bool Visit(Hp hp)
-        {
-            return GameManager.Instance.health / GameManager.Instance.maxHealth * 100 >= hp.HpPercent;
-        }
-        public bool Visit(Victory victory)
-        {
-            return AchieveManager.Instance.victoryCount >= victory.VictoryCount;
-        }
-    }
-    
-    private bool CheckCondition()
-    {
-        foreach (Condition item in Conditions)
-        {
+            AchieveCondition item = Conditions[i];
             if (!item.Accept(_checker))
                 return false;
         }
@@ -143,6 +50,11 @@ public class Achieve : AObserver
 
     public override void Notify(ASubject subject)
     {
-        CheckCondition();
+        if (CheckCondition())
+        {
+            Achieve achieve = AchieveManager.Instance.AddAchieveToUnlockList(this);
+            if (achieve != null)
+                AchieveManager.Instance.NotifyAchieve(achieve);
+        }
     }
 }

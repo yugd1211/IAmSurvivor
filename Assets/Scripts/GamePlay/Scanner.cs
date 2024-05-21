@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Scanner : MonoBehaviour
@@ -16,7 +13,7 @@ public class Scanner : MonoBehaviour
         nearestTarget = GetNearest();
     }
 
-    Transform GetNearest()
+    private Transform GetNearest()
     {
         Transform result = null;
         float diff = -1;
@@ -33,8 +30,6 @@ public class Scanner : MonoBehaviour
                 result = target.transform;
             }
         }
-        
         return result;
     }
-
 }

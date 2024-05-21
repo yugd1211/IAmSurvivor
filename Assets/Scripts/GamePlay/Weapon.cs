@@ -74,10 +74,12 @@ public class Weapon : MonoBehaviour
             data.baseRate, data.baseSpeed, 
             data.baseCount + _gameManager.player.data.Count, 
             data.basePer, 
-            data.weaponType);
-        WBI.SpeedMultiplier = 1;
-        WBI.DamageMultiplier = 1;
-        WBI.RateMultiplier = 1;
+            data.weaponType)
+        {
+            SpeedMultiplier = 1,
+            DamageMultiplier = 1,
+            RateMultiplier = 1,
+        };
 
         if (WBI.ID == (int)ItemData.WeaponType.Orbital)
             Batch();

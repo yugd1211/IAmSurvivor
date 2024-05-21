@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Core.Observer
 {
@@ -20,6 +18,11 @@ namespace Core.Observer
         public void Detach(AObserver observer)
         { 
             _observers.Remove(observer);
+        }
+
+        public int ObserverCount()
+        {
+            return _observers.Count;
         }
 
         protected void NotifyObservers()

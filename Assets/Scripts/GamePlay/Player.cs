@@ -1,10 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 // ReSharper disable All
 
 public class Player : MonoBehaviour
@@ -35,7 +30,6 @@ public class Player : MonoBehaviour
     {
         _anim.runtimeAnimatorController = data.AnimCon;
     }
-    
 
     public void OnMove(InputValue value)
     {

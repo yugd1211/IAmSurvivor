@@ -1,18 +1,16 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Core;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 
 public partial class AchieveManager : Singleton<AchieveManager>
 {
     [Header("# Inspector Allocate")]
+    public GameObject noticePrefab;
     public NoticeBuilder noticeBuilder;
 
     [Header("# Play Log")]
+    [Header("# Inspector Allocate")]
     public readonly Dictionary<int, Achieve> Achieves = new Dictionary<int, Achieve>();
     public readonly Dictionary<int, Achieve> UnlockAchieves = new Dictionary<int, Achieve>();
     public int kill;
@@ -31,25 +29,50 @@ public partial class AchieveManager : Singleton<AchieveManager>
     /// todo : 파일에서 파싱 가능하게 수정해야함
     private void InitAchieve()
     {
-        Achieve achieve = new Achieve("좀비 학살자", "좀비를 100마리 처치했습니다.");
+        Achieve achieve = new Achieve(0, "학살자", "적을 100마리 처치했습니다.");
+        // 현재는 에너미의 id나 종류별로 kill수를 따로 체크하지 않기 때문에 enemyType은 아무거나 넣어도 전체적인 kill수 체크한다.
+        achieve.AddCondition(new Kill(EnemyType.All, 0, 100, GameManager.Instance.TotalKill));
         // Achieve.Kill newAchieveKill = ;
-        achieve.AddCondition(new Achieve.Kill(EnemyType.None, 0, 100));
+        // 게임매니저의 kill, totalkill을 결정하고해야댐 achieve.AddCondition(new Kill(EnemyType.None, 0, 100,));
         // todo : gameManager에 attach하는것도 condition에 Kill이 add되면 알아서 attach하게 변경하는게 좋을듯
         // kill이면 kill에 victory면 victory에....victory같은 경우는 함수니까 좀더 고민해봐야할듯
         // GameManager.Instance.Kill.Attach(newAchieveKill.OKill);
         Achieves.Add(0, achieve);
-        achieve = new Achieve("I AM SURVIVOR", "살아남았습니다!!!");
-        achieve.AddCondition(new Achieve.Victory(1));
+        
+        achieve = new Achieve(1, "I AM SURVIVOR", "살아남았습니다!!!");
+        achieve.AddCondition(new Victory(1));
         Achieves.Add(1, achieve);
-        achieve = new Achieve("회피 마스터", "한번도 맞지않고 살아남았습니다.");
-        achieve.AddCondition(new Achieve.Hit(0));
-        achieve.AddCondition(new Achieve.Victory(AchieveManager.Instance.victoryCount + 1));
+        
+        achieve = new Achieve(2, "회피 마스터", "한번도 맞지않고 살아남았습니다.");
+        achieve.AddCondition(new Hit(0));
+        achieve.AddCondition(new Victory(AchieveManager.Instance.victoryCount + 1));
         Achieves.Add(2, achieve);
-        achieve = new Achieve("10킬 ", "10킬"); 
+        
+        achieve = new Achieve(3, "10킬 ", "10킬"); 
+        achieve.AddCondition(new Kill(EnemyType.Normal, 0, 10, GameManager.Instance.Kill));
         // newAchieveKill = new Achieve.Kill(EnemyType.None, 0, 10);
-        achieve.AddCondition(new Achieve.Kill(EnemyType.None, 0, 10));
+        // 게임매니저의 kill, totalkill을 결정하고해야댐 achieve.AddCondition(new Kill(EnemyType.None, 0, 10));
         // GameManager.Instance.Kill.Attach(newAchieveKill.OKill);
         Achieves.Add(3, achieve);
+    }
+
+    public Achieve AddAchieveToUnlockList(Achieve achieve)
+    {
+        if (!Achieves.TryGetValue(achieve.id, out Achieve unlockAchieve))
+            return null;
+        if (!UnlockAchieves.TryAdd(unlockAchieve.id, unlockAchieve))
+            return null;
+        // achieve
+        return unlockAchieve;
+    }
+
+    public void NotifyAchieve(Achieve achieve)
+    {
+        if (achieve == null)
+            return;
+        if (!noticeBuilder)
+            noticeBuilder = Instantiate(noticePrefab, FindObjectOfType<Canvas>().transform).GetComponent<NoticeBuilder>();
+        noticeBuilder.BuildNotice(achieve);
     }
     
     protected override void AwakeInit()
@@ -62,6 +85,14 @@ public partial class AchieveManager : Singleton<AchieveManager>
     private void Start()
     {
         InitAchieve();
+        foreach (KeyValuePair<int, Achieve> item in Achieves)
+        {
+            Achieve achieve = item.Value;
+            if (achieve.CheckCondition())
+            {
+                AddAchieveToUnlockList(achieve);
+            }
+        }
     }
 
     private void Init()
@@ -71,6 +102,10 @@ public partial class AchieveManager : Singleton<AchieveManager>
         {
             DataStorageManager.SaveData(achieve.ToString(), 0);
         }
+    }
+
+    private void Update()
+    {
     }
 
     /// <summary>
@@ -90,50 +125,8 @@ public partial class AchieveManager : Singleton<AchieveManager>
         else if (type == "achieve")
         {
             noticeBuilder.BuildNotice(Achieves[index]);
+            // noticeBuilder.BuildNotice(unlockAc[index]);
         }
     }
-    
-    // private void LateUpdate()
-    // {
-    //     foreach (Unlock achieve in _achieves)
-    //     {
-    //         CheckUnlockCharacter(achieve);
-    //     }   
-    // }
-    //
-    // void CheckUnlockCharacter(Unlock unlock)
-    // {
-    //     bool isAchieve = false;
-    //
-    //     switch (unlock)
-    //     {
-    //         case Unlock.UnlockPotato:
-    //             // isAchieve = GameManager.Instance.kill >= 10;
-    //             break;
-    //         case Unlock.UnlockBean:
-    //             isAchieve = GameManager.Instance.gameTime >= GameManager.Instance.maxGameTime;
-    //             break;
-    //     }
-    //
-    //     if (isAchieve && PlayerPrefs.GetInt(unlock.ToString()) == 0)
-    //     {
-    //         PlayerPrefs.SetInt(unlock.ToString(), 1);
-    //
-    //         for (int i = 0; i < uiNotice.transform.childCount; i++)
-    //         {
-    //             bool isActive = i == (int)unlock;
-    //             uiNotice.transform.GetChild(i).gameObject.SetActive(isActive);
-    //         }
-    //         StartCoroutine(NoticeRoutine());
-    //     }
-    // }
-    //
-    // private IEnumerator NoticeRoutine()
-    // {
-    //     uiNotice.SetActive(true);
-    //     AudioManager.Instance.PlaySfx(AudioManager.Sfx.LevelUp);
-    //     yield return _wait;
-    //     uiNotice.SetActive(false);
-    // }
 } 
 

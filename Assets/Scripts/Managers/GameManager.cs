@@ -10,35 +10,39 @@ public partial class GameManager : Singleton<GameManager>
     public PoolManager pool;
     public Player player;
     public LevelUp uiLevelUp;
-    public Result uiResult; 
+    public Result uiResult;
     public Enemy boss;
     
     [Header("# Game Control")]
     public float gameTime;
     public float maxGameTime = 20f;
     public bool isLive;
-    public bool isBoss;
+    public bool isEnd;
 
     [Header("# Player Info")]
     public CharacterData data;
     public int level;
     public readonly SubjectKill Kill = new SubjectKill();
-    public readonly ObserverKill TotalKill = new ObserverKill(1);
+    public readonly SubjectKill TotalKill = new SubjectKill();
     public int exp;
     public float health;
     public float maxHealth;
     public int[] nextExp;
 
+    // 환경매니저같은 곳에 넣어야할듯 전체적인 정보를 확인할 수있는 객체가 있어야할듯하다.
+    private ObserverKill _totalKillManager = new ObserverKill(1);
+    
     private void Start()
     {
-        Kill.Attach(TotalKill);
-        TotalKill.Action += TotalKillAction;
+        TotalKill.Attach(_totalKillManager);
+        _totalKillManager.Action += TotalKillAction;
     }
 
     public void TotalKillAction()
     {
-        TotalKill.GoalCount = TotalKill.Count + 1;
-        DataStorageManager.SaveData("TotalKill", TotalKill.Count);
+        _totalKillManager.GoalCount = _totalKillManager.Count + 1;
+        _totalKillManager.Count = _totalKillManager.Count;
+        DataStorageManager.SaveData("TotalKill", _totalKillManager.Count);
     }
 
     protected override void AwakeInit()
@@ -50,6 +54,7 @@ public partial class GameManager : Singleton<GameManager>
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         TotalKill.Count = int.Parse(DataStorageManager.LoadData("TotalKill"));
+        _totalKillManager.Count = int.Parse(DataStorageManager.LoadData("TotalKill"));
         if (scene.name == "GameScene")
             GameStart();        
     }
@@ -66,7 +71,6 @@ public partial class GameManager : Singleton<GameManager>
         level = 0;
         Kill.Count = 0;
         exp = 0;
-        isBoss = false;
         health = maxHealth;
         player = FindObjectOfType<Player>();
         uiLevelUp = FindObjectOfType<LevelUp>();
@@ -97,9 +101,8 @@ public partial class GameManager : Singleton<GameManager>
         else
             gameTime += Time.deltaTime;
 
-        if (!isBoss && gameTime >= maxGameTime)
+        if (!boss && gameTime >= maxGameTime)
         {
-            isBoss = true;
             boss = FindObjectOfType<Spawner>().Spawn(EnemyType.Boss);
         }
         if (level < nextExp.Length && exp >= nextExp[Mathf.Min(level, nextExp.Length - 1)])
@@ -159,6 +162,7 @@ public partial class GameManager
     private IEnumerator GameOverRoutine()
     {
         isLive = false;
+        isEnd = false;
         yield return new WaitForSeconds(0.5f);
 
         uiResult.gameObject.SetActive(true);
@@ -172,7 +176,7 @@ public partial class GameManager
     private IEnumerator GameVictoryRoutine()
     {
         isLive = false;
-        
+        isEnd = false;
         yield return new WaitForSeconds(0.5f);
         
         uiResult.gameObject.SetActive(true);
