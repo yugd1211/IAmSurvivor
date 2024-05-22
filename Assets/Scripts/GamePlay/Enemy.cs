@@ -76,19 +76,22 @@ public class Enemy : MonoBehaviour
         }
         else
         {
-            Die();
+            Die(true);
         }
     }
 
-    public void Die()
+    public void Die(bool killCount)
     {
         _isLive = false;
         _coll.enabled = false;
         _rigid.simulated = false;
         _spriter.sortingOrder = 1;
         _anim.SetBool("Dead", true);
-        _gameManager.Kill.Count++;
-        _gameManager.TotalKill.Count++;
+        if (killCount)
+        {
+            _gameManager.Kill.Count++;
+            _gameManager.TotalKill.Count++;
+        }
         if (Random.Range(0, 100) < 5)
         {
             Box box = _gameManager.pool.GetBox(0);

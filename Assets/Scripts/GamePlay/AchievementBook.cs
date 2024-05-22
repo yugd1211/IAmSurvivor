@@ -5,7 +5,7 @@ public class AchievementBook : MonoBehaviour
 { 
 	public GameObject achievePrefab;
 	
-	private AchieveManager _achieveManager = null;
+	private AchieveManager _achieveManager;
 	private AchievePanel[] _achievePanels;
 
 	private void Start()

@@ -7,11 +7,11 @@ public class NoticeBuilder : MonoBehaviour
     public GameObject characterPrefab;
     private Notice _notice;
 
-    public void BuildNotice(AchieveManager.Unlock unlock)
+    public void BuildNotice(CharacterType characterType)
     {
         GameObject noticeObject = Instantiate(characterPrefab, gameObject.transform);
         Notice notice = noticeObject.GetComponent<Notice>(); 
-        notice.Init(unlock);
+        notice.Init(characterType);
         notice.DisplayNotice();
     }
     

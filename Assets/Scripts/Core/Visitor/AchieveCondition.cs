@@ -1,9 +1,7 @@
 using Core.Observer;
-using UnityEngine;
 
 public abstract class AchieveCondition : ASubject
 {
-    public Achieve ParentAchieve;
     public abstract bool Accept(IConditionVisitor visitor);
 }
 
@@ -63,8 +61,6 @@ public class Kill : AchieveCondition
             // 생각해보니 애초에 attach를 안하면된다. attach 하기전에 이미 달성된 조건인지 아닌지를 먼저 판단해버리자
             // 다시 생각해보니까 lock, unlock은 따로 구분을 해야됨, 저장되는 데이터 뿐 아니라 특정판을 잘했을경우의 업적도 있기 때문에
             // 해당 업적들은 이미 달성됐기 때문에 이를 알고 있어야함
-            
-            // Debug.Log("Detach");
             NotifyObservers();
             attachKill.Detach(OKill);
         };

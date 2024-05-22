@@ -71,28 +71,28 @@ public class PoolManager : Singleton<PoolManager>
 
     public void DisableAllObjects()
     {
-        foreach (var enemy in _enemyPools)
+        foreach (Enemy enemy in _enemyPools)
         {
-            enemy.Die();
+            enemy.Die(false);
         }
-        foreach (var meleePool in _meleePools)
+        foreach (List<Bullet> meleePool in _meleePools)
         {
             foreach (var melee in meleePool)
                 melee.gameObject.SetActive(false);
         }
-        foreach (var rangePool in _rangePools)
+        foreach (List<Bullet> rangePool in _rangePools)
         {
             foreach (var range in rangePool)
                 range.gameObject.SetActive(false);
         }
-        foreach (var expPool in _expPools)
+        foreach (List<Exp> expPool in _expPools)
         {
             foreach (var exp in expPool)
                 exp.gameObject.SetActive(false);
         }
-        foreach (var boxPool in _boxPools)
+        foreach (List<Box> boxPool in _boxPools)
         {
-            foreach (var box in boxPool)
+            foreach (Box box in boxPool)
                 box.gameObject.SetActive(false);
         }
     }

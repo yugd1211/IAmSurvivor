@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Core.Observer;
+using UnityEngine;
 
 // 방문자패턴
 [Serializable]
@@ -10,6 +12,7 @@ public class Achieve : AObserver
     public string name;
     public string desc;
     public List<AchieveCondition> Conditions;
+    public Action ConditionsMetAction;
     private ConditionChecker _checker;
     
     public Achieve(int id, string name, string desc)
@@ -24,7 +27,6 @@ public class Achieve : AObserver
     // 현재 Achieve에 조건을 추가함
     public void AddCondition(AchieveCondition achieveCondition)
     {
-        achieveCondition.ParentAchieve = this;
         Conditions.Add(achieveCondition);
         achieveCondition.Attach(this);
         // 당연히 Achieve에 추가하고 kill일 경우에는 GameManager의 kill(옵저버 패턴의 subject)에 Attach해서
@@ -52,9 +54,18 @@ public class Achieve : AObserver
     {
         if (CheckCondition())
         {
+            ConditionsMetAction?.Invoke();
             Achieve achieve = AchieveManager.Instance.AddAchieveToUnlockList(this);
             if (achieve != null)
+            {
                 AchieveManager.Instance.NotifyAchieve(achieve);
+                int[] acheiveIds = new int[AchieveManager.Instance.UnlockAchieves.Count];
+                for (int i = 0; i < AchieveManager.Instance.UnlockAchieves.Count; i++)
+                {
+                    acheiveIds[i] = AchieveManager.Instance.UnlockAchieves.ElementAt(i).Key;
+                }
+                DataManager.SaveUnlockAchieves(acheiveIds);
+            }
         }
     }
 }

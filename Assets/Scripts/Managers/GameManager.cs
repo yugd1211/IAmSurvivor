@@ -1,6 +1,6 @@
 using System.Collections;
-using Core;
 using Core.Observer;
+using Core;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -29,32 +29,16 @@ public partial class GameManager : Singleton<GameManager>
     public float maxHealth;
     public int[] nextExp;
 
-    // 환경매니저같은 곳에 넣어야할듯 전체적인 정보를 확인할 수있는 객체가 있어야할듯하다.
-    private ObserverKill _totalKillManager = new ObserverKill(1);
-    
-    private void Start()
-    {
-        TotalKill.Attach(_totalKillManager);
-        _totalKillManager.Action += TotalKillAction;
-    }
-
-    public void TotalKillAction()
-    {
-        _totalKillManager.GoalCount = _totalKillManager.Count + 1;
-        _totalKillManager.Count = _totalKillManager.Count;
-        DataStorageManager.SaveData("TotalKill", _totalKillManager.Count);
-    }
-
     protected override void AwakeInit()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
         Application.targetFrameRate = 60;
+        DataManager.Init();
         pool = FindObjectOfType<PoolManager>();
     }
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        TotalKill.Count = int.Parse(DataStorageManager.LoadData("TotalKill"));
-        _totalKillManager.Count = int.Parse(DataStorageManager.LoadData("TotalKill"));
+        TotalKill.Count = (int)DataManager.LoadPlayLog().KillCount;
         if (scene.name == "GameScene")
             GameStart();        
     }
@@ -107,7 +91,7 @@ public partial class GameManager : Singleton<GameManager>
         }
         if (level < nextExp.Length && exp >= nextExp[Mathf.Min(level, nextExp.Length - 1)])
         {
-            this.exp -= nextExp[level];
+            exp -= nextExp[level];
             level++;
             uiLevelUp.Show();
         }
@@ -145,9 +129,16 @@ public partial class GameManager
     {
         pool.DisableAllObjects();
         if (isWin)
+        {
+            DataManager.Victory();
+            DataManager.SavePlayLog();
             GameVictory();
+        }
         else
+        {
+            DataManager.SavePlayLog();
             GameOver();
+        }
     }
     private void GameOver()
     {

@@ -91,6 +91,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ec08ce0a146b4c0a8f80f8bba5b4337, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nameText: {fileID: 0}
+  descText: {fileID: 0}
 --- !u!1 &8419474975765166439
 GameObject:
   m_ObjectHideFlags: 0
@@ -157,7 +159,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC880\uBE44 \uD559\uC0B4\uC790!"
+  m_text: "\uC5C5\uC801!"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3a65ceede64a2456fa7381d5f10493da, type: 2}
   m_sharedMaterial: {fileID: -3748566482104736573, guid: 3a65ceede64a2456fa7381d5f10493da, type: 2}
@@ -292,7 +294,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "100\uB9C8\uB9AC\uC758 \uC880\uBE44\uB97C \uCC98\uCE58\uD558\uC600\uC2B5\uB2C8\uB2E4."
+  m_text: ??????????????????????????????????????????????
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3a65ceede64a2456fa7381d5f10493da, type: 2}
   m_sharedMaterial: {fileID: -3748566482104736573, guid: 3a65ceede64a2456fa7381d5f10493da, type: 2}
