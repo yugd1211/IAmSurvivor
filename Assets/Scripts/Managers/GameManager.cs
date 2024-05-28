@@ -22,7 +22,7 @@ public partial class GameManager : Singleton<GameManager>
     [Header("# Player Info")]
     public CharacterData data;
     public int level;
-    public readonly SubjectKill Kill = new SubjectKill();
+    // public readonly SubjectKill Kill = new SubjectKill();
     public readonly SubjectKill TotalKill = new SubjectKill();
     public int exp;
     public float health;
@@ -36,9 +36,10 @@ public partial class GameManager : Singleton<GameManager>
         DataManager.Init();
         pool = FindObjectOfType<PoolManager>();
     }
+    
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        TotalKill.Count = (int)DataManager.LoadPlayLog().KillCount;
+        // TotalKill.Count = (int)DataManager.LoadPlayLog().KillCount;
         if (scene.name == "GameScene")
             GameStart();        
     }
@@ -49,9 +50,10 @@ public partial class GameManager : Singleton<GameManager>
     }
     public void GameStart()
     {
+        StatisticsManager.Instance.Init();
         gameTime = 0;
         level = 0;
-        Kill.Count = 0;
+        // Kill.Count = 0;
         exp = 0;
         health = maxHealth;
         player = FindObjectOfType<Player>();

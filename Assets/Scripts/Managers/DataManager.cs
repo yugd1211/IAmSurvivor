@@ -42,7 +42,7 @@ public class DataManager
 	public static void SavePlayLog()
 	{
 		UpdatePlayTime();
-		_playLog.KillCount = GameManager.Instance.TotalKill.Count;
+		_playLog.KillCount = StatisticsManager.Instance.GetTotalKillCount();
 		JsonConverter.Save(_playLog, _playLogPath);	
 	}
 	public static PlayLog LoadPlayLog()

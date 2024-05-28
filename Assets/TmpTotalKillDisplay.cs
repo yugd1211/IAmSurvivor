@@ -15,6 +15,7 @@ public class TmpTotalKillDisplay : MonoBehaviour
 
     void Update()
     {
-        _textMeshPro.text = GameManager.Instance.TotalKill.Count.ToString();
+        // _textMeshPro.text = GameManager.Instance.TotalKill.Count.ToString();
+        _textMeshPro.text = StatisticsManager.Instance.GetTotalKillCount().ToString();
     }
 }

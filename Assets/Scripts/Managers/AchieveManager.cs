@@ -27,7 +27,8 @@ public partial class AchieveManager : Singleton<AchieveManager>
     private void InitAchieve()
     {
         Achieve achieve = new Achieve(0, "학살자", "적을 100마리 처치했습니다.");
-        achieve.AddCondition(new Kill(EnemyType.All, 0, 100, GameManager.Instance.TotalKill));
+        // achieve.AddCondition(new Kill(EnemyType.All, 0, 100, GameManager.Instance.TotalKill));
+        achieve.AddCondition(new Kill(EnemyType.All, 0, 100, KillManager.Instance.TotalKill));
         Achieves.Add(0, achieve);
         achieve.ConditionsMetAction += () =>
         {
@@ -53,7 +54,8 @@ public partial class AchieveManager : Singleton<AchieveManager>
         Achieves.Add(2, achieve);
         
         achieve = new Achieve(3, "10킬 ", "10킬"); 
-        achieve.AddCondition(new Kill(EnemyType.Normal, 0, 10, GameManager.Instance.Kill));
+        // achieve.AddCondition(new Kill(EnemyType.Normal, 0, 10, GameManager.Instance.Kill));
+        achieve.AddCondition(new Kill(EnemyType.Normal, 0, 10, KillManager.Instance.Kill));
         Achieves.Add(3, achieve);
 
         UnlockAchieves = DataManager.LoadUnlockAchieves();

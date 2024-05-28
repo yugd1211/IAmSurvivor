@@ -43,7 +43,7 @@ public class HUD : MonoBehaviour
                 _text.text = $"Lv.{_gameManager.level:F0}";
                 break;
             case InfoType.Kill:
-                _text.text = $"{_gameManager.Kill.Count:F0}";
+                _text.text = $"{StatisticsManager.Instance.GetKillCount():F0}";
                 break;
             case InfoType.Health:
                 float currHealth = _gameManager.health;

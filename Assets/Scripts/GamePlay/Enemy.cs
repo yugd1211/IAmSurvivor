@@ -106,8 +106,7 @@ public class Enemy : MonoBehaviour
         _anim.SetBool("Dead", true);
         if (killCount)
         {
-            _gameManager.Kill.Count++;
-            _gameManager.TotalKill.Count++;
+            KillManager.Instance.IncrementKillCount();
         }
         if (Random.Range(0, 100) < 5)
         {
