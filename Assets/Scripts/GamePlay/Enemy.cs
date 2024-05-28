@@ -77,12 +77,10 @@ public class Enemy : MonoBehaviour
             return;
         _gameManager.GameEnd(true);
     }
-    private void OnTriggerEnter2D(Collider2D other)
+
+    public void Attacked(float damage)
     {
-        if (!other.CompareTag("Bullet") || !_isLive)
-            return;
-        
-        health -= other.GetComponent<Bullet>().WeaponInfo.Damage();
+        health -= damage;
         StartCoroutine(KnockBack());
         if (health > 0)
         {
@@ -95,8 +93,11 @@ public class Enemy : MonoBehaviour
         }
     }
 
+
     public void Die(bool killCount)
     {
+        if (!_isLive)
+            return;
         _isLive = false;
         _coll.enabled = false;
         _rigid.simulated = false;

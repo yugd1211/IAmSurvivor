@@ -65,6 +65,8 @@ public class Bullet : MonoBehaviour
         {
             gameObject.SetActive(false);
         }
+        Enemy enemy = other.GetComponent<Enemy>();
+        enemy.Attacked(WeaponInfo.Damage());
     }
 
     private void OnTriggerExit2D(Collider2D other)

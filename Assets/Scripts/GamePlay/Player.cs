@@ -38,22 +38,15 @@ public class Player : MonoBehaviour
             return;
         dir = InputVec;
     }
-    private void OnCollisionStay2D(Collision2D other)
+
+    public void Dead()
     {
-        if (!_gameManager.isLive || !other.transform.CompareTag("Enemy"))
-            return;
-
-        _gameManager.health -= Time.deltaTime * 10;
-
-        if (_gameManager.health < 0.0f)
+        for (int i = 2; i < transform.childCount; i++)
         {
-            for (int i = 2; i < transform.childCount; i++)
-            {
-                transform.GetChild(i).gameObject.SetActive(false);
-            }
-            _anim.SetTrigger("Dead");
-            _gameManager.GameEnd(false);
+            transform.GetChild(i).gameObject.SetActive(false);
         }
+        _anim.SetTrigger("Dead");
+        _gameManager.GameEnd(false);
     }
 
     void FixedUpdate()
