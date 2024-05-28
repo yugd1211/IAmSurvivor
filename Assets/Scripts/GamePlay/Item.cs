@@ -85,36 +85,32 @@ public class Item : MonoBehaviour
     {
         switch (data.itemType)
         {
-            case ItemData.ItemType.Weapon:
-                if (level == 0)
-                {
-                    GameObject newWeapon = new GameObject();
-                    weapon = newWeapon.AddComponent<Weapon>();
-                    weapon.Init(data);
-                }
-                else
-                {
-                    weapon.LevelUp(data.nextDamages[level], 
-                        data.nextCounts[level], 
-                        data.nextWeaponSpeed[level], 
-                        data.nextRate[level], 
-                        data.nextPer[level]);
-                }
+            case ItemData.ItemType.Weapon when level == 0:
+            {
+                GameObject newWeapon = new GameObject();
+                weapon = newWeapon.AddComponent<Weapon>();
+                weapon.Init(data);
                 break;
+            }
+            case ItemData.ItemType.Weapon:
+                weapon.LevelUp(data.nextDamages[level],
+                    data.nextCounts[level],
+                    data.nextWeaponSpeed[level],
+                    data.nextRate[level],
+                    data.nextPer[level]);
+                break;
+            case ItemData.ItemType.Armor when level == 0:
+            {
+                GameObject newArmor = new GameObject();
+                armor = newArmor.AddComponent<Armor>();
+                armor.Init(data);
+                break;
+            }
             case ItemData.ItemType.Armor:
-                if (level == 0)
-                {
-                    GameObject newArmor = new GameObject();
-                    armor = newArmor.AddComponent<Armor>();
-                    armor.Init(data);
-                }
-                else
-                {
-                    armor.LevelUp(data.nextDamages[level], 
-                        data.nextMoveSpeed[level], 
-                        data.nextWeaponSpeed[level], 
-                        data.nextRate[level]);
-                }
+                armor.LevelUp(data.nextDamages[level],
+                    data.nextMoveSpeed[level],
+                    data.nextWeaponSpeed[level],
+                    data.nextRate[level]);
                 break;
             case ItemData.ItemType.Potion:
                 _gameManager.health = _gameManager.maxHealth;
@@ -126,6 +122,6 @@ public class Item : MonoBehaviour
         if (level == data.nextDamages.Length)
         {
             GetComponent<Button>().interactable = false;
-}
         }
     }
+}
