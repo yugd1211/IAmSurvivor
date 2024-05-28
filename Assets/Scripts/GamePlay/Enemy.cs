@@ -46,6 +46,17 @@ public class Enemy : MonoBehaviour
             return;
         _spriter.flipX = target.position.x < _rigid.position.x;
     }
+
+    private void OnCollisionStay2D(Collision2D other)
+    {
+        if (!_gameManager.isLive || !other.transform.CompareTag("Player"))
+            return;
+        _gameManager.health -= Time.deltaTime * 10;
+        if (_gameManager.health < 0.0f)
+            _gameManager.player.Dead();
+    }
+
+
     private void OnEnable()
     {
         target = _gameManager.player.GetComponent<Rigidbody2D>();
