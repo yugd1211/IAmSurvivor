@@ -49,8 +49,6 @@ public partial class GameManager : Singleton<GameManager>
     }
     public void GameStart()
     {
-        health = maxHealth;
-
         gameTime = 0;
         level = 0;
         Kill.Count = 0;

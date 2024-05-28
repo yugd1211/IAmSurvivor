@@ -67,6 +67,7 @@ public partial class AchieveManager : Singleton<AchieveManager>
             return null;
         return unlockAchieve;
     }
+    
     // public void NotifyAchieve<T>(Achieve achieve)
     // {
     //     

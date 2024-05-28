@@ -55,7 +55,8 @@ public class Enemy : MonoBehaviour
             return;
         if (_attackCoolTime < data.coolTime)
             return;
-        _gameManager.health -= data.damage;
+        _attackCoolTime = 0;
+        other.gameObject.GetComponent<Player>().Attacked(data.damage);
         if (_gameManager.health < 0.0f)
             _gameManager.player.Dead();
     }

@@ -1,5 +1,5 @@
+using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices.WindowsRuntime;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -90,7 +90,7 @@ public class LevelUp : MonoBehaviour
         }
     }
 
-    void PickRandomItem()
+    private void PickRandomItem()
     {
         // 모든 아이템 비활성화
         foreach (Item item in _items)
@@ -118,5 +118,6 @@ public class LevelUp : MonoBehaviour
             ranItem.gameObject.SetActive(true);
         }
         _selectItemNum = ran;
+        Array.Sort(_selectItemNum);
     }
 }

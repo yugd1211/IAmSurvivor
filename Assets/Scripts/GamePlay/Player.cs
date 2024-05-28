@@ -39,6 +39,11 @@ public class Player : MonoBehaviour
         dir = InputVec;
     }
 
+    public void Attacked(float damage)
+    {
+        _gameManager.health -= damage;
+    }
+
     public void Dead()
     {
         for (int i = 2; i < transform.childCount; i++)

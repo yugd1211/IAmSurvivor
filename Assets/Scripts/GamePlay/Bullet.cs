@@ -58,17 +58,21 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!other.CompareTag("Enemy") || WeaponInfo.Type != ItemData.WeaponType.Range)
+        if (!other.CompareTag("Enemy"))
             return;
-        WeaponInfo.Per--;
-        if (WeaponInfo.Per < 0)
+        if (WeaponInfo.Type == ItemData.WeaponType.Range)
         {
-            gameObject.SetActive(false);
+            WeaponInfo.Per--;
+            if (WeaponInfo.Per < 0)
+            {
+                gameObject.SetActive(false);
+            }
         }
         Enemy enemy = other.GetComponent<Enemy>();
         enemy.Attacked(WeaponInfo.Damage());
     }
 
+    // Area 밖으로 나가면 사라짐
     private void OnTriggerExit2D(Collider2D other)
     {
         if (!other.CompareTag("Area") || WeaponInfo.Type != ItemData.WeaponType.Range)

@@ -1,4 +1,5 @@
 using Core.Observer;
+using UnityEngine;
 
 public abstract class AchieveCondition : ASubject
 {
@@ -22,6 +23,7 @@ public class ConditionChecker : IConditionVisitor
     }
     public bool Visit(Hit hit)
     {
+        Debug.Log("Hit Visit");
         return AchieveManager.Instance.hitCount >= hit.HitCount;
     }
     public bool Visit(HP hp)
@@ -79,6 +81,7 @@ public class Hit : AchieveCondition
     public Hit(int hitCount)
     {
         HitCount = hitCount;
+        
     }
 
     public override bool Accept(IConditionVisitor visitor)
