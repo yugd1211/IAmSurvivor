@@ -19,6 +19,7 @@ public class Enemy : MonoBehaviour
     private Animator _anim;
     private WaitForFixedUpdate _wait;
     private GameManager _gameManager;
+    private float _attackCoolTime;
 
     private void Awake()
     {
@@ -34,6 +35,7 @@ public class Enemy : MonoBehaviour
     {
         if (!_gameManager.isLive)
             return;
+        _attackCoolTime += Time.fixedDeltaTime;
         if (!_isLive || _anim.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
             return;
         Move();
@@ -51,7 +53,9 @@ public class Enemy : MonoBehaviour
     {
         if (!_gameManager.isLive || !other.transform.CompareTag("Player"))
             return;
-        _gameManager.health -= Time.deltaTime * 10;
+        if (_attackCoolTime < data.coolTime)
+            return;
+        _gameManager.health -= data.damage;
         if (_gameManager.health < 0.0f)
             _gameManager.player.Dead();
     }

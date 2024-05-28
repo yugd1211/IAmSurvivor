@@ -23,6 +23,7 @@ public class EnemyData : ScriptableObject
     public float damage;
     public bool isMelee;
     public float attackRange;
+    public float coolTime;
     [SerializeField] private RuntimeAnimatorController animCon;
 
     public RuntimeAnimatorController AnimCon => animCon;
