@@ -1,4 +1,5 @@
 using Core.Observer;
+using UnityEditor.Searcher;
 using UnityEngine;
 
 public abstract class AchieveCondition : ASubject
@@ -23,8 +24,7 @@ public class ConditionChecker : IConditionVisitor
     }
     public bool Visit(Hit hit)
     {
-        Debug.Log("Hit Visit");
-        return StatisticsManager.Instance.GetHitCount() >= hit.HitCount;
+        return hit.IsVictory && StatisticsManager.Instance.GetHitCount() <= hit.HitCount;
     }
     public bool Visit(HP hp)
     {
@@ -78,10 +78,16 @@ public class Kill : AchieveCondition
 public class Hit : AchieveCondition 
 {
     public readonly int HitCount;
+    public bool IsVictory;
     public Hit(int hitCount)
     {
+        IsVictory = false;
         HitCount = hitCount;
-        
+        GameManager.Instance.VictoryAction += () =>
+        {
+            IsVictory = true;
+            NotifyObservers(); 
+        };
     }
 
     public override bool Accept(IConditionVisitor visitor)

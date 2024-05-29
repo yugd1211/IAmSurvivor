@@ -12,7 +12,7 @@ public class Result : MonoBehaviour
     private void Awake()
     {
         _button = GetComponentInChildren<Button>(true);
-        _button.onClick.AddListener(() => GameManager.Instance.GameRetry());
+        _button.onClick.AddListener(() => GameManager.Instance.GoToMainScene());
     }
 
     public void GameOver(bool isWin)

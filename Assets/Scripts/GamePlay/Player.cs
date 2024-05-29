@@ -64,7 +64,7 @@ public class Player : MonoBehaviour
             transform.GetChild(i).gameObject.SetActive(false);
         }
         _anim.SetTrigger("Dead");
-        _gameManager.GameEnd(false);
+        _gameManager.GameOver(false);
     }
 
     void FixedUpdate()

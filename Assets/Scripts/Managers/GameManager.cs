@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Core;
 using UnityEngine;
@@ -12,6 +13,8 @@ public partial class GameManager : Singleton<GameManager>
     public Result uiResult;
     public Enemy boss;
     public KillManager KillManager;
+    public Action VictoryAction;
+    public Action DefeatAction;
     
     [Header("# Game Control")]
     public float gameTime;
@@ -65,10 +68,10 @@ public partial class GameManager : Singleton<GameManager>
         AudioManager.Instance.PlayBgm(true);
         AudioManager.Instance.PlaySfx(AudioManager.Sfx.Select);
     }
-    public void GameRetry()
+    public void GoToMainScene()
     {
         pool.DestroyAllObjects();
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene("MainScene");
     }
     
     private void Update()
@@ -111,8 +114,13 @@ public partial class GameManager : Singleton<GameManager>
 
     public void GameExit()
     {
-        Application.Quit();
+        #if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+        #else
+                Application.Quit();
+        #endif
     }
+    
 }
 
 
@@ -121,7 +129,7 @@ public partial class GameManager : Singleton<GameManager>
 /// </summary>
 public partial class GameManager
 {
-    public void GameEnd(bool isWin)
+    public void GameOver(bool isWin)
     {
         pool.DisableAllObjects();
         if (isWin)
@@ -136,6 +144,8 @@ public partial class GameManager
     {
         isLive = false;
         isEnd = false;
+        VictoryAction?.Invoke();
+        DefeatAction?.Invoke();
         uiResult.gameObject.SetActive(true);
         uiResult.GameOver(isWin);
         AudioManager.Instance.PlayBgm(false);

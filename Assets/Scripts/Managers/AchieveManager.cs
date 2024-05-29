@@ -51,6 +51,7 @@ public partial class AchieveManager : Singleton<AchieveManager>
         
         achieve = new Achieve(2, "회피 마스터", "한번도 맞지않고 살아남았습니다.");
         achieve.AddCondition(new Hit(0));
+
         Achieves.Add(achieve.id, achieve);
         
         achieve = new Achieve(3, "10킬 ", "10킬"); 
@@ -83,6 +84,4 @@ public partial class AchieveManager : Singleton<AchieveManager>
                 break;
         }
     }
-
-    
 }
