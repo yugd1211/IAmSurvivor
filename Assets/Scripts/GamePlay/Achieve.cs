@@ -52,13 +52,15 @@ public class Achieve : AObserver
 
     public override void Notify(ASubject subject)
     {
+        Debug.Log("AchieveNotify");
         if (CheckCondition())
         {
+            Debug.Log("AchieveNotify clear CheckCondition");
             ConditionsMetAction?.Invoke();
             Achieve achieve = AchieveManager.Instance.AddAchieveToUnlockList(this);
             if (achieve != null)
             {
-                AchieveManager.Instance.NotifyAchieve(achieve);
+                AchieveManager.Instance.ProgressNotify(achieve);
                 int[] acheiveIds = new int[AchieveManager.Instance.UnlockAchieves.Count];
                 for (int i = 0; i < AchieveManager.Instance.UnlockAchieves.Count; i++)
                 {

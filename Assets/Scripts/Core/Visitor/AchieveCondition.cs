@@ -24,7 +24,7 @@ public class ConditionChecker : IConditionVisitor
     public bool Visit(Hit hit)
     {
         Debug.Log("Hit Visit");
-        return AchieveManager.Instance.hitCount >= hit.HitCount;
+        return StatisticsManager.Instance.GetHitCount() >= hit.HitCount;
     }
     public bool Visit(HP hp)
     {
@@ -32,7 +32,7 @@ public class ConditionChecker : IConditionVisitor
     }
     public bool Visit(Victory victory)
     {
-        return AchieveManager.Instance.victoryCount >= victory.VictoryCount;
+        return StatisticsManager.Instance.GetVictoryCount() >= victory.VictoryCount;
     }
 }
 

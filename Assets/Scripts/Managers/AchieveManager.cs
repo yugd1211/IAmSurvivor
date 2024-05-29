@@ -17,13 +17,12 @@ public partial class AchieveManager : Singleton<AchieveManager>
     [Header("# Inspector Allocate")]
     public readonly Dictionary<int, Achieve> Achieves = new Dictionary<int, Achieve>();
     public Dictionary<int, Achieve> UnlockAchieves = null;
-    public int kill;
-    public int hit;
-    public int hitCount;
-    public int victoryCount;
     private readonly WaitForSecondsRealtime _wait = new WaitForSecondsRealtime(5);
 
-    /// todo : 파일에서 파싱 가능하게 수정해야함
+    private void Start()
+    {
+        InitAchieve();
+    }
     private void InitAchieve()
     {
         Achieve achieve = new Achieve(0, "학살자", "적을 100마리 처치했습니다.");
@@ -33,7 +32,7 @@ public partial class AchieveManager : Singleton<AchieveManager>
         {
             List<int> charList = DataManager.LoadCharacters();
             charList.Add(0);
-            NotifyCharacter(CharacterType.Potato);
+            ProgressNotify(CharacterType.Potato);
             DataManager.SaveCharacters(charList);
             DataManager.SavePlayLog();
         };
@@ -45,7 +44,7 @@ public partial class AchieveManager : Singleton<AchieveManager>
         {
             List<int> charList = DataManager.LoadCharacters();
             charList.Add(1);
-            NotifyCharacter(CharacterType.Bean);
+            ProgressNotify(CharacterType.Bean);
             DataManager.SaveCharacters(charList);
             DataManager.SavePlayLog();
         };
@@ -70,31 +69,20 @@ public partial class AchieveManager : Singleton<AchieveManager>
         return unlockAchieve;
     }
     
-    // public void NotifyAchieve<T>(Achieve achieve)
-    // {
-    //     
-    // }
-    
-
-    public void NotifyAchieve(Achieve achieve)
-    {
-        if (achieve == null)
-            return;
-        if (!noticeBuilder)
-            noticeBuilder = Instantiate(noticePrefab, FindObjectOfType<Canvas>().transform).GetComponent<NoticeBuilder>();
-        noticeBuilder.BuildNotice(achieve);
-    }
-
-    public void NotifyCharacter(CharacterType type)
+    public void ProgressNotify<T>(T notifiedNode)
     {
         if (!noticeBuilder)
             noticeBuilder = Instantiate(noticePrefab, FindObjectOfType<Canvas>().transform).GetComponent<NoticeBuilder>();
-        noticeBuilder.BuildNotice(type);
+        switch (notifiedNode)
+        {
+            case Achieve achieve:
+                noticeBuilder.BuildNotice(achieve);
+                break;
+            case CharacterType character:
+                noticeBuilder.BuildNotice(character);
+                break;
+        }
     }
 
-    private void Start()
-    {
-        InitAchieve();
-    }
     
 }
