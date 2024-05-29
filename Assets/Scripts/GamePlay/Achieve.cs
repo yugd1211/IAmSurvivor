@@ -22,6 +22,7 @@ public class Achieve : AObserver
         this.desc = desc;
         _checker = new ConditionChecker();
         Conditions = new List<AchieveCondition>();
+        ConditionsMetAction += DataManager.SavePlayLog;
     }
 
     // 현재 Achieve에 조건을 추가함
@@ -58,7 +59,7 @@ public class Achieve : AObserver
             Achieve achieve = AchieveManager.Instance.AddAchieveToUnlockList(this);
             if (achieve != null)
             {
-                AchieveManager.Instance.NotifyAchieve(achieve);
+                AchieveManager.Instance.ProgressNotify(achieve);
                 int[] acheiveIds = new int[AchieveManager.Instance.UnlockAchieves.Count];
                 for (int i = 0; i < AchieveManager.Instance.UnlockAchieves.Count; i++)
                 {

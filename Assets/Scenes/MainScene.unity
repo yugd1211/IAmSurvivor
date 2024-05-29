@@ -1669,10 +1669,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   noticePrefab: {fileID: 3116372567637176942, guid: f5dff17f294424f9bb449be685b9a62b, type: 3}
   noticeBuilder: {fileID: 1525645715}
-  kill: 0
-  hit: 0
-  hitCount: 0
-  victoryCount: 0
 --- !u!4 &415081163
 Transform:
   m_ObjectHideFlags: 0
@@ -1823,37 +1819,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 438727621}
   m_CullTransparentMesh: 1
---- !u!1 &456250410
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 456250412}
-  m_Layer: 0
-  m_Name: data
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &456250412
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 456250410}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -12.608707, y: -7.027419, z: -0.12616524}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 9
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &513534936
 GameObject:
   m_ObjectHideFlags: 0

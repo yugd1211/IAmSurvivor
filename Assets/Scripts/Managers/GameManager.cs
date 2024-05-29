@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Core;
 using UnityEngine;
@@ -12,6 +13,8 @@ public partial class GameManager : Singleton<GameManager>
     public Result uiResult;
     public Enemy boss;
     public KillManager KillManager;
+    public Action VictoryAction;
+    public Action DefeatAction;
     
     [Header("# Game Control")]
     public float gameTime;
@@ -40,13 +43,13 @@ public partial class GameManager : Singleton<GameManager>
         
     }
 
-    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if (scene.name == "GameScene")
             GameStart();        
     }
 
-    public void GameStart()
+    private void GameStart()
     {
         StatisticsManager.Instance.InitInGameData();
         gameTime = 0;
@@ -65,10 +68,10 @@ public partial class GameManager : Singleton<GameManager>
         AudioManager.Instance.PlayBgm(true);
         AudioManager.Instance.PlaySfx(AudioManager.Sfx.Select);
     }
-    public void GameRetry()
+    public void GoToMainScene()
     {
         pool.DestroyAllObjects();
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene("MainScene");
     }
     
     private void Update()
@@ -82,9 +85,8 @@ public partial class GameManager : Singleton<GameManager>
             gameTime += Time.deltaTime;
 
         if (!boss && gameTime >= maxGameTime)
-        {
             boss = FindObjectOfType<Spawner>().Spawn(EnemyType.Boss);
-        }
+        
         if (level < nextExp.Length && exp >= nextExp[Mathf.Min(level, nextExp.Length - 1)])
         {
             exp -= nextExp[level];
@@ -111,8 +113,13 @@ public partial class GameManager : Singleton<GameManager>
 
     public void GameExit()
     {
-        Application.Quit();
+        #if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+        #else
+                Application.Quit();
+        #endif
     }
+    
 }
 
 
@@ -121,7 +128,7 @@ public partial class GameManager : Singleton<GameManager>
 /// </summary>
 public partial class GameManager
 {
-    public void GameEnd(bool isWin)
+    public void GameOver(bool isWin)
     {
         pool.DisableAllObjects();
         if (isWin)
@@ -140,8 +147,10 @@ public partial class GameManager
         uiResult.GameOver(isWin);
         AudioManager.Instance.PlayBgm(false);
         AudioManager.Instance.PlaySfx(isWin ? AudioManager.Sfx.Win : AudioManager.Sfx.Lose);
+        VictoryAction?.Invoke();
+        DefeatAction?.Invoke();
         yield return new WaitForSeconds(5f);
-        // Pause();
+        Pause();
     }
 }
 

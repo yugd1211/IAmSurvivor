@@ -79,7 +79,7 @@ public class Enemy : MonoBehaviour
     {
         if (_type != EnemyType.Boss)
             return;
-        _gameManager.GameEnd(true);
+        _gameManager.GameOver(true);
     }
 
     public void Attacked(float damage)
