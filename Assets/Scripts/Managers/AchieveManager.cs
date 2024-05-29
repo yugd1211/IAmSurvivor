@@ -31,10 +31,11 @@ public partial class AchieveManager : Singleton<AchieveManager>
         achieve.ConditionsMetAction += () =>
         {
             List<int> charList = DataManager.LoadCharacters();
+            if (charList.Contains((int)CharacterType.Potato))
+                return;
             charList.Add(0);
             ProgressNotify(CharacterType.Potato);
             DataManager.SaveCharacters(charList);
-            DataManager.SavePlayLog();
         };
         
         achieve = new Achieve(1, "I AM SURVIVOR", "살아남았습니다!!!");
@@ -43,19 +44,15 @@ public partial class AchieveManager : Singleton<AchieveManager>
         achieve.ConditionsMetAction += () =>
         {
             List<int> charList = DataManager.LoadCharacters();
+            if (charList.Contains((int)CharacterType.Bean))
+                return;
             charList.Add(1);
             ProgressNotify(CharacterType.Bean);
             DataManager.SaveCharacters(charList);
-            DataManager.SavePlayLog();
         };
         
         achieve = new Achieve(2, "회피 마스터", "한번도 맞지않고 살아남았습니다.");
         achieve.AddCondition(new Hit(0));
-
-        Achieves.Add(achieve.id, achieve);
-        
-        achieve = new Achieve(3, "10킬 ", "10킬"); 
-        achieve.AddCondition(new Kill(EnemyType.Normal, 0, 10, GameManager.Instance.KillManager.Kill));
         Achieves.Add(achieve.id, achieve);
 
         UnlockAchieves = DataManager.LoadUnlockAchieves();

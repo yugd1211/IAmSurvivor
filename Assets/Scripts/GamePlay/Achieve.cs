@@ -22,6 +22,7 @@ public class Achieve : AObserver
         this.desc = desc;
         _checker = new ConditionChecker();
         Conditions = new List<AchieveCondition>();
+        ConditionsMetAction += DataManager.SavePlayLog;
     }
 
     // 현재 Achieve에 조건을 추가함

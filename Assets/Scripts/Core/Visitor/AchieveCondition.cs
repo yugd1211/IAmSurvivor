@@ -28,7 +28,7 @@ public class ConditionChecker : IConditionVisitor
     }
     public bool Visit(HP hp)
     {
-        return GameManager.Instance.player.health / GameManager.Instance.player.maxHealth * 100 >= hp.HpPercent;
+        return hp.IsVictory && GameManager.Instance.player.health / GameManager.Instance.player.maxHealth * 100 >= hp.HpPercent;
     }
     public bool Visit(Victory victory)
     {
@@ -36,9 +36,6 @@ public class ConditionChecker : IConditionVisitor
     }
 }
 
-// todo : GameManager.totalKill을 subject로 바꿀지 아니면 Observer인 상태로 둘지를 정해야할듯
-// 그리고 서브젝트에 등록할텐데 해당 subject로부터 detach를 해야하니 totalKill도 subject인게 좋을듯..
-// 
 public class Kill : AchieveCondition
 {
     public readonly EnemyType EnemyType;
@@ -57,12 +54,6 @@ public class Kill : AchieveCondition
         attachKill.Attach(OKill);
         OKill.Action += () =>
         {
-            // todo : 문제가 있음, 언록된 도감도 일단은 attach하기 때문에, 이미 달성된 도감의 조건들도 일단 게임도중 조건이 달성되면 Action을 실행시킴
-            // 결론적으로는 이미 unlock됐기 때문에 아무일도 발생하지 않지만, 이미 달성된 도감임에도 불구하고 게임도중에 계속 조건을 확인함...
-            // 이것도 사실 처음부터 lock, unlock achieve를 나눠두면 상관없을거같긴함 unlock이면 애초에 attach를...........
-            // 생각해보니 애초에 attach를 안하면된다. attach 하기전에 이미 달성된 조건인지 아닌지를 먼저 판단해버리자
-            // 다시 생각해보니까 lock, unlock은 따로 구분을 해야됨, 저장되는 데이터 뿐 아니라 특정판을 잘했을경우의 업적도 있기 때문에
-            // 해당 업적들은 이미 달성됐기 때문에 이를 알고 있어야함
             NotifyObservers();
             attachKill.Detach(OKill);
         };
@@ -99,9 +90,17 @@ public class Hit : AchieveCondition
 public class HP : AchieveCondition
 {
     public readonly int HpPercent;
+    public bool IsVictory;
+
     public HP(int hpPercent)
     {
         HpPercent = hpPercent;
+        IsVictory = false;
+        GameManager.Instance.VictoryAction += () =>
+        {
+            IsVictory = true;
+            NotifyObservers(); 
+        };
     }
 
     public override bool Accept(IConditionVisitor visitor)
@@ -116,6 +115,10 @@ public class Victory : AchieveCondition
     public Victory(int victoryCount)
     {
         VictoryCount = victoryCount;
+        GameManager.Instance.VictoryAction += () =>
+        {
+            NotifyObservers(); 
+        };
     }
 
     public override bool Accept(IConditionVisitor visitor)

@@ -43,13 +43,13 @@ public partial class GameManager : Singleton<GameManager>
         
     }
 
-    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if (scene.name == "GameScene")
             GameStart();        
     }
 
-    public void GameStart()
+    private void GameStart()
     {
         StatisticsManager.Instance.InitInGameData();
         gameTime = 0;
@@ -85,9 +85,8 @@ public partial class GameManager : Singleton<GameManager>
             gameTime += Time.deltaTime;
 
         if (!boss && gameTime >= maxGameTime)
-        {
             boss = FindObjectOfType<Spawner>().Spawn(EnemyType.Boss);
-        }
+        
         if (level < nextExp.Length && exp >= nextExp[Mathf.Min(level, nextExp.Length - 1)])
         {
             exp -= nextExp[level];
@@ -144,14 +143,14 @@ public partial class GameManager
     {
         isLive = false;
         isEnd = false;
-        VictoryAction?.Invoke();
-        DefeatAction?.Invoke();
         uiResult.gameObject.SetActive(true);
         uiResult.GameOver(isWin);
         AudioManager.Instance.PlayBgm(false);
         AudioManager.Instance.PlaySfx(isWin ? AudioManager.Sfx.Win : AudioManager.Sfx.Lose);
+        VictoryAction?.Invoke();
+        DefeatAction?.Invoke();
         yield return new WaitForSeconds(5f);
-        // Pause();
+        Pause();
     }
 }
 
