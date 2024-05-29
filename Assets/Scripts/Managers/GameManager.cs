@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Core.Observer;
 using Core;
@@ -34,9 +35,13 @@ public partial class GameManager : Singleton<GameManager>
         SceneManager.sceneLoaded += OnSceneLoaded;
         Application.targetFrameRate = 60;
         DataManager.Init();
+    }
+
+    private void Start()
+    {
         pool = FindObjectOfType<PoolManager>();
     }
-    
+
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         // TotalKill.Count = (int)DataManager.LoadPlayLog().KillCount;
@@ -44,16 +49,11 @@ public partial class GameManager : Singleton<GameManager>
             GameStart();        
     }
 
-    void OnDisable()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
     public void GameStart()
     {
         StatisticsManager.Instance.Init();
         gameTime = 0;
         level = 0;
-        // Kill.Count = 0;
         exp = 0;
         health = maxHealth;
         player = FindObjectOfType<Player>();
@@ -129,53 +129,21 @@ public partial class GameManager
     {
         pool.DisableAllObjects();
         if (isWin)
-        {
             DataManager.Victory();
-            DataManager.SavePlayLog();
-            GameVictory();
-        }
-        else
-        {
-            DataManager.SavePlayLog();
-            GameOver();
-        }
-    }
-    private void GameOver()
-    {
-        StartCoroutine(GameOverRoutine());
+        DataManager.SavePlayLog();
+        StartCoroutine(GameEndRoutine(isWin));
     }
     
-    private void GameVictory()
-    {
-        StartCoroutine(GameVictoryRoutine());
-    }
-
-    private IEnumerator GameOverRoutine()
+    private IEnumerator GameEndRoutine(bool isWin)
     {
         isLive = false;
         isEnd = false;
         yield return new WaitForSeconds(0.5f);
-
         uiResult.gameObject.SetActive(true);
-        uiResult.Lose();
+        uiResult.GameOver(isWin);
         Stop();
-
         AudioManager.Instance.PlayBgm(false);
-        AudioManager.Instance.PlaySfx(AudioManager.Sfx.Lose);
-    }
-
-    private IEnumerator GameVictoryRoutine()
-    {
-        isLive = false;
-        isEnd = false;
-        yield return new WaitForSeconds(0.5f);
-        
-        uiResult.gameObject.SetActive(true);
-        uiResult.Win();
-        Stop();
-
-        AudioManager.Instance.PlayBgm(false);
-        AudioManager.Instance.PlaySfx(AudioManager.Sfx.Win);
+        AudioManager.Instance.PlaySfx(isWin ? AudioManager.Sfx.Win : AudioManager.Sfx.Lose);
     }
 }
 

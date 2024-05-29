@@ -15,13 +15,11 @@ public class Result : MonoBehaviour
         _button.onClick.AddListener(() => GameManager.Instance.GameRetry());
     }
 
-    public void Lose()
+    public void GameOver(bool isWin)
     {
-        titles[0].SetActive(true);
-    }
-    
-    public void Win()
-    {
-        titles[1].SetActive(true);
+        if (isWin)
+            titles[1].SetActive(true);
+        else
+            titles[0].SetActive(true);
     }
 }

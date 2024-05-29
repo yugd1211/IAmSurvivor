@@ -1,5 +1,4 @@
 using Core;
-using UnityEngine.SceneManagement;
 
 public class StatisticsManager : Singleton<StatisticsManager>
 {
