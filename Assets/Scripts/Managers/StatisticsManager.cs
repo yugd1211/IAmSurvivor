@@ -3,6 +3,8 @@ using Core;
 public class StatisticsManager : Singleton<StatisticsManager>
 {
 	private int _killCount;
+	private int _hitCount;
+
 	private long _totalKillCount;
 	private int _victoryCount;
 	private int _defeatCount;
@@ -10,6 +12,7 @@ public class StatisticsManager : Singleton<StatisticsManager>
 	public void Init()
 	{
 		_killCount = 0;
+		_hitCount = 0;
 		_totalKillCount = DataManager.LoadPlayLog().KillCount;
 	}
 
@@ -21,5 +24,6 @@ public class StatisticsManager : Singleton<StatisticsManager>
 	public int GetVictoryCount() => _victoryCount;
 	public void IncrementDefeatCount() => _defeatCount++;
 	public int GetDefeatCount() => _defeatCount;
-
+	public void IncrementHitCount() => _hitCount++;
+	public int GetHitCount() => _hitCount;
 }

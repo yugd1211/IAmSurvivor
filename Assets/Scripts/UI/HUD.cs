@@ -46,8 +46,8 @@ public class HUD : MonoBehaviour
                 _text.text = $"{StatisticsManager.Instance.GetKillCount():F0}";
                 break;
             case InfoType.Health:
-                float currHealth = _gameManager.health;
-                float maxHealth = _gameManager.maxHealth;
+                float currHealth = _gameManager.player.health;
+                float maxHealth = _gameManager.player.maxHealth;
                 _slider.value = currHealth / maxHealth;
                 break;
             case InfoType.BossHealth:

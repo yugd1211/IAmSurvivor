@@ -113,7 +113,7 @@ public class Item : MonoBehaviour
                     data.nextRate[level]);
                 break;
             case ItemData.ItemType.Potion:
-                _gameManager.health = _gameManager.maxHealth;
+                _gameManager.player.health = _gameManager.player.maxHealth;
                 break;
         }
         if (data.itemType != ItemData.ItemType.Potion)

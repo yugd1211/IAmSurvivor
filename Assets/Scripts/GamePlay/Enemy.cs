@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Cinemachine;
 using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -56,12 +57,14 @@ public class Enemy : MonoBehaviour
         if (_attackCoolTime < data.coolTime)
             return;
         _attackCoolTime = 0;
-        other.gameObject.GetComponent<Player>().Attacked(data.damage);
-        if (_gameManager.health < 0.0f)
-            _gameManager.player.Dead();
+        Attack(other.gameObject.GetComponent<Player>());
     }
 
-
+    public void Attack(Player player)
+    {
+        player.TakeDamage(data.damage);
+    }
+    
     private void OnEnable()
     {
         target = _gameManager.player.GetComponent<Rigidbody2D>();

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 // ReSharper disable All
@@ -5,6 +6,8 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 {
     public CharacterData data;
+    public float health;
+    public float maxHealth;
     public Vector2 InputVec { get; set; }
     public Vector2 dir;
     public float moveSpeed = 5f;
@@ -23,6 +26,12 @@ public class Player : MonoBehaviour
         _anim = GetComponent<Animator>();
         scanner = GetComponent<Scanner>();
         hands = GetComponentsInChildren<Hand>(true);
+        health = data.HP;
+        maxHealth = data.HP;
+    }
+
+    private void Start()
+    {
         _gameManager = GameManager.Instance;
     }
 
@@ -39,9 +48,12 @@ public class Player : MonoBehaviour
         dir = InputVec;
     }
 
-    public void Attacked(float damage)
-    {
-        _gameManager.health -= damage;
+    public void TakeDamage(float damage)
+    { 
+        health -= damage;
+        StatisticsManager.Instance.IncrementHitCount();
+        if (health < 0.0f) 
+            Dead();
     }
 
     public void Dead()

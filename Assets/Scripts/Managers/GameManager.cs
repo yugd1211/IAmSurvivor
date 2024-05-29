@@ -23,11 +23,7 @@ public partial class GameManager : Singleton<GameManager>
     [Header("# Player Info")]
     public CharacterData data;
     public int level;
-    // public readonly SubjectKill Kill = new SubjectKill();
-    public readonly SubjectKill TotalKill = new SubjectKill();
     public int exp;
-    public float health;
-    public float maxHealth;
     public int[] nextExp;
 
     protected override void AwakeInit()
@@ -55,7 +51,6 @@ public partial class GameManager : Singleton<GameManager>
         gameTime = 0;
         level = 0;
         exp = 0;
-        health = maxHealth;
         player = FindObjectOfType<Player>();
         uiLevelUp = FindObjectOfType<LevelUp>();
         pool = FindObjectOfType<PoolManager>();
