@@ -52,6 +52,7 @@ public class Player : MonoBehaviour
     { 
         health -= damage;
         StatisticsManager.Instance.IncrementHitCount();
+        StatisticsManager.Instance.IncrementTotalHitCount();
         if (health < 0.0f) 
             Dead();
     }

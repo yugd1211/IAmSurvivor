@@ -66,7 +66,7 @@ public class LevelUp : MonoBehaviour
     {
         PickRandomItem();
         _rect.localScale = Vector3.one;
-        _gameManager.Stop();
+        _gameManager.Pause();
         AudioManager.Instance.PlaySfx(AudioManager.Sfx.LevelUp);
         AudioManager.Instance.EffectBgm(true);
 

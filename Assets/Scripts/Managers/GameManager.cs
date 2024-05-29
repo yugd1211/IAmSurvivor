@@ -1,6 +1,4 @@
-using System;
 using System.Collections;
-using Core.Observer;
 using Core;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -13,6 +11,7 @@ public partial class GameManager : Singleton<GameManager>
     public LevelUp uiLevelUp;
     public Result uiResult;
     public Enemy boss;
+    public KillManager KillManager;
     
     [Header("# Game Control")]
     public float gameTime;
@@ -31,23 +30,25 @@ public partial class GameManager : Singleton<GameManager>
         SceneManager.sceneLoaded += OnSceneLoaded;
         Application.targetFrameRate = 60;
         DataManager.Init();
+        KillManager = new KillManager(0, DataManager.LoadPlayLog().KillCount);
+        StatisticsManager.Instance.InitPlayLog();
     }
 
     private void Start()
     {
         pool = FindObjectOfType<PoolManager>();
+        
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // TotalKill.Count = (int)DataManager.LoadPlayLog().KillCount;
         if (scene.name == "GameScene")
             GameStart();        
     }
 
     public void GameStart()
     {
-        StatisticsManager.Instance.Init();
+        StatisticsManager.Instance.InitInGameData();
         gameTime = 0;
         level = 0;
         exp = 0;
@@ -97,7 +98,7 @@ public partial class GameManager : Singleton<GameManager>
             return;
         this.exp += exp;
     }
-    public void Stop()
+    public void Pause()
     {
         isLive = false;
         Time.timeScale = 0;
@@ -124,7 +125,9 @@ public partial class GameManager
     {
         pool.DisableAllObjects();
         if (isWin)
-            DataManager.Victory();
+            StatisticsManager.Instance.IncrementVictoryCount();
+        else
+            StatisticsManager.Instance.IncrementDefeatCount();
         DataManager.SavePlayLog();
         StartCoroutine(GameEndRoutine(isWin));
     }
@@ -133,12 +136,12 @@ public partial class GameManager
     {
         isLive = false;
         isEnd = false;
-        yield return new WaitForSeconds(0.5f);
         uiResult.gameObject.SetActive(true);
         uiResult.GameOver(isWin);
-        Stop();
         AudioManager.Instance.PlayBgm(false);
         AudioManager.Instance.PlaySfx(isWin ? AudioManager.Sfx.Win : AudioManager.Sfx.Lose);
+        yield return new WaitForSeconds(5f);
+        // Pause();
     }
 }
 

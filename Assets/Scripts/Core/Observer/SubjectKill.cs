@@ -5,8 +5,8 @@ namespace Core.Observer
 {
     public class SubjectKill : ASubject
     {
-        private int _count = 0;
-        public int Count
+        private long _count = 0;
+        public long Count
         {
             get => _count;
             set
@@ -24,8 +24,8 @@ namespace Core.Observer
             GoalCount = goalCount;
         }
         
-        public int Count { get; set; }
-        public int GoalCount;
+        public long Count { get; set; }
+        public long GoalCount;
         public Action Action;
         
         // subject에게 알림을 받을때 사용하는 함수
