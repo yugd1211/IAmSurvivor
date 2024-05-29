@@ -1,5 +1,4 @@
 using System.Collections;
-using Core.Observer;
 using Core;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -12,6 +11,7 @@ public partial class GameManager : Singleton<GameManager>
     public LevelUp uiLevelUp;
     public Result uiResult;
     public Enemy boss;
+    public KillManager KillManager;
     
     [Header("# Game Control")]
     public float gameTime;
@@ -22,11 +22,7 @@ public partial class GameManager : Singleton<GameManager>
     [Header("# Player Info")]
     public CharacterData data;
     public int level;
-    // public readonly SubjectKill Kill = new SubjectKill();
-    public readonly SubjectKill TotalKill = new SubjectKill();
     public int exp;
-    public float health;
-    public float maxHealth;
     public int[] nextExp;
 
     protected override void AwakeInit()
@@ -34,28 +30,28 @@ public partial class GameManager : Singleton<GameManager>
         SceneManager.sceneLoaded += OnSceneLoaded;
         Application.targetFrameRate = 60;
         DataManager.Init();
-        pool = FindObjectOfType<PoolManager>();
+        KillManager = new KillManager(0, DataManager.LoadPlayLog().KillCount);
+        StatisticsManager.Instance.InitPlayLog();
     }
-    
+
+    private void Start()
+    {
+        pool = FindObjectOfType<PoolManager>();
+        
+    }
+
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // TotalKill.Count = (int)DataManager.LoadPlayLog().KillCount;
         if (scene.name == "GameScene")
             GameStart();        
     }
 
-    void OnDisable()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
     public void GameStart()
     {
-        StatisticsManager.Instance.Init();
+        StatisticsManager.Instance.InitInGameData();
         gameTime = 0;
         level = 0;
-        // Kill.Count = 0;
         exp = 0;
-        health = maxHealth;
         player = FindObjectOfType<Player>();
         uiLevelUp = FindObjectOfType<LevelUp>();
         pool = FindObjectOfType<PoolManager>();
@@ -102,7 +98,7 @@ public partial class GameManager : Singleton<GameManager>
             return;
         this.exp += exp;
     }
-    public void Stop()
+    public void Pause()
     {
         isLive = false;
         Time.timeScale = 0;
@@ -129,53 +125,23 @@ public partial class GameManager
     {
         pool.DisableAllObjects();
         if (isWin)
-        {
-            DataManager.Victory();
-            DataManager.SavePlayLog();
-            GameVictory();
-        }
+            StatisticsManager.Instance.IncrementVictoryCount();
         else
-        {
-            DataManager.SavePlayLog();
-            GameOver();
-        }
-    }
-    private void GameOver()
-    {
-        StartCoroutine(GameOverRoutine());
+            StatisticsManager.Instance.IncrementDefeatCount();
+        DataManager.SavePlayLog();
+        StartCoroutine(GameEndRoutine(isWin));
     }
     
-    private void GameVictory()
-    {
-        StartCoroutine(GameVictoryRoutine());
-    }
-
-    private IEnumerator GameOverRoutine()
+    private IEnumerator GameEndRoutine(bool isWin)
     {
         isLive = false;
         isEnd = false;
-        yield return new WaitForSeconds(0.5f);
-
         uiResult.gameObject.SetActive(true);
-        uiResult.Lose();
-        Stop();
-
+        uiResult.GameOver(isWin);
         AudioManager.Instance.PlayBgm(false);
-        AudioManager.Instance.PlaySfx(AudioManager.Sfx.Lose);
-    }
-
-    private IEnumerator GameVictoryRoutine()
-    {
-        isLive = false;
-        isEnd = false;
-        yield return new WaitForSeconds(0.5f);
-        
-        uiResult.gameObject.SetActive(true);
-        uiResult.Win();
-        Stop();
-
-        AudioManager.Instance.PlayBgm(false);
-        AudioManager.Instance.PlaySfx(AudioManager.Sfx.Win);
+        AudioManager.Instance.PlaySfx(isWin ? AudioManager.Sfx.Win : AudioManager.Sfx.Lose);
+        yield return new WaitForSeconds(5f);
+        // Pause();
     }
 }
 

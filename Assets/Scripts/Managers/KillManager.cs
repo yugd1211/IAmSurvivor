@@ -1,10 +1,15 @@
-using Core;
 using Core.Observer;
 
-public class KillManager : Singleton<KillManager>
-{
+public class KillManager
+{ 
 	public readonly SubjectKill Kill = new SubjectKill();
 	public readonly SubjectKill TotalKill = new SubjectKill();
+
+	public KillManager(int killCount, long totalKillCount)
+	{
+		Kill.Count = killCount;
+		TotalKill.Count = totalKillCount;
+	}
 
 	public void IncrementKillCount()
 	{
@@ -12,11 +17,5 @@ public class KillManager : Singleton<KillManager>
 		TotalKill.Count++;
 		StatisticsManager.Instance.IncrementKillCount();
 		StatisticsManager.Instance.IncrementTotalKillCount();
-	}
-	
-	public void Init()
-	{
-		Kill.Count = 0;
-		TotalKill.Count = (int)DataManager.LoadPlayLog().KillCount;
 	}
 }

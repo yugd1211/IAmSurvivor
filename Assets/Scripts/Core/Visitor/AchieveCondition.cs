@@ -28,7 +28,7 @@ public class ConditionChecker : IConditionVisitor
     }
     public bool Visit(HP hp)
     {
-        return GameManager.Instance.health / GameManager.Instance.maxHealth * 100 >= hp.HpPercent;
+        return GameManager.Instance.player.health / GameManager.Instance.player.maxHealth * 100 >= hp.HpPercent;
     }
     public bool Visit(Victory victory)
     {

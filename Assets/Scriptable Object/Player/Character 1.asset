@@ -18,5 +18,6 @@ MonoBehaviour:
   weaponSpeed: 1.1
   weaponRate: 1.1
   damage: 1
+  hp: 10
   count: 0
   initWeaponId: 7

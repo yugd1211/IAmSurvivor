@@ -6,7 +6,9 @@ public struct PlayLog
 {
 	public double PlayTime;
 	public long KillCount;
+	public long HitCount;
 	public int VictoryCount;
+	public int DefeatCount;
 }
 
 public class DataManager
@@ -20,6 +22,7 @@ public class DataManager
 	public static void Init()
 	{
 		_playLog = LoadPlayLog();
+		
 	}
 
 	public static void SaveCharacters(List<int> characters)
@@ -41,8 +44,12 @@ public class DataManager
 	
 	public static void SavePlayLog()
 	{
+		StatisticsManager statistics = StatisticsManager.Instance;
 		UpdatePlayTime();
-		_playLog.KillCount = StatisticsManager.Instance.GetTotalKillCount();
+		_playLog.KillCount = statistics.GetTotalKillCount();
+		_playLog.VictoryCount = statistics.GetVictoryCount();
+		_playLog.DefeatCount = statistics.GetDefeatCount();
+		_playLog.HitCount = statistics.GetHitCount();
 		JsonConverter.Save(_playLog, _playLogPath);	
 	}
 	public static PlayLog LoadPlayLog()
@@ -73,6 +80,4 @@ public class DataManager
 		}
 		return unlockAchieves;
 	}
-
-	public static void Victory() => _playLog.VictoryCount++;
 }
