@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 0 Standard
   m_EditorClassIdentifier: 
   characterName: "\uD45C\uC900 \uADDC\uACA9"
-  moveSpeed: 6
+  moveSpeed: 1
   animCon: {fileID: 9100000, guid: d3e98fab15f6d47be89f2ab3528cca6d, type: 2}
   weaponSpeed: 1
   weaponRate: 1
