@@ -8,7 +8,7 @@ public enum CharacterType
     Bean,
 }
 
-public partial class AchieveManager : Singleton<AchieveManager>
+public class AchieveManager : Singleton<AchieveManager>
 {
     [Header("# Inspector Allocate")]
     public GameObject noticePrefab;

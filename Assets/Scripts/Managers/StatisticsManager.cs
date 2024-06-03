@@ -1,6 +1,4 @@
 using Core;
-using TMPro;
-using UnityEngine;
 
 public class StatisticsManager : Singleton<StatisticsManager>
 {

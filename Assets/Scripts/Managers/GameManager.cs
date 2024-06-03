@@ -122,7 +122,6 @@ public partial class GameManager : Singleton<GameManager>
     
 }
 
-
 /// <summary>
 /// coroutine function
 /// </summary>
@@ -153,5 +152,3 @@ public partial class GameManager
         Pause();
     }
 }
-
-

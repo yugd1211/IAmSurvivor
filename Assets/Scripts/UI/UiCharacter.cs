@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -26,7 +23,4 @@ public class UiCharacter : MonoBehaviour
             SceneManager.LoadScene(1);
         });
     }
-
-    // 씬 로드 후에 호출되는 메서드입니다.
-
 }

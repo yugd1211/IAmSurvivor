@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Core.Observer;
-using UnityEngine;
 
 // 방문자패턴
 [Serializable]
