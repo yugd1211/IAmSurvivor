@@ -1,8 +1,7 @@
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
-// ReSharper disable All
 
+// ReSharper disable All
 public class Player : MonoBehaviour
 {
     public CharacterData data;
@@ -10,7 +9,7 @@ public class Player : MonoBehaviour
     public float maxHealth;
     public Vector2 InputVec { get; set; }
     public Vector2 dir;
-    public float moveSpeed = 5f;
+    public float moveSpeed = 1f;
     public Scanner scanner;
     public Hand[] hands;
     
@@ -71,7 +70,7 @@ public class Player : MonoBehaviour
     {
         if (!_gameManager.isLive)
             return;
-        Vector2 nextVec = InputVec.normalized * (moveSpeed * Time.fixedDeltaTime);
+        Vector2 nextVec = InputVec.normalized * (data.MoveSpeed * moveSpeed * Time.fixedDeltaTime);
         _rigid.MovePosition(_rigid.position + nextVec);
     }
     void LateUpdate()
