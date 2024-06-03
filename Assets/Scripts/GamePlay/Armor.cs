@@ -22,12 +22,13 @@ public class Armor : MonoBehaviour
     private void ApplyArmor(float damage, float moveSpeed, float weaponSpeed, float weaponRate)
     {
         Weapon[] weapons = transform.parent.GetComponentsInChildren<Weapon>();
-        
+
+        transform.parent.GetComponent<Player>().moveSpeed += moveSpeed;
         foreach (Weapon weapon in weapons)
         {
-            weapon.WBI.DamageMultiplier += damage;
-            weapon.WBI.SpeedMultiplier += weaponSpeed;
-            weapon.WBI.RateMultiplier += weaponRate;
+            weapon.WI.DamageMultiplier += damage;
+            weapon.WI.SpeedMultiplier += weaponSpeed;
+            weapon.WI.RateMultiplier += weaponRate;
         }
     }
 }
