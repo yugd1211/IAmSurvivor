@@ -3,16 +3,16 @@ using System.Text;
 using UnityEngine;
 using Newtonsoft.Json;
 
-public class JsonConverter : MonoBehaviour
+public static class JsonConverter
 {
-	public static void Save<T>(T objectToSave, string fileName)
-	{
-		fileName = Application.dataPath + fileName;
-		using FileStream stream = new FileStream(fileName, FileMode.Create);
-		string jsonData = JsonConvert.SerializeObject(objectToSave);
-		byte[] data = Encoding.UTF8.GetBytes(jsonData);
-		stream.Write(data, 0, data.Length);
-	}
+public static void Save<T>(T objectToSave, string fileName)
+{
+	fileName = Application.dataPath + fileName;
+	using FileStream stream = new FileStream(fileName, FileMode.Create);
+	string jsonData = JsonConvert.SerializeObject(objectToSave);
+	byte[] data = Encoding.UTF8.GetBytes(jsonData);
+	stream.Write(data, 0, data.Length);
+}
 
 	public static bool Load<T>(out T objectToLoad, string fileName)
 	{
