@@ -11,25 +11,38 @@ public static class JsonConverter
 		CreateNewFile(objectToSave, fileName);
 	}
 
-	public static bool Load<T>(out T objectToLoad, string fileName)
+public static bool Load<T>(out T objectToLoad, string fileName)
+{
+	fileName = Application.dataPath + fileName;
+	if (File.Exists(fileName))
 	{
-		fileName = Application.dataPath + fileName;
-		if (File.Exists(fileName))
-		{
-			using FileStream stream = new FileStream(fileName, FileMode.Open);
-			byte[] data = new byte[stream.Length];
-			stream.Read(data, 0, (int)stream.Length);
-			string jsonData = Encoding.UTF8.GetString(data);
-			objectToLoad = JsonConvert.DeserializeObject<T>(jsonData);
-			stream.Close();
-			return true;
-		}
-		else
-		{
-			objectToLoad = default;
-			return false;
-		}
+		string jsonData = File.ReadAllText(fileName);
+		objectToLoad = JsonConvert.DeserializeObject<T>(jsonData);
+		return true;
 	}
+	else
+	{
+		objectToLoad = default;
+		return false;
+	}
+	// fileName = Application.dataPath + fileName;
+	// if (File.Exists(fileName))
+	// { 
+	// 	using FileStream stream = new FileStream(fileName, FileMode.Open);
+	// 	byte[] data = new byte[stream.Length];
+	// 	stream.Read(data, 0, (int)stream.Length);
+	// 	string jsonData = Encoding.UTF8.GetString(data);
+	// 	objectToLoad = JsonConvert.DeserializeObject<T>(jsonData);
+	// 	stream.Close();
+	// 	return true;
+	// }
+	// else
+	// {
+	// 	objectToLoad = default;
+	// 	return false;
+	// }
+}
+	
 	private static void CreateNewFile<T>(T objectToLoad, string fileName)
 	{
 		if (objectToLoad == null)

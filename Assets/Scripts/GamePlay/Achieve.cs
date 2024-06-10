@@ -52,20 +52,19 @@ public class Achieve : AObserver
 
     public override void Notify(ASubject subject)
     {
-        if (CheckCondition())
+        if (!CheckCondition())
+            return;
+        ConditionsMetAction?.Invoke();
+        Achieve achieve = AchieveManager.Instance.AddAchieveToUnlockList(this);
+        if (achieve != null)
         {
-            ConditionsMetAction?.Invoke();
-            Achieve achieve = AchieveManager.Instance.AddAchieveToUnlockList(this);
-            if (achieve != null)
+            AchieveManager.Instance.ProgressNotify(achieve);
+            int[] acheiveIds = new int[AchieveManager.Instance.UnlockAchieves.Count];
+            for (int i = 0; i < AchieveManager.Instance.UnlockAchieves.Count; i++)
             {
-                AchieveManager.Instance.ProgressNotify(achieve);
-                int[] acheiveIds = new int[AchieveManager.Instance.UnlockAchieves.Count];
-                for (int i = 0; i < AchieveManager.Instance.UnlockAchieves.Count; i++)
-                {
-                    acheiveIds[i] = AchieveManager.Instance.UnlockAchieves.ElementAt(i).Key;
-                }
-                DataManager.SaveUnlockAchieves(acheiveIds);
+                acheiveIds[i] = AchieveManager.Instance.UnlockAchieves.ElementAt(i).Key;
             }
+            DataManager.SaveUnlockAchieves(acheiveIds);
         }
     }
 }
