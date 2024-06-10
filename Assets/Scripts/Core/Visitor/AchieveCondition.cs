@@ -1,6 +1,4 @@
 using Core.Observer;
-using UnityEditor.Searcher;
-using UnityEngine;
 
 public abstract class AchieveCondition : ASubject
 {
@@ -126,4 +124,3 @@ public class Victory : AchieveCondition
         return visitor.Visit(this);
     }
 }
-

@@ -146,7 +146,6 @@ public partial class GameManager
     
     private IEnumerator GameEndRoutine(bool isWin)
     {
-        Debug.Log("GameEndRoutine");
         isLive = false;
         isEnd = false;
         uiResult.gameObject.SetActive(true);

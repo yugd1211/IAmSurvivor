@@ -16,8 +16,7 @@ public class AchieveManager : Singleton<AchieveManager>
 
     [Header("# Inspector Allocate")]
     public readonly Dictionary<int, Achieve> Achieves = new Dictionary<int, Achieve>();
-    public Dictionary<int, Achieve> UnlockAchieves = null;
-    private readonly WaitForSecondsRealtime _wait = new WaitForSecondsRealtime(5);
+    public Dictionary<int, Achieve> UnlockAchieves;
 
     private void Start()
     {
@@ -61,7 +60,6 @@ public class AchieveManager : Singleton<AchieveManager>
         achieve.AddCondition(new Kill(EnemyType.All, 0, 90, GameManager.Instance.KillManager.TotalKill));
         Achieves.Add(achieve.id, achieve);
         
-
         UnlockAchieves = DataManager.LoadUnlockAchieves();
     }
 

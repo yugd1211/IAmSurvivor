@@ -66,11 +66,10 @@ public class DataManager
 	public static Dictionary<int, Achieve> LoadUnlockAchieves()
 	{
 		if (!JsonConverter.Load(out int[] unLockAchieves, _achievePath))
-			return null;
+			return new Dictionary<int, Achieve>();
 
 		Dictionary<int, Achieve> unlockAchieves = new Dictionary<int, Achieve>();
 		Dictionary<int, Achieve> achieves = AchieveManager.Instance.Achieves;
-
 		foreach (int id in unLockAchieves)
 		{
 			if (achieves.TryGetValue(id, out Achieve achieve) && achieve != null)
