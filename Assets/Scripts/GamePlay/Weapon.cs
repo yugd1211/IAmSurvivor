@@ -5,6 +5,15 @@ using Vector3 = UnityEngine.Vector3;
 
 public class Weapon : MonoBehaviour
 { 
+    public enum BulletType
+    {
+        Shovels = 0,
+        Poke,
+        Scythe,
+        Sniper,
+        MachineGun,
+        Shotgun,
+    }
     public WeaponInfo WI;
     private float _timer;
     private Player _player;
@@ -115,7 +124,7 @@ public class Weapon : MonoBehaviour
                 bullet = transform.GetChild(i).GetComponent<Bullet>();
             else
             {
-                bullet = _gameManager.pool.GetMelee(0);
+                bullet = _gameManager.pool.Get<Bullet>((int)BulletType.Shovels);
                 bullet.transform.parent = transform;
             }
             Transform bulletTrans = bullet.transform;
@@ -129,7 +138,7 @@ public class Weapon : MonoBehaviour
     
     private void Poke()
     {
-        Bullet bullet = _gameManager.pool.GetMelee(1);
+        Bullet bullet = _gameManager.pool.Get<Bullet>((int)BulletType.Poke);
         Transform bulletTrans = bullet.transform;
         
         bulletTrans.parent = transform;
@@ -145,7 +154,7 @@ public class Weapon : MonoBehaviour
     private void Scythe()
     {
         Vector2 dir = _player.dir;
-        Bullet bullet = _gameManager.pool.GetMelee(2);
+        Bullet bullet = _gameManager.pool.Get<Bullet>((int)BulletType.Scythe);
         Transform bulletTrans = bullet.transform;
         
         bulletTrans.parent = transform;
@@ -174,7 +183,7 @@ public class Weapon : MonoBehaviour
         {
             for (int i = 0; i < WI.Count; i++)
             {
-                Bullet bullet = _gameManager.pool.GetRange(WI.ID == 1 ? 0 : WI.ID == 6 ? 1 : 2);
+                Bullet bullet = _gameManager.pool.Get<Bullet>(WI.ID == 1 ? (int)BulletType.Sniper : WI.ID == 6 ? (int)BulletType.MachineGun : (int)BulletType.Shotgun);
                 bullet.transform.position = transform.position;
                 bullet.transform.rotation = Quaternion.FromToRotation(Vector3.up, dir);
                 Quaternion q = i == 0
@@ -185,7 +194,7 @@ public class Weapon : MonoBehaviour
         }
         else
         {
-            Bullet bullet = _gameManager.pool.GetRange(WI.ID == 1 ? 0 : WI.ID == 6 ? 1 : 2);
+            Bullet bullet = _gameManager.pool.Get<Bullet>(WI.ID == 1 ? (int)BulletType.Sniper : WI.ID == 6 ? (int)BulletType.MachineGun : (int)BulletType.Shotgun);
             bullet.transform.position = transform.position;
             bullet.transform.rotation = Quaternion.FromToRotation(Vector3.up, dir);
             bullet.Init(WI, dir);

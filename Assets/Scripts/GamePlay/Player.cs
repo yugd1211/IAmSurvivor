@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-// ReSharper disable All
 public class Player : MonoBehaviour
 {
     public CharacterData data;
@@ -47,12 +46,12 @@ public class Player : MonoBehaviour
         dir = InputVec;
     }
 
-    public void TakeDamage(float damage)
+    public void Damaged(float damage)
     { 
         health -= damage;
         StatisticsManager.Instance.IncrementHitCount();
         StatisticsManager.Instance.IncrementTotalHitCount();
-        if (health < 0.0f) 
+        if (health <= 0.0f) 
             Dead();
     }
 
@@ -66,14 +65,15 @@ public class Player : MonoBehaviour
         _gameManager.GameOver(false);
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         if (!_gameManager.isLive)
             return;
         Vector2 nextVec = InputVec.normalized * (data.MoveSpeed * moveSpeed * Time.fixedDeltaTime);
         _rigid.MovePosition(_rigid.position + nextVec);
     }
-    void LateUpdate()
+    
+    private void LateUpdate()
     {
         if (!_gameManager.isLive)
             return;
@@ -81,5 +81,4 @@ public class Player : MonoBehaviour
             _spriter.flipX = InputVec.x < 0;
         _anim.SetFloat("Speed", InputVec.magnitude);
     }
-    
 }
