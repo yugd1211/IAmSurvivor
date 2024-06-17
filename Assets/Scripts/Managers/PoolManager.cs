@@ -38,9 +38,6 @@ public partial class PoolManager
         InitCreatePools();
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
-    private void Start()
-    {
-    }
 }
 
 public partial class PoolManager : Singleton<PoolManager>
