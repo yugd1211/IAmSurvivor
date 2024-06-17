@@ -37,7 +37,7 @@ public class magnet : MonoBehaviour
 
     private void PullExp(Transform target)
     {
-        List<Exp> exps = _gameManager.pool.GetAllExp(0);
+        List<Exp> exps = _gameManager.pool.GetAll<Exp>();
         foreach (Exp item in exps)
         {
             item.Follow(target);

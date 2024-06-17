@@ -1,206 +1,148 @@
 using System.Collections.Generic;
 using Core;
 using UnityEngine;
+using System;
+using System.Linq;
+using UnityEngine.SceneManagement;
+using Object = UnityEngine.Object;
 
-public class PoolManager : Singleton<PoolManager>
+public partial class PoolManager
 {
     public GameObject enemyPrefabs;
+    public GameObject expPrefabs;
+    public GameObject boxPrefabs;
     public GameObject[] meleePrefabs;
     public GameObject[] rangePrefabs;
-    public GameObject[] expPrefabs;
-    public GameObject[] boxPrefabs;
-    
-    private List<Enemy> _enemyPools;
-    private List<Bullet>[] _meleePools;
-    private List<Bullet>[] _rangePools;
-    private List<Exp>[] _expPools;
-    private List<Box>[] _boxPools;
+    private void InitCreatePools()
+    {
+        CreatePool<Enemy>(enemyPrefabs);
+        CreatePool<Exp>(expPrefabs);
+        CreatePool<Box>(boxPrefabs);
+        
+        CreatePool<Bullet>(meleePrefabs[0], (int)Weapon.BulletType.Shovels);
+        CreatePool<Bullet>(meleePrefabs[1], (int)Weapon.BulletType.Poke);
+        CreatePool<Bullet>(meleePrefabs[2], (int)Weapon.BulletType.Scythe);
+        CreatePool<Bullet>(rangePrefabs[0], (int)Weapon.BulletType.Sniper);
+        CreatePool<Bullet>(rangePrefabs[1], (int)Weapon.BulletType.MachineGun);
+        CreatePool<Bullet>(rangePrefabs[2], (int)Weapon.BulletType.Shotgun);
+    }
 
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "GameScene")
+            InitCreatePools();
+    }
+    
     protected override void AwakeInit()
     {
-        _enemyPools = new List<Enemy>();
-        
-        _meleePools = new List<Bullet>[meleePrefabs.Length];
-        for (int i = 0; i < _meleePools.Length; i++)
-            _meleePools[i] = new List<Bullet>();
-        
-        _rangePools = new List<Bullet>[rangePrefabs.Length];
-        for (int i = 0; i < _rangePools.Length; i++)
-            _rangePools[i] = new List<Bullet>();
-        
-        _expPools = new List<Exp>[expPrefabs.Length];
-        for (int i = 0; i < _expPools.Length; i++)
-            _expPools[i] = new List<Exp>();
-        
-        _boxPools = new List<Box>[boxPrefabs.Length];
-        for (int i = 0; i < _boxPools.Length; i++)
-            _boxPools[i] = new List<Box>();
+        InitCreatePools();
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+    private void Start()
+    {
+    }
+}
+
+public partial class PoolManager : Singleton<PoolManager>
+{
+    private readonly Dictionary<Type, Dictionary<int, object>> _poolDic = new Dictionary<Type, Dictionary<int, object>>();
+    
+    public void CreatePool<T>(GameObject prefab, int id = 0) where T : Component
+    {
+        if (_poolDic.ContainsKey(typeof(T)))
+        {
+            if (_poolDic[typeof(T)].ContainsKey(id))
+                return;
+        }
+        else
+        {
+            _poolDic.Add(typeof(T), new Dictionary<int, object>());
+        }
+
+        ObjectPool<T> newPool = new ObjectPool<T>(prefab, 1, transform);
+        _poolDic[typeof(T)].Add(id, newPool);
     }
 
-    public void DestroyAllObjects()
+    public T Get<T>(int index = 0) where T : Component
     {
-        foreach (var enemy in _enemyPools)
-            Destroy(enemy.gameObject);
-        _enemyPools.RemoveRange(0, _enemyPools.Count);
-        
-        foreach (var meleePool in _meleePools)
-        {
-            foreach (var melee in meleePool)
-                Destroy(melee.gameObject);
-            meleePool.RemoveRange(0, meleePool.Count);
-        }
-        foreach (var rangePool in _rangePools)
-        {
-            foreach (var range in rangePool)
-                Destroy(range.gameObject);
-            rangePool.RemoveRange(0, rangePool.Count);
-        }
-        foreach (var expPool in _expPools)
-        {
-            foreach (var exp in expPool)
-                Destroy(exp.gameObject);
-            expPool.RemoveRange(0, expPool.Count);
-        }
-        foreach (var boxPool in _boxPools)
-        {
-            foreach (var box in boxPool)
-                Destroy(box.gameObject);
-            boxPool.RemoveRange(0, boxPool.Count);
-        }
-    }
-
-    public void DisableAllObjects()
-    {
-        foreach (Enemy enemy in _enemyPools)
-        {
-            enemy.Die(false);
-        }
-        foreach (List<Bullet> meleePool in _meleePools)
-        {
-            foreach (var melee in meleePool)
-                melee.gameObject.SetActive(false);
-        }
-        foreach (List<Bullet> rangePool in _rangePools)
-        {
-            foreach (var range in rangePool)
-                range.gameObject.SetActive(false);
-        }
-        foreach (List<Exp> expPool in _expPools)
-        {
-            foreach (var exp in expPool)
-                exp.gameObject.SetActive(false);
-        }
-        foreach (List<Box> boxPool in _boxPools)
-        {
-            foreach (Box box in boxPool)
-                box.gameObject.SetActive(false);
-        }
-    }
-
-    public Enemy GetEnemy()
-    {
-        Enemy select = null;
-
-        foreach (Enemy item in _enemyPools)
-        {
-            if (!item.gameObject.activeSelf)
-            {
-                select = item;
-                select.gameObject.SetActive(true);
-                break;
-            }
-        }
-        if (!select)
-        {
-            select = Instantiate(enemyPrefabs, transform).GetComponent<Enemy>();
-            _enemyPools.Add(select);
-        }
-        return select;
-    }
-    public Bullet GetMelee(int index)
-    {
-        Bullet select = null;
-
-        foreach (Bullet item in _meleePools[index])
-        {
-            if (!item.gameObject.activeSelf)
-            {
-                select = item;
-                select.gameObject.SetActive(true);
-                break;
-            }
-        }
-        if (!select)
-        {
-            select = Instantiate(meleePrefabs[index], transform).GetComponent<Bullet>();
-            _meleePools[index].Add(select);
-        }
-        return select;
-    }   
-    public Bullet GetRange(int index)
-    {
-        Bullet select = null;
-
-        foreach (Bullet item in _rangePools[index])
-        {
-            if (!item.gameObject.activeSelf)
-            {
-                select = item;
-                select.gameObject.SetActive(true);
-                break;
-            }
-        }
-        if (!select)
-        {
-            select = Instantiate(rangePrefabs[index], transform).GetComponent<Bullet>();
-            _rangePools[index].Add(select);
-        }
-        return select;
+        if (_poolDic.ContainsKey(typeof(T)) && _poolDic[typeof(T)].TryGetValue(index, out object pool))
+            return ((ObjectPool<T>)pool)?.Get();
+        else
+            Debug.Log($"No pool type = {typeof(T)}, index = {index}.");
+        return null;
     }
     
-    public Exp GetExp(int index)
+    public List<T> GetAll<T>(int index = 0) where T : Component
     {
-        Exp select = null;
-
-        foreach (Exp item in _expPools[index])
-        {
-            if (!item.gameObject.activeSelf)
-            {
-                select = item;
-                select.gameObject.SetActive(true);
-                break;
-            }
-        }
-        if (!select)
-        {
-            select = Instantiate(expPrefabs[index], transform).GetComponent<Exp>();
-            _expPools[index].Add(select);
-        }
-        return select;
-    }    
-    public Box GetBox(int index)
+        if (_poolDic.ContainsKey(typeof(T)) && _poolDic[typeof(T)].TryGetValue(index, out object pool))
+            return ((ObjectPool<T>)pool).GetAll();
+        else
+            Debug.Log($"No pool type = {typeof(T)}, index = {index}.");
+        return null;
+    }
+    
+    public void ExecuteMethodOnAllObjects(string method)
     {
-        Box select = null;
+        foreach (object objectPool in _poolDic.Values.SelectMany(pools => pools.Values))
+            objectPool.GetType().GetMethod(method)?.Invoke(objectPool, null);
+    }
+}
 
-        foreach (Box item in _boxPools[index])
-        {
-            if (!item.gameObject.activeSelf)
-            {
-                select = item;
-                select.gameObject.SetActive(true);
-                break;
-            }
-        }
-        if (!select)
-        {
-            select = Instantiate(boxPrefabs[index], transform).GetComponent<Box>();
-            _boxPools[index].Add(select);
-        }
-        return select;
+public class ObjectPool<T> where T : Component
+{
+    private readonly GameObject _prefab;
+    private readonly Transform _parentTransform;
+    private readonly List<T> _pool;
+    private int _currPos;
+
+    public ObjectPool(GameObject prefab, int initSize, Transform parentTransform)
+    {
+        _currPos = 0;
+        _prefab = prefab;
+        _parentTransform = parentTransform;
+        _pool = new List<T>();
+
+        for (int i = 0; i < initSize; i++)
+            AddObject();
     }
 
-    public List<Exp> GetAllExp(int index)
+    public T Get()
     {
-        return _expPools[index];
+        if (_currPos >= _pool.Count)
+            _currPos = 0;
+        for (; _currPos < _pool.Count; _currPos++)
+        {
+            if (_pool[_currPos].gameObject.activeSelf)
+                continue;
+            _pool[_currPos].gameObject.SetActive(true);
+            return _pool[_currPos++];
+        }
+        AddObject();
+        _pool[_currPos].gameObject.SetActive(true);
+        return _pool[_currPos++];
+    }
+
+    public List<T> GetAll()
+    {
+        return _pool;
+    }
+
+    private void AddObject()
+    {
+        T newObject = Object.Instantiate(_prefab, _parentTransform)?.GetComponent<T>();
+        _pool.Add(newObject);
+        newObject?.gameObject.SetActive(false);
+    }
+    
+    public void DisableAll()
+    {
+        foreach (T item in _pool)
+            item.gameObject.SetActive(false);
+    }
+    public void DestroyAll()
+    {
+        foreach (T item in _pool)
+            Object.Destroy(item.gameObject);
+        _pool.Clear();
     }
 }

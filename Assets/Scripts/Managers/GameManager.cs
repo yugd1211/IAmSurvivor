@@ -39,12 +39,6 @@ public partial class GameManager : Singleton<GameManager>
         StatisticsManager.Instance.InitPlayLog();
     }
 
-    private void Start()
-    {
-        pool = FindObjectOfType<PoolManager>();
-        
-    }
-    
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         // 게임이 끝날때 코루틴 함수를 호출한다. 문제는 게임매니저는 DontDestroyOnLoad 객체이기 때문에 씬의 이동시에도 코루틴 함수가 진행된다.
@@ -63,8 +57,8 @@ public partial class GameManager : Singleton<GameManager>
         exp = 0;
         player = FindObjectOfType<Player>();
         uiLevelUp = FindObjectOfType<LevelUp>();
-        pool = FindObjectOfType<PoolManager>();
         uiResult = FindObjectOfType<Result>(true);
+        pool = PoolManager.Instance;
         
         player.data = data;
         player.ChangeAnim();
@@ -76,7 +70,7 @@ public partial class GameManager : Singleton<GameManager>
     }
     public void GoToMainScene()
     {
-        pool.DestroyAllObjects();
+        pool.ExecuteMethodOnAllObjects("DestroyAll");
         SceneManager.LoadScene("MainScene");
     }
     
@@ -135,7 +129,7 @@ public partial class GameManager
 {
     public void GameOver(bool isWin)
     {
-        pool.DisableAllObjects();
+        pool.ExecuteMethodOnAllObjects("DisableAll");
         if (isWin)
             StatisticsManager.Instance.IncrementVictoryCount();
         else

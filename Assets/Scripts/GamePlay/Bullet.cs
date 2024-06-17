@@ -68,7 +68,7 @@ public class Bullet : MonoBehaviour
             }
         }
         Enemy enemy = other.GetComponent<Enemy>();
-        enemy.Attacked(WeaponInfo.Damage());
+        enemy.Damaged(WeaponInfo.Damage());
     }
 
     // Area 밖으로 나가면 사라짐
