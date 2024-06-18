@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class magnet : MonoBehaviour
+public class Magnet : MonoBehaviour
 {
     private GameManager _gameManager;
     private Transform _target = null;

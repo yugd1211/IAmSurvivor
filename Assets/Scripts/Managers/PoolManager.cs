@@ -84,8 +84,6 @@ public class PoolManager : Singleton<PoolManager>
     }
 }
 
-
-
 public class ObjectPool<T> where T : Component
 {
     private readonly GameObject _prefab;
@@ -124,15 +122,7 @@ public class ObjectPool<T> where T : Component
     {
         return _pool;
     }
-
-    private void AddObject()
-    {
-        T newObject = Object.Instantiate(_prefab, _parentTransform)?.GetComponent<T>();
-        _pool.Add(newObject);
-        newObject?.gameObject.SetActive(false);
-    }
-    
-    public void DisableAll()
+        public void DisableAll()
     {
         foreach (T item in _pool)
             item.gameObject.SetActive(false);
@@ -142,5 +132,12 @@ public class ObjectPool<T> where T : Component
         foreach (T item in _pool)
             Object.Destroy(item.gameObject);
         _pool.Clear();
+    }
+
+    private void AddObject()
+    {
+        T newObject = Object.Instantiate(_prefab, _parentTransform)?.GetComponent<T>();
+        _pool.Add(newObject);
+        newObject?.gameObject.SetActive(false);
     }
 }

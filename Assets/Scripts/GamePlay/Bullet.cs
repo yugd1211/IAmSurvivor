@@ -4,11 +4,6 @@ using Vector3 = UnityEngine.Vector3;
 
 public class Bullet : MonoBehaviour
 {
-    // public int id;
-    // public float damage;
-    // public ItemData.WeaponType WeaponInfo.type;
-    // public int per;
-    // public float speed;
     public WeaponInfo WeaponInfo;
     
     private Rigidbody2D _rigid;
@@ -19,14 +14,12 @@ public class Bullet : MonoBehaviour
     {
         _rigid = GetComponent<Rigidbody2D>();
         _spriter = GetComponent<SpriteRenderer>();
-        // _player = GameManager.Instance.player;
     }
 
     private void OnEnable()
     {
         _player = GameManager.Instance.player;
     }
-
 
     private void FixedUpdate()
     {
