@@ -1,7 +1,4 @@
-using System;
 using System.Collections;
-using Cinemachine;
-using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -62,12 +59,13 @@ public class Enemy : MonoBehaviour
 
     public void Attack(Player player)
     {
-        player.TakeDamage(data.damage);
+        player.Damaged(data.damage);
     }
     
     private void OnEnable()
     {
-        target = _gameManager.player.GetComponent<Rigidbody2D>();
+        if (_gameManager.player != null)
+            target = _gameManager.player.GetComponent<Rigidbody2D>();
         _isLive = true;
         _coll.enabled = true;
         _rigid.simulated = true;
@@ -82,7 +80,7 @@ public class Enemy : MonoBehaviour
         _gameManager.GameOver(true);
     }
 
-    public void Attacked(float damage)
+    public void Damaged(float damage)
     {
         health -= damage;
         StartCoroutine(KnockBack());
@@ -113,13 +111,13 @@ public class Enemy : MonoBehaviour
         }
         if (Random.Range(0, 100) < 5)
         {
-            Box box = _gameManager.pool.GetBox(0);
+            Box box = _gameManager.pool.Get<Box>();
             box.transform.position = transform.position;
             box.gameObject.SetActive(true);
         }
         else
         {
-            Exp exp = _gameManager.pool.GetExp(0);
+            Exp exp = _gameManager.pool.Get<Exp>();
             exp.Init((Exp.ExpType)_type - 1);   
             exp.transform.position = transform.position;
         }
@@ -127,7 +125,7 @@ public class Enemy : MonoBehaviour
             AudioManager.Instance.PlaySfx(AudioManager.Sfx.Dead);
     }
 
-    IEnumerator KnockBack()
+    private IEnumerator KnockBack()
     {
         yield return _wait;
         Vector3 playerPos = _gameManager.player.transform.position;

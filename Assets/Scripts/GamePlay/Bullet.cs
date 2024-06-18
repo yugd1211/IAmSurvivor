@@ -1,15 +1,9 @@
-using System;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
 
 public class Bullet : MonoBehaviour
 {
-    // public int id;
-    // public float damage;
-    // public ItemData.WeaponType WeaponInfo.type;
-    // public int per;
-    // public float speed;
     public WeaponInfo WeaponInfo;
     
     private Rigidbody2D _rigid;
@@ -20,14 +14,12 @@ public class Bullet : MonoBehaviour
     {
         _rigid = GetComponent<Rigidbody2D>();
         _spriter = GetComponent<SpriteRenderer>();
-        // _player = GameManager.Instance.player;
     }
 
     private void OnEnable()
     {
         _player = GameManager.Instance.player;
     }
-
 
     private void FixedUpdate()
     {
@@ -69,7 +61,7 @@ public class Bullet : MonoBehaviour
             }
         }
         Enemy enemy = other.GetComponent<Enemy>();
-        enemy.Attacked(WeaponInfo.Damage());
+        enemy.Damaged(WeaponInfo.Damage());
     }
 
     // Area 밖으로 나가면 사라짐

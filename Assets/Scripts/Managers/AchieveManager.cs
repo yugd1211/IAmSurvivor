@@ -8,7 +8,7 @@ public enum CharacterType
     Bean,
 }
 
-public partial class AchieveManager : Singleton<AchieveManager>
+public class AchieveManager : Singleton<AchieveManager>
 {
     [Header("# Inspector Allocate")]
     public GameObject noticePrefab;
@@ -16,8 +16,7 @@ public partial class AchieveManager : Singleton<AchieveManager>
 
     [Header("# Inspector Allocate")]
     public readonly Dictionary<int, Achieve> Achieves = new Dictionary<int, Achieve>();
-    public Dictionary<int, Achieve> UnlockAchieves = null;
-    private readonly WaitForSecondsRealtime _wait = new WaitForSecondsRealtime(5);
+    public Dictionary<int, Achieve> UnlockAchieves;
 
     private void Start()
     {
@@ -36,7 +35,8 @@ public partial class AchieveManager : Singleton<AchieveManager>
             charList.Add(0);
             ProgressNotify(CharacterType.Potato);
             DataManager.SaveCharacters(charList);
-        };
+        }; 
+
         
         achieve = new Achieve(1, "I AM SURVIVOR", "살아남았습니다!!!");
         achieve.AddCondition(new Victory(1));
@@ -54,7 +54,12 @@ public partial class AchieveManager : Singleton<AchieveManager>
         achieve = new Achieve(2, "회피 마스터", "한번도 맞지않고 살아남았습니다.");
         achieve.AddCondition(new Hit(0));
         Achieves.Add(achieve.id, achieve);
-
+        
+        
+        achieve = new Achieve(3, "고급 생존자", "적을 90마리 처치했습니다.");
+        achieve.AddCondition(new Kill(EnemyType.All, 0, 90, GameManager.Instance.KillManager.TotalKill));
+        Achieves.Add(achieve.id, achieve);
+        
         UnlockAchieves = DataManager.LoadUnlockAchieves();
     }
 

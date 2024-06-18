@@ -552,8 +552,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: 3dd81d46579284ab2aa2a0b31901c98b, type: 2}
+  health: 0
+  maxHealth: 0
   dir: {x: 0, y: 0}
-  moveSpeed: 3
+  moveSpeed: 1
   scanner: {fileID: 0}
   hands: []
 --- !u!114 &1960874177

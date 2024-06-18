@@ -28,6 +28,8 @@ public partial class GameManager : Singleton<GameManager>
     public int exp;
     public int[] nextExp;
 
+    private Coroutine _coroutine; 
+
     protected override void AwakeInit()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -37,14 +39,12 @@ public partial class GameManager : Singleton<GameManager>
         StatisticsManager.Instance.InitPlayLog();
     }
 
-    private void Start()
-    {
-        pool = FindObjectOfType<PoolManager>();
-        
-    }
-
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        // 게임이 끝날때 코루틴 함수를 호출한다. 문제는 게임매니저는 DontDestroyOnLoad 객체이기 때문에 씬의 이동시에도 코루틴 함수가 진행된다.
+        // 그렇기 때문에 게임 끝날때의 코루틴 함수가 메인씬에서 혹은 그 다음 다시 시작하는 게임씬에서도 계속 호출될수 있기때문에 씬이동 시 해당 코루틴을 종료시켜준다.
+        if (_coroutine != null)
+            StopCoroutine(_coroutine);
         if (scene.name == "GameScene")
             GameStart();        
     }
@@ -57,8 +57,8 @@ public partial class GameManager : Singleton<GameManager>
         exp = 0;
         player = FindObjectOfType<Player>();
         uiLevelUp = FindObjectOfType<LevelUp>();
-        pool = FindObjectOfType<PoolManager>();
         uiResult = FindObjectOfType<Result>(true);
+        pool = PoolManager.Instance;
         
         player.data = data;
         player.ChangeAnim();
@@ -70,7 +70,7 @@ public partial class GameManager : Singleton<GameManager>
     }
     public void GoToMainScene()
     {
-        pool.DestroyAllObjects();
+        pool.ExecuteMethodOnAllObjects("DestroyAll");
         SceneManager.LoadScene("MainScene");
     }
     
@@ -122,7 +122,6 @@ public partial class GameManager : Singleton<GameManager>
     
 }
 
-
 /// <summary>
 /// coroutine function
 /// </summary>
@@ -130,13 +129,13 @@ public partial class GameManager
 {
     public void GameOver(bool isWin)
     {
-        pool.DisableAllObjects();
+        pool.ExecuteMethodOnAllObjects("DisableAll");
         if (isWin)
             StatisticsManager.Instance.IncrementVictoryCount();
         else
             StatisticsManager.Instance.IncrementDefeatCount();
         DataManager.SavePlayLog();
-        StartCoroutine(GameEndRoutine(isWin));
+        _coroutine = StartCoroutine(GameEndRoutine(isWin));
     }
     
     private IEnumerator GameEndRoutine(bool isWin)
@@ -153,5 +152,3 @@ public partial class GameManager
         Pause();
     }
 }
-
-

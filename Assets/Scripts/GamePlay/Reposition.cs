@@ -9,9 +9,10 @@ public class Reposition : MonoBehaviour
         _coll = GetComponent<Collider2D>();
         _gameManager = GameManager.Instance;
     }
-    void OnTriggerExit2D(Collider2D collision)
+    
+    private void OnTriggerExit2D(Collider2D other)
     {
-        if (!collision.CompareTag("Area"))
+        if (!other.CompareTag("Area"))
             return;
         Vector2 playerPos = _gameManager.player.transform.position;
         Vector2 myPos = transform.position;
@@ -28,9 +29,9 @@ public class Reposition : MonoBehaviour
                 diffY = Mathf.Abs(diffY);
                 
                 if (diffX > diffY)
-                    transform.Translate(Vector3.right * dirX * collision.bounds.size.x * 2);
+                    transform.Translate(Vector3.right * dirX * other.bounds.size.x * 2);
                 else if (diffX < diffY)
-                    transform.Translate(Vector3.up * dirY * collision.bounds.size.y * 2);
+                    transform.Translate(Vector3.up * dirY * other.bounds.size.y * 2);
                 break;
             case "Enemy":
                 if (_coll.enabled)

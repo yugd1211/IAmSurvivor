@@ -1,6 +1,4 @@
 using Core.Observer;
-using UnityEditor.Searcher;
-using UnityEngine;
 
 public abstract class AchieveCondition : ASubject
 {
@@ -15,8 +13,7 @@ public interface IConditionVisitor
     bool Visit(Victory victory);
 }
 
-// todo : 킬 감지를 어떤식으로 할지 더 확실하게 해야할듯
-public class ConditionChecker : IConditionVisitor
+public class ConditionFulfillmentChecker : IConditionVisitor
 {
     public bool Visit(Kill kill)
     {
@@ -63,7 +60,6 @@ public class Kill : AchieveCondition
     {
         return visitor.Visit(this);
     }
-
 }
 
 public class Hit : AchieveCondition 
@@ -115,10 +111,7 @@ public class Victory : AchieveCondition
     public Victory(int victoryCount)
     {
         VictoryCount = victoryCount;
-        GameManager.Instance.VictoryAction += () =>
-        {
-            NotifyObservers(); 
-        };
+        GameManager.Instance.VictoryAction += NotifyObservers;
     }
 
     public override bool Accept(IConditionVisitor visitor)
@@ -126,4 +119,3 @@ public class Victory : AchieveCondition
         return visitor.Visit(this);
     }
 }
-

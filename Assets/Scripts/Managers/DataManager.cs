@@ -32,8 +32,9 @@ public class DataManager
 
 	public static List<int> LoadCharacters()
 	{
-		JsonConverter.Load(out List<int> characters, _CharacterPath);
-		return characters;
+		if (JsonConverter.Load(out List<int> characters, _CharacterPath))
+			return characters;
+		return new List<int>();
 	}
 
 	private static void UpdatePlayTime()
@@ -54,8 +55,9 @@ public class DataManager
 	}
 	public static PlayLog LoadPlayLog()
 	{
-		JsonConverter.Load(out PlayLog playLog, _playLogPath);
-		return playLog;
+		if (JsonConverter.Load(out PlayLog playLog, _playLogPath))
+			return playLog;
+		return new PlayLog();
 	}
 	
 	public static void SaveUnlockAchieves(int[] achieveIds)
@@ -65,13 +67,12 @@ public class DataManager
 	
 	public static Dictionary<int, Achieve> LoadUnlockAchieves()
 	{
-		if (!JsonConverter.Load(out int[] unLockAchieves, _achievePath))
-			return null;
+		if (!JsonConverter.Load(out int[] unlockArr, _achievePath))
+			return new Dictionary<int, Achieve>();
 
 		Dictionary<int, Achieve> unlockAchieves = new Dictionary<int, Achieve>();
 		Dictionary<int, Achieve> achieves = AchieveManager.Instance.Achieves;
-
-		foreach (int id in unLockAchieves)
+		foreach (int id in unlockArr)
 		{
 			if (achieves.TryGetValue(id, out Achieve achieve) && achieve != null)
 				unlockAchieves.Add(achieve.id, achieve);

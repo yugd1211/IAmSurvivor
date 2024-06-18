@@ -42,9 +42,8 @@ public class Spawner : MonoBehaviour
 
     public Enemy Spawn(EnemyType enemyType)
     {
-        Enemy enemy = _gameManager.pool.GetEnemy();
+        Enemy enemy = _gameManager.pool.Get<Enemy>();
         enemy.transform.position = spawnPoint[Random.Range(1, spawnPoint.Length)].position;
-        // enemy.Init(new EnemyData, Ene);
         enemy.Init(enemyType == EnemyType.Boss ? bossData : enemyDatas[_level], enemyType);
         return enemy;
     }

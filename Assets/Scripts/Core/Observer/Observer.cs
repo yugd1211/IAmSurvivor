@@ -6,6 +6,7 @@ namespace Core.Observer
     {
         public abstract void Notify(ASubject subject);
     }
+    
     public abstract class ASubject
     {
         private readonly List<AObserver> _observers = new List<AObserver>();
@@ -18,11 +19,6 @@ namespace Core.Observer
         public void Detach(AObserver observer)
         { 
             _observers.Remove(observer);
-        }
-
-        public int ObserverCount()
-        {
-            return _observers.Count;
         }
 
         protected void NotifyObservers()
