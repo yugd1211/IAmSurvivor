@@ -6,13 +6,16 @@ using System.Linq;
 using UnityEngine.SceneManagement;
 using Object = UnityEngine.Object;
 
-public partial class PoolManager
+public class PoolManager : Singleton<PoolManager>
 {
     public GameObject enemyPrefabs;
     public GameObject expPrefabs;
     public GameObject boxPrefabs;
     public GameObject[] meleePrefabs;
     public GameObject[] rangePrefabs;
+    
+    private readonly Dictionary<Type, Dictionary<int, object>> _poolDic = new Dictionary<Type, Dictionary<int, object>>();
+    
     private void InitCreatePools()
     {
         CreatePool<Enemy>(enemyPrefabs);
@@ -38,11 +41,7 @@ public partial class PoolManager
         InitCreatePools();
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
-}
 
-public partial class PoolManager : Singleton<PoolManager>
-{
-    private readonly Dictionary<Type, Dictionary<int, object>> _poolDic = new Dictionary<Type, Dictionary<int, object>>();
     
     public void CreatePool<T>(GameObject prefab, int id = 0) where T : Component
     {
@@ -84,6 +83,8 @@ public partial class PoolManager : Singleton<PoolManager>
             objectPool.GetType().GetMethod(method)?.Invoke(objectPool, null);
     }
 }
+
+
 
 public class ObjectPool<T> where T : Component
 {
