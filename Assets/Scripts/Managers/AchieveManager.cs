@@ -56,7 +56,10 @@ public class AchieveManager : Singleton<AchieveManager>
         Achieves.Add(achieve.id, achieve);
         
         
-        achieve = new Achieve(3, "고급 생존자", "적을 90마리 처치했습니다.");
+        achieve = new Achieve(3, "초급 생존자", "적을 10마리 처치했습니다.");
+        achieve.AddCondition(new Kill(EnemyType.All, 0, 10, GameManager.Instance.KillManager.TotalKill));
+        Achieves.Add(achieve.id, achieve);
+        achieve = new Achieve(4, "고급 생존자", "적을 90마리 처치했습니다.");
         achieve.AddCondition(new Kill(EnemyType.All, 0, 90, GameManager.Instance.KillManager.TotalKill));
         Achieves.Add(achieve.id, achieve);
         

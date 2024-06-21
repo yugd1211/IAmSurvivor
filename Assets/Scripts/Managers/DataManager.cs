@@ -15,9 +15,9 @@ public class DataManager
 {
 	private static float _creationTime;
 	private static PlayLog _playLog;
-	private static string _achievePath = "/Json/Achieve.json";
-	private static string _playLogPath = "/Json/PlayLog.json";
-	private static string _CharacterPath = "/Json/Character.json";
+	private static string _achievePath = "/Achieve.json";
+	private static string _playLogPath = "/PlayLog.json";
+	private static string _CharacterPath = "/Character.json";
 
 	public static void Init()
 	{

@@ -6,32 +6,37 @@ public static class JsonConverter
 {
 	public static void Save<T>(T objectToSave, string fileName)
 	{
-		fileName = Application.dataPath + fileName;
+		fileName = Application.persistentDataPath + fileName;
 		CreateNewFile(objectToSave, fileName);
 	}
 
-public static bool Load<T>(out T objectToLoad, string fileName)
-{
-	fileName = Application.dataPath + fileName;
-	if (File.Exists(fileName))
+	public static bool Load<T>(out T objectToLoad, string fileName)
 	{
-		string jsonData = File.ReadAllText(fileName);
-		objectToLoad = JsonConvert.DeserializeObject<T>(jsonData);
-		return true;
-	}
-	else
-	{
+		fileName = Application.persistentDataPath + fileName;
+		if (File.Exists(fileName))
+		{
+			string jsonData = File.ReadAllText(fileName);
+			if (jsonData != string.Empty)
+			{
+				objectToLoad = JsonConvert.DeserializeObject<T>(jsonData);
+				return true;
+			}
+		}
 		objectToLoad = default;
 		return false;
-	}
-}
+	}	
 	
 	private static void CreateNewFile<T>(T objectToLoad, string fileName)
 	{
-		if (objectToLoad == null)
-			objectToLoad = default;
+		objectToLoad ??= default;
 		string jsonData = JsonConvert.SerializeObject(objectToLoad);
-		File.WriteAllText(fileName, jsonData);
+		if (!File.Exists(fileName))
+		{
+			Directory.CreateDirectory(Path.GetDirectoryName(fileName) ?? string.Empty);
+			File.Create(fileName).Dispose();
+		}
+		if (File.Exists(fileName))
+			File.WriteAllText(fileName, jsonData);
 	}
 
 	public static void DeleteJson(string fileName)
