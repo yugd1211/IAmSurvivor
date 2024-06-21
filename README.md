@@ -4,8 +4,11 @@
 
 ### 게임플레이
 
-PC 버전으로 플레이 가능합니다.  
-https://play.unity.com/mg/other/webgl-builds-421309
+PC 버전으로 플레이 가능합니다. 
+
+이동 : WASD or 방향키  
+캐릭터, 아이템 선택 : 마우스 좌클릭  
+https://play.unity.com/mg/other/webgl-builds-421309  
 
 # MainScene
 
