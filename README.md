@@ -2,6 +2,11 @@
 
 [주요 코드 설명](https://github.com/yugd1211/IAmSurvivor/wiki)
 
+### 게임플레이
+
+PC 버전으로 플레이 가능합니다.  
+https://play.unity.com/mg/other/webgl-builds-421309
+
 # MainScene
 
 ## 캐릭터 선택
