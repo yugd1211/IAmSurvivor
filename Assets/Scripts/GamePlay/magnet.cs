@@ -4,7 +4,7 @@ using UnityEngine;
 public class Magnet : MonoBehaviour
 {
     private GameManager _gameManager;
-    private Transform _target = null;
+    private Transform _target;
     public int speed = 10;
 
     private void Awake()
@@ -52,7 +52,6 @@ public class Magnet : MonoBehaviour
             gameObject.SetActive(false);
         }
     }
-
 
     private void OnTriggerEnter2D(Collider2D other)
     {
