@@ -1,6 +1,14 @@
 # IAmSurvivor
 
-[주요 코드 설명](https://github.com/yugd1211/IAmSurvivor/wiki)
+## [주요 코드 설명](https://github.com/yugd1211/IAmSurvivor/wiki)
+
+### 게임플레이
+
+PC에서 플레이 가능합니다. 
+
+이동 : WASD or 방향키  
+캐릭터, 아이템 선택 : 마우스 좌클릭  
+https://play.unity.com/en/games/2c98ef4e-5b48-4c03-a13d-c4a8365ab91e/webgl-builds
 
 # MainScene
 
