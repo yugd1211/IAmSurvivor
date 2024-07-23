@@ -1,33 +1,31 @@
-using System.Collections.Generic;
+using System;
 
 namespace Core.Observer
 {
-    public abstract class AObserver
+    public interface IObserver
     {
-        public abstract void Notify(ASubject subject);
+        public void Notify(ISubject subject);
     }
     
-    public abstract class ASubject
+    public class ObserverKill : IObserver
     {
-        private readonly List<AObserver> _observers = new List<AObserver>();
-
-        public void Attach(AObserver observer)
+        public ObserverKill(int goalCount)
         {
-            _observers.Add(observer);
+            GoalCount = goalCount;
         }
         
-        public void Detach(AObserver observer)
-        { 
-            _observers.Remove(observer);
-        }
-
-        protected void NotifyObservers()
+        public long Count { get; set; }
+        public long GoalCount;
+        public Action Action;
+        
+        // subject에게 알림을 받을때 사용하는 함수
+        public void Notify(ISubject subject)
         {
-            // Notify중 Detach했을때 오류가 발생하기 때문에 이전값이 모두 저장된 list를 복사후 진행
-            List<AObserver> observersSnapshot = new List<AObserver>(_observers);
-            foreach (AObserver observer in observersSnapshot)
+            if (subject is SubjectKill kill)
             {
-                observer.Notify(this);
+                Count = kill.Count;
+                if (Count >= GoalCount)
+                    Action();
             }
         }
     }

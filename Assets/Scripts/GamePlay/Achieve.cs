@@ -4,7 +4,7 @@ using System.Linq;
 using Core.Observer;
 
 [Serializable]
-public class Achieve : AObserver
+public class Achieve : IObserver
 {
     public int id;
     public string name;
@@ -35,18 +35,18 @@ public class Achieve : AObserver
         _conditions.Remove(achieveCondition);
     }
     
-public bool CheckCondition()
-{
-    for (int i = 0; i < _conditions.Count; i++)
+    public bool CheckCondition()
     {
-        AchieveCondition item = _conditions[i];
-        if (!item.Accept(_fulfillmentChecker))
-            return false;
+        for (int i = 0; i < _conditions.Count; i++)
+        {
+            AchieveCondition item = _conditions[i];
+            if (!item.Accept(_fulfillmentChecker))
+                return false;
+        }
+        return true;
     }
-    return true;
-}
 
-    public override void Notify(ASubject subject)
+    public void Notify(ISubject subject)
     {
         AchieveManager achieveManager = AchieveManager.Instance;
         if (!CheckCondition())

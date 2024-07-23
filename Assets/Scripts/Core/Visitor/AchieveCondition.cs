@@ -1,6 +1,6 @@
 using Core.Observer;
 
-public abstract class AchieveCondition : ASubject
+public abstract class AchieveCondition : Subject
 {
     public abstract bool Accept(IConditionVisitor visitor);
 }
