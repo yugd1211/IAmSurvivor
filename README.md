@@ -1,14 +1,22 @@
 # IAmSurvivor
 
+<img width="700" alt="스크린샷 2024-07-24 15 48 30" src="https://github.com/user-attachments/assets/6bc7ca81-ba8b-43a9-b200-a924d9185477">
+
+뱀서라이크류 2D 게임입니다.
+
+엔진 : Unity  
+버전 : 2021.3.35f1  
+
+WebGL로 빌드후 unity play에 업로드하여 브라우저상에서 플레이 가능합니다. (PC O, Mobile X)    
+https://play.unity.com/en/games/2c98ef4e-5b48-4c03-a13d-c4a8365ab91e/webgl-builds  
+이동 : WASD or 방향키  
+캐릭터, 아이템 선택 : 마우스 좌클릭  
+
+
 ## [주요 코드 설명](https://github.com/yugd1211/IAmSurvivor/wiki)
 
 ### 게임플레이
 
-PC에서 플레이 가능합니다. 
-
-이동 : WASD or 방향키  
-캐릭터, 아이템 선택 : 마우스 좌클릭  
-https://play.unity.com/en/games/2c98ef4e-5b48-4c03-a13d-c4a8365ab91e/webgl-builds
 
 # MainScene
 
