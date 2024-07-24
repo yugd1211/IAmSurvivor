@@ -30,8 +30,9 @@ public partial class GameManager : Singleton<GameManager>
 
     private Coroutine _coroutine; 
 
-    protected override void AwakeInit()
+    protected override void Awake()
     {
+        base.Awake();
         SceneManager.sceneLoaded += OnSceneLoaded;
         Application.targetFrameRate = 60;
         DataManager.Init();

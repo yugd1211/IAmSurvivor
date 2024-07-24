@@ -36,8 +36,9 @@ public class PoolManager : Singleton<PoolManager>
             InitCreatePools();
     }
     
-    protected override void AwakeInit()
+    protected override void Awake()
     {
+        base.Awake();
         InitCreatePools();
         SceneManager.sceneLoaded += OnSceneLoaded;
     }

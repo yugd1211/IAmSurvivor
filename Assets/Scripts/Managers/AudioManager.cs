@@ -30,8 +30,9 @@ public class AudioManager : Singleton<AudioManager>
         Win,
     }
 
-    protected override void AwakeInit()
+    protected override void Awake()
     {
+        base.Awake();
         SceneManager.sceneLoaded += OnSceneLoaded;
         Init();
         PlayBgm(true);
